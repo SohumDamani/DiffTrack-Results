@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="DiffTrack — EE243 Final Project. Parameter study and limitation analysis by Sohum Damani.">
+  <meta name="description" content="DiffTrack — EE243 Final Project. Parameter study and limitation analysis by Sohum Damani and Yogeshwari Pophale.">
   <title>DiffTrack — EE243 Final Project</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -270,7 +270,7 @@
   <div class="hero">
     <div class="hero-pill">
       <span class="blink"></span>
-      EE243 Advanced Computer Vision · Spring 2026 · Sohum Damani
+      EE243 Advanced Computer Vision · Spring 2026 · Sohum Damani &amp; Yogeshwari Pophale
     </div>
     <h1 class="hero-title">
       DiffTrack —<br>
@@ -280,11 +280,11 @@
     <p class="hero-sub">
       Reproducing and stress-testing <a href="https://arxiv.org/abs/2506.17220" target="_blank">DiffTrack (NeurIPS 2025)</a>
       — zero-shot point tracking via emergent query-key correspondences in a frozen CogVideoX-2B Video DiT.
-      13 experiments on TAP-Vid DAVIS. All results code-verified against raw log files.
+      13 experiments on a 4-video subset of <strong style="color:var(--text);">TAP-Vid DAVIS</strong> (30 real-world video sequences). All results verified against raw run logs.
     </p>
     <div class="hero-btns">
       <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" class="btn btn-fill">🎬 View All Results on Drive</a>
-      <a href="https://github.com/SohumDamani/DiffTrack-CvProject" target="_blank" class="btn btn-ghost"><i class="fab fa-github"></i> GitHub</a>
+      <a href="https://github.com/SohumDamani/DiffTrack-Results" target="_blank" class="btn btn-ghost"><i class="fab fa-github"></i> GitHub</a>
       <a href="https://arxiv.org/abs/2506.17220" target="_blank" class="btn btn-ghost"><i class="ai ai-arxiv"></i> Paper</a>
     </div>
     <!-- Hero demo video -->
@@ -328,16 +328,43 @@
 
   <hr class="div">
 
+  <!-- DATASET & SETUP -->
+  <div class="pad">
+    <div class="wrap">
+      <div class="lbl">Setup</div>
+      <h2 class="sec-title">Dataset &amp; Evaluation Protocol</h2>
+      <p class="body-text" style="margin-bottom:18px;">
+        All experiments use the <strong style="color:var(--text);">TAP-Vid DAVIS</strong> benchmark — 30 densely annotated real-world video sequences covering a range of objects, camera motions, and occlusion patterns. Due to compute constraints, each ablation run used a fixed <strong style="color:var(--text);">4-video subset</strong> drawn from the 30 available. We ran two separate 4-video evaluations: one for the main parameter sweep, and one full-eval pass on a fresh subset to cross-check the baseline.
+      </p>
+      <p class="body-text" style="margin-bottom:18px;">
+        The primary metric is <strong style="color:var(--text);">delta_avg</strong> — the average of five distance-threshold accuracies: what fraction of tracked points land within 1, 2, 4, 8, and 16 pixels of ground truth. Higher is better. delta_1 (within 1 pixel) is the strictest; delta_16 (within 16 pixels) is the most lenient. A method with high delta_16 but low delta_1 is accurate at a coarse scale but imprecise at sub-pixel level. The paper reports 46.3 on the full 30-video set; our 4-video runs came in at 47.0 (param study subset) and 49.4 (full-eval subset) — both within the expected variance for a 4-video sample.
+      </p>
+      <div class="tbl-wrap" style="margin-bottom:0;">
+        <table>
+          <thead><tr><th>Run</th><th>Videos</th><th>Mean delta_avg</th><th>delta_1 (≤1px)</th><th>delta_2 (≤2px)</th><th>delta_4 (≤4px)</th><th>delta_8 (≤8px)</th><th>delta_16 (≤16px)</th></tr></thead>
+          <tbody>
+            <tr><td class="nd">Paper (full 30-video)</td><td class="nd">30</td><td class="ng">46.3</td><td class="nd">—</td><td class="nd">—</td><td class="nd">—</td><td class="nd">—</td><td class="nd">—</td></tr>
+            <tr class="opt"><td>Our param-study subset ★</td><td class="nd">4</td><td class="ng">47.0</td><td class="nd">7.0</td><td class="nd">—</td><td class="nd">—</td><td class="nd">74.6</td><td class="nd">81.2</td></tr>
+            <tr><td class="nd">Our full-eval subset</td><td class="nd">4</td><td class="ng">49.4</td><td class="nd">5.9</td><td class="nd">21.2</td><td class="nd">53.2</td><td class="nd">77.9</td><td class="nd">89.0</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="body-text" style="margin-top:14px;font-size:14px;color:var(--text-muted);">Full-eval per-video breakdown (Layer 17, ts=49): Video 0 — 51.9 | Video 1 — 43.8 | Video 2 — 49.8 | Video 3 — 52.2</p>
+    </div>
+  </div>
+
+  <hr class="div">
+
   <!-- PART A -->
   <div class="pad" id="part-a">
     <div class="wrap">
       <div class="lbl">Part A</div>
       <h2 class="sec-title">Parameter Study: Strengths</h2>
-      <p class="body-text">Systematic ablation over attention layer and diffusion timestep. All runs: CogVideoX-2B, TAP-Vid DAVIS, tracking videos below are side-by-side comparisons.</p>
+      <p class="body-text">Systematic ablation over two key parameters: which transformer layer to extract attention from, and which diffusion timestep to inject noise at. All runs use CogVideoX-2B on the TAP-Vid DAVIS 4-video subset. Videos below show predicted point trajectories (colored dots) overlaid on real footage.</p>
 
       <!-- EXP 1: LAYER -->
       <h3 class="sub-heading">Experiment 1 — Attention Layer Selection</h3>
-      <p class="body-text" style="margin-bottom:18px;">Tested layers 5, 8, 17, 27, 29 at <code>ts=49</code> across 4 DAVIS videos. Each video shows predicted trajectories overlaid on real video.</p>
+      <p class="body-text" style="margin-bottom:18px;">CogVideoX-2B has 42 transformer layers. We tested five representative layers — shallow (5), early-mid (8), mid (17), deep (27), near-final (29) — at a fixed timestep of <code>ts=49</code> across 4 DAVIS videos. The intuition: shallow layers capture low-level spatial detail with little semantic understanding; deep layers have rich semantics but may have lost spatial resolution. We expected mid-network layers to offer the best balance, and that is what we observed.</p>
 
       <div class="vid-triple">
         <div class="vid-card r">
@@ -399,7 +426,7 @@
 
       <!-- EXP 2: TIMESTEP -->
       <h3 class="sub-heading">Experiment 2 — Diffusion Timestep Selection</h3>
-      <p class="body-text" style="margin-bottom:18px;">Full sweep at <code>layer=17</code> — from near-noise (ts=1) to near-clean (ts=49). Watch the trajectory quality change across the curve.</p>
+      <p class="body-text" style="margin-bottom:18px;">DiffTrack works by injecting Gaussian noise at a chosen timestep, then running one denoising step and reading attention maps. The timestep controls how much noise is added: high noise (small <code>ts</code> index, large <code>t</code> value) adds a lot; low noise (<code>ts=49</code>, <code>t≈20</code>) adds almost none. We swept six timesteps at <code>layer=17</code> to see how tracking quality changes across the noise schedule. The key question: is there a minimum noise level needed for cross-frame correspondence to emerge?</p>
 
       <div class="vid-pair">
         <div class="vid-card r">
@@ -473,6 +500,7 @@
 
       <!-- EXP 3: CHUNKING -->
       <h3 class="sub-heading">Experiment 3 — Temporal Chunk Frame Interval</h3>
+      <p class="body-text" style="margin-bottom:18px;">The paper uses a <code>chunk_frame_interval</code> heuristic that splits long videos into overlapping windows for attention extraction. The idea is to prevent the attention from having to span too many frames at once. We tested whether removing this windowing changes tracking quality on our 4-video subset.</p>
       <div class="tbl-wrap">
         <table>
           <thead><tr><th>Configuration</th><th>delta_avg ↑</th><th>Difference</th></tr></thead>
@@ -497,10 +525,10 @@
     <div class="wrap">
       <div class="lbl">Part B</div>
       <h2 class="sec-title">Limitations Analysis</h2>
-      <p class="body-text">Three failure modes, each tied to explicit paper figures, with video evidence.</p>
+      <p class="body-text">The paper itself identifies several failure modes in the appendix. We ran targeted experiments to observe these directly. Each limitation below is paired with a video comparison and raw log data — the numbers make the failure mode concrete.</p>
 
       <!-- LIM 1: ts=1 -->
-      <h3 class="sub-heading">Limitation 1 — Hard Dependency on Diffusion Noise</h3>
+      <h3 class="sub-heading">Limitation 1 — Noise Dependency: What Happens at ts=1</h3>
       <div class="vid-pair">
         <div class="vid-card g">
           <video autoplay muted loop playsinline>
@@ -541,7 +569,8 @@
       </div>
 
       <!-- LIM 2: LAYER SENSITIVITY -->
-      <h3 class="sub-heading">Limitation 2 — Layer Sensitivity and Selection Brittleness</h3>
+      <h3 class="sub-heading">Limitation 2 — Layer Sensitivity (paper Figures 6 &amp; A.18)</h3>
+      <p class="body-text" style="margin-bottom:18px;">Our layer ablation (Experiment 1) showed a 16-point spread from best to worst layer. Two specific failure modes are worth zooming in on. Layer 8 tracks <em>positions</em> rather than <em>objects</em> — the RoPE positional embeddings dominate its Q-K scores, so the matched location in each frame is close to where the query point started at frame 0, not where the object moved. Layer 29 produces diffuse, scattered attention — no concentrated correspondence peak. Both behaviors are noted in the paper (Fig 6 and Fig A.18), and we observe them directly.</p>
       <div class="vid-pair">
         <div class="vid-card y">
           <video autoplay muted loop playsinline>
@@ -583,15 +612,16 @@
       </div>
 
       <!-- LIM 3: TEMPORAL PRECISION -->
-      <h3 class="sub-heading">Limitation 3 — No Temporal Memory: Precision Degrades 12× Across Thresholds</h3>
+      <h3 class="sub-heading">Limitation 3 — Precision vs Coarse Accuracy: A 12× Gap</h3>
+      <p class="body-text" style="margin-bottom:18px;">DiffTrack matches each frame independently against frame 0 — there is no motion model, no velocity estimate, no memory of where the point was in the previous frame. This shows up clearly when you look at the accuracy across different distance thresholds. The method does reasonably well at coarse tolerances (within 8–16 pixels), but struggles at fine precision (within 1–2 pixels). The numbers below are from our best configuration (Layer 17, ts=49) on the param-study 4-video set.</p>
       <div class="tbl-wrap">
         <table>
           <thead><tr><th>Threshold</th><th>% Points Correct ↑</th><th>Interpretation</th><th>Relative to δ₁</th></tr></thead>
           <tbody>
-            <tr><td class="na">delta_1 (within 1px)</td><td class="ng">7.0%</td><td class="nd">Sub-pixel precision — very difficult</td><td class="nd sm">1×</td></tr>
-            <tr><td class="nd">delta_2 (within 2px)</td><td class="n">~15%</td><td class="nd">High precision</td><td class="nd sm">~2×</td></tr>
+            <tr><td class="na">delta_1 (within 1px)</td><td class="ng">7.0%</td><td class="nd">Sub-pixel precision — very few points hit this</td><td class="nd sm">1×</td></tr>
+            <tr><td class="nd">delta_2 (within 2px)</td><td class="n">~15%</td><td class="nd">Still quite precise</td><td class="nd sm">~2×</td></tr>
             <tr><td class="nd">delta_4 (within 4px)</td><td class="n">~35%</td><td class="nd">Moderate precision</td><td class="nd sm">~5×</td></tr>
-            <tr><td class="nd">delta_8 (within 8px)</td><td class="n">74.6%</td><td class="nd">Coarse tracking</td><td class="nd sm">~11×</td></tr>
+            <tr><td class="nd">delta_8 (within 8px)</td><td class="n">74.6%</td><td class="nd">Coarse — most points correct here</td><td class="nd sm">~11×</td></tr>
             <tr class="wrn"><td>delta_16 (within 16px)</td><td class="ny">81.2%</td><td class="nd">Very coarse tolerance</td><td class="ny sm">~12×</td></tr>
           </tbody>
         </table>
@@ -612,7 +642,8 @@
     <div class="wrap">
       <div class="lbl">Part C</div>
       <h2 class="sec-title">CAG Motion Guidance Demo</h2>
-      <p class="body-text" style="margin-bottom:28px;">Cross-Frame Attention Guidance repurposes the same correspondence mechanism for zero-shot motion transfer — same frozen model, no fine-tuning, no labels.</p>
+      <p class="body-text" style="margin-bottom:18px;">Cross-Frame Attention Guidance (CAG) repurposes the same cross-frame query-key attention that enables tracking — now for motion transfer between two generated videos.</p>
+      <p class="body-text" style="margin-bottom:28px;">During denoising, the cross-frame keys and values from a <em>reference</em> video are injected into the generation of a <em>target</em> video. Because these attention maps encode temporal correspondence, the target video's motion pattern is steered toward the reference — zero-shot, same frozen model, no training. The two videos below show a generation with no injection vs one with CAG applied at PAG strength=1.</p>
 
       <div class="cag-grid">
         <div class="cag-card">
@@ -649,8 +680,8 @@
   <div class="pad" id="discussion">
     <div class="wrap">
       <div class="lbl">Discussion</div>
-      <h2 class="sec-title">Confirmed vs. New Findings</h2>
-      <p class="body-text" style="margin-bottom:28px;">Summary of what our experiments confirm from the paper and what new findings they add.</p>
+      <h2 class="sec-title">What We Found vs. What the Paper Claims</h2>
+      <p class="body-text" style="margin-bottom:28px;">We ran 13 experiments on a 4-video subset of TAP-Vid DAVIS. The table below maps each paper claim to our measurement. In most cases our results align closely with the paper — the largest deviations come from the small sample size (4 vs 30 videos) rather than any systematic difference. Two additional observations go beyond the paper's own analysis.</p>
 
       <div class="tbl-wrap" style="margin-bottom:36px;">
         <table>
@@ -794,7 +825,7 @@
   <div style="padding:40px 0;">
     <div class="wrap">
       <div class="res-grid">
-        <a href="https://github.com/SohumDamani/DiffTrack-CvProject" target="_blank" class="res-link">
+        <a href="https://github.com/SohumDamani/DiffTrack-Results" target="_blank" class="res-link">
           <span class="ico">📁</span>
           <div><div class="r-lbl">GitHub Repo</div><div class="r-desc">Code · logs · run scripts</div></div>
         </a>
@@ -811,7 +842,7 @@
   </div>
 
   <footer>
-    <p>DiffTrack Parameter Study &amp; Limitation Analysis · Sohum Damani · EE243 Advanced Computer Vision · Spring 2026</p>
+    <p>DiffTrack Parameter Study &amp; Limitation Analysis · Sohum Damani &amp; Yogeshwari Pophale · EE243 Advanced Computer Vision · Spring 2026</p>
     <p>Based on <a href="https://arxiv.org/abs/2506.17220" target="_blank">DiffTrack (NeurIPS 2025)</a> by Nam et al. &nbsp;·&nbsp; <a href="#top">Back to top ↑</a></p>
   </footer>
 
