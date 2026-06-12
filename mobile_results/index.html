@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DiffTrack Results</title>
+  <style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: #111; color: #e8e8e8; padding: 12px; }
+h1 { font-size: 1.4rem; margin-bottom: 4px; color: #fff; }
+h2 { font-size: 1.1rem; margin: 20px 0 8px; color: #adf; border-bottom: 1px solid #333; padding-bottom: 4px; }
+h3 { font-size: 0.9rem; color: #ccc; margin: 12px 0 4px; }
+.subtitle { font-size: 0.8rem; color: #888; margin-bottom: 16px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-bottom: 12px; }
+th { background: #222; color: #adf; text-align: left; padding: 6px 8px; }
+td { padding: 5px 8px; border-bottom: 1px solid #222; }
+tr:nth-child(even) td { background: #161616; }
+.best td { color: #7ef07e; font-weight: bold; }
+code { color: #cce7ff; font-size: 0.74rem; word-break: break-all; }
+.lineage-table td { vertical-align: top; }
+.muted { color: #888; }
+.plots { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
+.plots img { max-width: 100%; border-radius: 6px; background: #1a1a1a; flex: 1 1 280px; }
+.video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+.video-card { background: #1a1a1a; border-radius: 8px; padding: 8px; }
+.video-card p { font-size: 0.72rem; color: #999; margin-top: 4px; word-break: break-all; }
+video { width: 100%; border-radius: 4px; display: block; }
+.tag { display: inline-block; background: #2a3a50; color: #7bc; border-radius: 4px;
+       font-size: 0.7rem; padding: 1px 6px; margin-right: 4px; }
+.tag.pred { background: #2a4030; color: #7ec; }
+.tag.gt { background: #3a2a20; color: #e97; }
+footer { margin-top: 24px; font-size: 0.72rem; color: #555; text-align: center; }
+</style>
+</head>
+<body>
+  <h1>DiffTrack — Experiment Dashboard</h1>
+  <p class="subtitle">Generated: 2026-06-12 12:53 &nbsp;|&nbsp;
+    Serve locally: <code>cd mobile_results && python -m http.server 8080</code></p>
+
+  <h2>All Results (sorted by δ_avg)</h2>
+  
+<table>
+  <thead><tr>
+    <th>Group</th><th>Layer</th><th>Timestep</th><th>Videos</th>
+    <th>δ_avg</th><th>δ₁</th><th>δ₂</th><th>δ₄</th><th>δ₈</th><th>δ₁₆</th>
+  </tr></thead>
+  <tbody><tr class="best"><td>param_study</td><td>L17</td><td>t=30</td><td>4</td><td><b>47.8</b></td><td>5.7</td><td>20.7</td><td>51.2</td><td>74.3</td><td>87.2</td></tr>
+<tr><td>param_study</td><td>L17</td><td>t=49</td><td>2</td><td><b>47.0</b></td><td>7.0</td><td>21.2</td><td>50.9</td><td>74.6</td><td>81.2</td></tr>
+<tr><td>param_study_no_chunk</td><td>L17</td><td>t=49</td><td>4</td><td><b>46.4</b></td><td>5.1</td><td>18.8</td><td>47.7</td><td>74.7</td><td>85.6</td></tr>
+<tr><td>limitations</td><td>L8</td><td>t=49</td><td>4</td><td><b>41.9</b></td><td>2.9</td><td>14.4</td><td>39.7</td><td>68.0</td><td>84.3</td></tr>
+<tr><td>limitations</td><td>L29</td><td>t=49</td><td>4</td><td><b>38.0</b></td><td>3.8</td><td>14.1</td><td>35.3</td><td>59.8</td><td>77.2</td></tr>
+<tr><td>param_study</td><td>L27</td><td>t=49</td><td>2</td><td><b>37.0</b></td><td>3.7</td><td>14.1</td><td>35.7</td><td>57.5</td><td>73.8</td></tr>
+<tr><td>new_experiments</td><td>L17</td><td>t=20</td><td>4</td><td><b>33.4</b></td><td>1.5</td><td>8.0</td><td>22.7</td><td>52.3</td><td>82.6</td></tr>
+<tr><td>param_study</td><td>L5</td><td>t=49</td><td>2</td><td><b>31.3</b></td><td>0.8</td><td>6.8</td><td>23.3</td><td>51.7</td><td>73.8</td></tr>
+<tr><td>param_study</td><td>L17</td><td>t=10</td><td>4</td><td><b>13.1</b></td><td>0.1</td><td>1.0</td><td>4.9</td><td>17.6</td><td>41.9</td></tr>
+<tr><td>new_experiments</td><td>L5</td><td>t=10</td><td>4</td><td><b>1.7</b></td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.6</td><td>7.7</td></tr>
+<tr><td>limitations</td><td>L17</td><td>t=5</td><td>4</td><td><b>0.8</b></td><td>0.0</td><td>0.0</td><td>0.1</td><td>0.4</td><td>3.5</td></tr>
+<tr><td>new_experiments</td><td>L17</td><td>t=5</td><td>4</td><td><b>0.8</b></td><td>0.0</td><td>0.0</td><td>0.1</td><td>0.4</td><td>3.5</td></tr>
+<tr><td>limitations</td><td>L17</td><td>t=1</td><td>4</td><td><b>0.0</b></td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
+<tr><td>new_experiments</td><td>L5</td><td>t=5</td><td>4</td><td><b>0.0</b></td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
+</tbody>
+</table>
+
+  <h2>Charts</h2>
+  <p style='color:#666'>No charts generated yet — run more experiments.</p>
+
+  <h2>Lineage</h2>
+  <p class="subtitle">Machine-readable files: <code>lineage.json</code> and <code>lineage.csv</code></p>
+  
+<table class="lineage-table">
+  <thead><tr>
+    <th>Run</th><th>Source</th><th>Parameters</th><th>Parsed Metrics</th><th>Dashboard Outputs</th>
+  </tr></thead>
+  <tbody><tr><td>limitations<br><code>layer[17]_timestep[1]_noiseFalse</code></td><td><code>results/limitations/layer[17]_timestep[1]_noiseFalse/log.txt</code><br><span class="muted">0 source video(s)</span></td><td>L17, t=1, noise=False</td><td>4 video(s)<br>delta_avg=0.0</td><td>0 dashboard video(s)</td></tr>
+<tr><td>limitations<br><code>layer[17]_timestep[5]_noiseFalse</code></td><td><code>results/limitations/layer[17]_timestep[5]_noiseFalse/log.txt</code><br><span class="muted">0 source video(s)</span></td><td>L17, t=5, noise=False</td><td>4 video(s)<br>delta_avg=0.8</td><td>0 dashboard video(s)</td></tr>
+<tr><td>limitations<br><code>layer[29]_timestep[49]_noiseFalse</code></td><td><code>results/limitations/layer[29]_timestep[49]_noiseFalse/log.txt</code><br><span class="muted">0 source video(s)</span></td><td>L29, t=49, noise=False</td><td>4 video(s)<br>delta_avg=38.0</td><td>0 dashboard video(s)</td></tr>
+<tr><td>limitations<br><code>layer[8]_timestep[49]_noiseFalse</code></td><td><code>results/limitations/layer[8]_timestep[49]_noiseFalse/log.txt</code><br><span class="muted">0 source video(s)</span></td><td>L8, t=49, noise=False</td><td>4 video(s)<br>delta_avg=41.9</td><td>0 dashboard video(s)</td></tr>
+<tr><td>new_experiments<br><code>layer[17]_timestep[20]_noiseFalse</code></td><td><code>results/new_experiments/layer[17]_timestep[20]_noiseFalse/log.txt</code><br><span class="muted">0 source video(s)</span></td><td>L17, t=20, noise=False</td><td>4 video(s)<br>delta_avg=33.4</td><td>0 dashboard video(s)</td></tr>
+<tr><td>new_experiments<br><code>layer[17]_timestep[5]_noiseFalse</code></td><td><code>results/new_experiments/layer[17]_timestep[5]_noiseFalse/log.txt</code><br><span class="muted">0 source video(s)</span></td><td>L17, t=5, noise=False</td><td>4 video(s)<br>delta_avg=0.8</td><td>0 dashboard video(s)</td></tr>
+<tr><td>new_experiments<br><code>layer[5]_timestep[10]_noiseFalse</code></td><td><code>results/new_experiments/layer[5]_timestep[10]_noiseFalse/log.txt</code><br><span class="muted">0 source video(s)</span></td><td>L5, t=10, noise=False</td><td>4 video(s)<br>delta_avg=1.7</td><td>0 dashboard video(s)</td></tr>
+<tr><td>new_experiments<br><code>layer[5]_timestep[5]_noiseFalse</code></td><td><code>results/new_experiments/layer[5]_timestep[5]_noiseFalse/log.txt</code><br><span class="muted">0 source video(s)</span></td><td>L5, t=5, noise=False</td><td>4 video(s)<br>delta_avg=0.0</td><td>0 dashboard video(s)</td></tr>
+<tr><td>param_study<br><code>layer[17]_timestep[10]_noiseFalse</code></td><td><code>results/param_study/layer[17]_timestep[10]_noiseFalse/log.txt</code><br><span class="muted">0 source video(s)</span></td><td>L17, t=10, noise=False</td><td>4 video(s)<br>delta_avg=13.1</td><td>0 dashboard video(s)</td></tr>
+<tr><td>param_study<br><code>layer[17]_timestep[30]_noiseFalse</code></td><td><code>results/param_study/layer[17]_timestep[30]_noiseFalse/log.txt</code><br><span class="muted">0 source video(s)</span></td><td>L17, t=30, noise=False</td><td>4 video(s)<br>delta_avg=47.8</td><td>0 dashboard video(s)</td></tr>
+<tr><td>param_study<br><code>layer[17]_timestep[49]_noiseFalse</code></td><td><code>results/param_study/layer[17]_timestep[49]_noiseFalse/log.txt</code><br><span class="muted">0 source video(s)</span></td><td>L17, t=49, noise=False</td><td>2 video(s)<br>delta_avg=47.0</td><td>0 dashboard video(s)</td></tr>
+<tr><td>param_study<br><code>layer[27]_timestep[49]_noiseFalse</code></td><td><code>results/param_study/layer[27]_timestep[49]_noiseFalse/log.txt</code><br><span class="muted">0 source video(s)</span></td><td>L27, t=49, noise=False</td><td>2 video(s)<br>delta_avg=37.0</td><td>0 dashboard video(s)</td></tr>
+<tr><td>param_study<br><code>layer[5]_timestep[49]_noiseFalse</code></td><td><code>results/param_study/layer[5]_timestep[49]_noiseFalse/log.txt</code><br><span class="muted">0 source video(s)</span></td><td>L5, t=49, noise=False</td><td>2 video(s)<br>delta_avg=31.3</td><td>0 dashboard video(s)</td></tr>
+<tr><td>param_study_no_chunk<br><code>layer[17]_timestep[49]_noiseFalse</code></td><td><code>results/param_study_no_chunk/layer[17]_timestep[49]_noiseFalse/log.txt</code><br><span class="muted">0 source video(s)</span></td><td>L17, t=49, noise=False</td><td>4 video(s)<br>delta_avg=46.4</td><td>0 dashboard video(s)</td></tr>
+</tbody>
+</table>
+
+  <h2>Tracking Videos</h2>
+  <p style='color:#666'>No videos found.</p>
+
+  <footer>DiffTrack · CogVideoX-2B · DAVIS eval · t=1 clean, t=49 noisy</footer>
+</body>
+</html>

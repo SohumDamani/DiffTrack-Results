@@ -6,16 +6,21 @@ Usage:
 """
 
 import argparse
+import csv
+import json
 import os
 import re
 import shutil
 from pathlib import Path
 from collections import defaultdict
+from html import escape
 
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import numpy as np
+try:
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+except ModuleNotFoundError:
+    plt = None
 
 
 # --------------------------------------------------------------------------- #
@@ -89,6 +94,9 @@ COLORS = ["#4C72B0", "#55A868", "#C44E52", "#8172B2", "#CCB974", "#64B5CD"]
 
 
 def _bar_chart(labels, values, title, ylabel, out_path, baseline_label=None):
+    if plt is None:
+        return False
+
     fig, ax = plt.subplots(figsize=(max(5, len(labels) * 1.4), 4))
     bars = ax.bar(labels, values, color=COLORS[:len(labels)], edgecolor="white", linewidth=0.8)
     ax.set_title(title, fontsize=13, fontweight="bold", pad=10)
@@ -106,6 +114,7 @@ def _bar_chart(labels, values, title, ylabel, out_path, baseline_label=None):
     plt.tight_layout()
     fig.savefig(out_path, dpi=130, bbox_inches="tight")
     plt.close(fig)
+    return True
 
 
 def make_layer_chart(records, out_dir: Path) -> Path | None:
@@ -117,8 +126,9 @@ def make_layer_chart(records, out_dir: Path) -> Path | None:
     labels = [f"Layer {r['layer']}" for r in rows]
     values = [r["metrics"]["delta_avg"] for r in rows]
     out = out_dir / "layer_comparison.png"
-    _bar_chart(labels, values, "Layer Ablation (timestep=49)", "Mean δ_avg", out, baseline_label="Layer 17")
-    return out
+    if _bar_chart(labels, values, "Layer Ablation (timestep=49)", "Mean δ_avg", out, baseline_label="Layer 17"):
+        return out
+    return None
 
 
 def make_timestep_chart(records, out_dir: Path) -> Path | None:
@@ -130,9 +140,10 @@ def make_timestep_chart(records, out_dir: Path) -> Path | None:
     labels = [f"t={r['timestep']}" for r in rows]
     values = [r["metrics"]["delta_avg"] for r in rows]
     out = out_dir / "timestep_comparison.png"
-    _bar_chart(labels, values, "Timestep Ablation (layer=17)\nt=1 clean → t=49 noisy",
-               "Mean δ_avg", out, baseline_label="t=1")
-    return out
+    if _bar_chart(labels, values, "Timestep Ablation (layer=17)\nt=1 clean → t=49 noisy",
+                  "Mean δ_avg", out, baseline_label="t=1"):
+        return out
+    return None
 
 
 def make_delta_breakdown_chart(records, out_dir: Path) -> Path | None:
@@ -145,10 +156,11 @@ def make_delta_breakdown_chart(records, out_dir: Path) -> Path | None:
     labels = ["δ₁", "δ₂", "δ₄", "δ₈", "δ₁₆"]
     values = [best["metrics"].get(k, 0) for k in keys]
     out = out_dir / "delta_breakdown.png"
-    _bar_chart(labels, values,
-               f"δ Threshold Breakdown\n(layer={best['layer']}, t={best['timestep']})",
-               "% correct (↑)", out)
-    return out
+    if _bar_chart(labels, values,
+                  f"δ Threshold Breakdown\n(layer={best['layer']}, t={best['timestep']})",
+                  "% correct (↑)", out):
+        return out
+    return None
 
 
 def make_limitations_chart(records, out_dir: Path) -> Path | None:
@@ -158,8 +170,9 @@ def make_limitations_chart(records, out_dir: Path) -> Path | None:
     labels = [f"L{r['layer']} t={r['timestep']}" for r in rows]
     values = [r["metrics"]["delta_avg"] for r in rows]
     out = out_dir / "limitations.png"
-    _bar_chart(labels, values, "Limitations Comparison", "Mean δ_avg", out)
-    return out
+    if _bar_chart(labels, values, "Limitations Comparison", "Mean δ_avg", out):
+        return out
+    return None
 
 
 # --------------------------------------------------------------------------- #
@@ -185,6 +198,7 @@ def collect_videos(results_dir: Path, out_dir: Path) -> list[dict]:
         vid_id = parts[3] if len(parts) > 4 else mp4.stem
         entries.append({
             "src":    f"videos/{flat}",
+            "source": rel.as_posix(),
             "group":  group,
             "cfg":    cfg,
             "kind":   kind,
@@ -192,6 +206,103 @@ def collect_videos(results_dir: Path, out_dir: Path) -> list[dict]:
             "label":  f"{group} / {cfg} / {kind} / {vid_id}",
         })
     return entries
+
+
+# --------------------------------------------------------------------------- #
+# Lineage
+# --------------------------------------------------------------------------- #
+
+def _rel_path(path: Path, root: Path) -> str:
+    try:
+        return path.relative_to(root).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
+def build_lineage(records, video_entries, chart_paths, results_dir: Path, out_dir: Path,
+                  generated_at: str) -> dict:
+    """Return a machine-readable map from dashboard rows back to source artifacts."""
+    videos_by_run: dict[tuple[str, str], list[dict]] = defaultdict(list)
+    for video in video_entries:
+        videos_by_run[(video["group"], video["cfg"])].append({
+            "source": video["source"],
+            "dashboard_copy": video["src"],
+            "kind": video["kind"],
+            "video_id": video["vid_id"],
+        })
+
+    experiment_records = []
+    for record in sorted(records, key=lambda r: (r["group"], r["cfg_name"])):
+        key = (record["group"], record["cfg_name"])
+        metrics = record["metrics"]
+        experiment_records.append({
+            "run_id": f"{record['group']}::{record['cfg_name']}",
+            "group": record["group"],
+            "config_name": record["cfg_name"],
+            "parameters": {
+                "layer": record["layer"],
+                "timestep": record["timestep"],
+                "noise": record["noise"],
+            },
+            "inputs": {
+                "result_dir": _rel_path(record["path"], results_dir.parent),
+                "log": _rel_path(record["log"], results_dir.parent),
+                "videos": [video["source"] for video in videos_by_run.get(key, [])],
+            },
+            "metrics": metrics,
+            "outputs": {
+                "dashboard": _rel_path(out_dir / "index.html", out_dir),
+                "copied_videos": [video["dashboard_copy"] for video in videos_by_run.get(key, [])],
+            },
+        })
+
+    return {
+        "generated_at": generated_at,
+        "generated_by": "build_dashboard.py",
+        "results_dir": results_dir.as_posix(),
+        "dashboard_dir": out_dir.as_posix(),
+        "global_outputs": {
+            "dashboard": "index.html",
+            "lineage_json": "lineage.json",
+            "lineage_csv": "lineage.csv",
+            "charts": [f"plots/{p.name}" for p in chart_paths if p is not None],
+        },
+        "experiments": experiment_records,
+    }
+
+
+def write_lineage_files(lineage: dict, out_dir: Path) -> tuple[Path, Path]:
+    json_path = out_dir / "lineage.json"
+    csv_path = out_dir / "lineage.csv"
+
+    json_path.write_text(json.dumps(lineage, indent=2), encoding="utf-8")
+
+    fields = [
+        "run_id", "group", "config_name", "layer", "timestep", "noise",
+        "n_videos", "delta_avg", "source_log", "source_result_dir",
+        "source_video_count", "copied_video_count",
+    ]
+    with csv_path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer.writeheader()
+        for experiment in lineage["experiments"]:
+            metrics = experiment["metrics"]
+            writer.writerow({
+                "run_id": experiment["run_id"],
+                "group": experiment["group"],
+                "config_name": experiment["config_name"],
+                "layer": experiment["parameters"]["layer"],
+                "timestep": experiment["parameters"]["timestep"],
+                "noise": experiment["parameters"]["noise"],
+                "n_videos": metrics.get("n_videos", ""),
+                "delta_avg": metrics.get("delta_avg", ""),
+                "source_log": experiment["inputs"]["log"],
+                "source_result_dir": experiment["inputs"]["result_dir"],
+                "source_video_count": len(experiment["inputs"]["videos"]),
+                "copied_video_count": len(experiment["outputs"]["copied_videos"]),
+            })
+
+    return json_path, csv_path
 
 
 # --------------------------------------------------------------------------- #
@@ -211,6 +322,9 @@ th { background: #222; color: #adf; text-align: left; padding: 6px 8px; }
 td { padding: 5px 8px; border-bottom: 1px solid #222; }
 tr:nth-child(even) td { background: #161616; }
 .best td { color: #7ef07e; font-weight: bold; }
+code { color: #cce7ff; font-size: 0.74rem; word-break: break-all; }
+.lineage-table td { vertical-align: top; }
+.muted { color: #888; }
 .plots { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
 .plots img { max-width: 100%; border-radius: 6px; background: #1a1a1a; flex: 1 1 280px; }
 .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
@@ -262,7 +376,36 @@ def _plot_section(chart_paths: list[Path | None], out_dir: Path) -> str:
     ) + "</div>"
 
 
-def build_html(records, video_entries, chart_paths, out_dir: Path, gen_date: str) -> str:
+def _lineage_table(lineage: dict) -> str:
+    rows = []
+    for experiment in lineage["experiments"]:
+        metrics = experiment["metrics"]
+        inputs = experiment["inputs"]
+        outputs = experiment["outputs"]
+        rows.append(
+            "<tr>"
+            f"<td>{escape(experiment['group'])}<br><code>{escape(experiment['config_name'])}</code></td>"
+            f"<td><code>{escape(inputs['log'])}</code><br>"
+            f"<span class=\"muted\">{len(inputs['videos'])} source video(s)</span></td>"
+            f"<td>L{escape(str(experiment['parameters']['layer']))}, "
+            f"t={escape(str(experiment['parameters']['timestep']))}, "
+            f"noise={escape(str(experiment['parameters']['noise']))}</td>"
+            f"<td>{metrics.get('n_videos', 0)} video(s)<br>"
+            f"delta_avg={metrics.get('delta_avg', 0):.1f}</td>"
+            f"<td>{len(outputs['copied_videos'])} dashboard video(s)</td>"
+            "</tr>\n"
+        )
+
+    return f"""
+<table class="lineage-table">
+  <thead><tr>
+    <th>Run</th><th>Source</th><th>Parameters</th><th>Parsed Metrics</th><th>Dashboard Outputs</th>
+  </tr></thead>
+  <tbody>{''.join(rows)}</tbody>
+</table>"""
+
+
+def build_html(records, video_entries, chart_paths, out_dir: Path, gen_date: str, lineage: dict) -> str:
     # Summary table — sort by delta_avg desc
     sorted_records = sorted(records, key=lambda r: r["metrics"]["delta_avg"], reverse=True)
     best_cfg = sorted_records[0]["cfg_name"] if sorted_records else ""
@@ -310,6 +453,10 @@ def build_html(records, video_entries, chart_paths, out_dir: Path, gen_date: str
   <h2>Charts</h2>
   {_plot_section(chart_paths, out_dir)}
 
+  <h2>Lineage</h2>
+  <p class="subtitle">Machine-readable files: <code>lineage.json</code> and <code>lineage.csv</code></p>
+  {_lineage_table(lineage)}
+
   <h2>Tracking Videos</h2>
   {video_sections if video_sections else "<p style='color:#666'>No videos found.</p>"}
 
@@ -333,14 +480,14 @@ def main():
     plots_dir   = out_dir / "plots"
     plots_dir.mkdir(parents=True, exist_ok=True)
 
-    print(f"Scanning {results_dir} …")
+    print(f"Scanning {results_dir} ...")
     records = collect_experiments(results_dir)
     print(f"  Found {len(records)} completed experiment(s)")
     for r in records:
         print(f"  [{r['group']}] layer={r['layer']} ts={r['timestep']} "
-              f"→ δ_avg={r['metrics']['delta_avg']:.1f} ({r['metrics']['n_videos']} videos)")
+              f"-> delta_avg={r['metrics']['delta_avg']:.1f} ({r['metrics']['n_videos']} videos)")
 
-    print("Generating charts …")
+    print("Generating charts ...")
     chart_paths = [
         make_layer_chart(records,      plots_dir),
         make_timestep_chart(records,   plots_dir),
@@ -350,16 +497,20 @@ def main():
     generated = [p for p in chart_paths if p]
     print(f"  {len(generated)} chart(s) saved to {plots_dir}")
 
-    print("Collecting videos …")
+    print("Collecting videos ...")
     video_entries = collect_videos(results_dir, out_dir)
     print(f"  {len(video_entries)} video(s) copied")
 
     from datetime import datetime
     gen_date = datetime.now().strftime("%Y-%m-%d %H:%M")
-    html = build_html(records, video_entries, chart_paths, out_dir, gen_date)
+    lineage = build_lineage(records, video_entries, chart_paths, results_dir, out_dir, gen_date)
+    lineage_json, lineage_csv = write_lineage_files(lineage, out_dir)
+    print(f"  Lineage saved to {lineage_json} and {lineage_csv}")
+
+    html = build_html(records, video_entries, chart_paths, out_dir, gen_date, lineage)
     index_path = out_dir / "index.html"
-    index_path.write_text(html)
-    print(f"\nDashboard ready → {index_path}")
+    index_path.write_text(html, encoding="utf-8")
+    print(f"\nDashboard ready -> {index_path}")
     print(f"Serve with:  cd {out_dir} && python -m http.server 8080")
 
 

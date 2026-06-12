@@ -1,0 +1,484 @@
+{
+  "generated_at": "2026-06-12 12:53",
+  "generated_by": "build_dashboard.py",
+  "results_dir": "results",
+  "dashboard_dir": "mobile_results",
+  "global_outputs": {
+    "dashboard": "index.html",
+    "lineage_json": "lineage.json",
+    "lineage_csv": "lineage.csv",
+    "charts": []
+  },
+  "experiments": [
+    {
+      "run_id": "limitations::layer[17]_timestep[1]_noiseFalse",
+      "group": "limitations",
+      "config_name": "layer[17]_timestep[1]_noiseFalse",
+      "parameters": {
+        "layer": "17",
+        "timestep": "1",
+        "noise": "False"
+      },
+      "inputs": {
+        "result_dir": "results/limitations/layer[17]_timestep[1]_noiseFalse",
+        "log": "results/limitations/layer[17]_timestep[1]_noiseFalse/log.txt",
+        "videos": []
+      },
+      "metrics": {
+        "delta_avg": 0.0,
+        "delta_1": 0.0,
+        "delta_2": 0.0,
+        "delta_4": 0.0,
+        "delta_8": 0.0,
+        "delta_16": 0.0,
+        "n_videos": 4,
+        "frame_counts": [
+          69,
+          50,
+          80,
+          84
+        ]
+      },
+      "outputs": {
+        "dashboard": "index.html",
+        "copied_videos": []
+      }
+    },
+    {
+      "run_id": "limitations::layer[17]_timestep[5]_noiseFalse",
+      "group": "limitations",
+      "config_name": "layer[17]_timestep[5]_noiseFalse",
+      "parameters": {
+        "layer": "17",
+        "timestep": "5",
+        "noise": "False"
+      },
+      "inputs": {
+        "result_dir": "results/limitations/layer[17]_timestep[5]_noiseFalse",
+        "log": "results/limitations/layer[17]_timestep[5]_noiseFalse/log.txt",
+        "videos": []
+      },
+      "metrics": {
+        "delta_avg": 0.8,
+        "delta_1": 0.0,
+        "delta_2": 0.0,
+        "delta_4": 0.1,
+        "delta_8": 0.4,
+        "delta_16": 3.5,
+        "n_videos": 4,
+        "frame_counts": [
+          69,
+          50,
+          80,
+          84
+        ]
+      },
+      "outputs": {
+        "dashboard": "index.html",
+        "copied_videos": []
+      }
+    },
+    {
+      "run_id": "limitations::layer[29]_timestep[49]_noiseFalse",
+      "group": "limitations",
+      "config_name": "layer[29]_timestep[49]_noiseFalse",
+      "parameters": {
+        "layer": "29",
+        "timestep": "49",
+        "noise": "False"
+      },
+      "inputs": {
+        "result_dir": "results/limitations/layer[29]_timestep[49]_noiseFalse",
+        "log": "results/limitations/layer[29]_timestep[49]_noiseFalse/log.txt",
+        "videos": []
+      },
+      "metrics": {
+        "delta_avg": 38.0,
+        "delta_1": 3.8,
+        "delta_2": 14.1,
+        "delta_4": 35.3,
+        "delta_8": 59.8,
+        "delta_16": 77.2,
+        "n_videos": 4,
+        "frame_counts": [
+          69,
+          50,
+          80,
+          84
+        ]
+      },
+      "outputs": {
+        "dashboard": "index.html",
+        "copied_videos": []
+      }
+    },
+    {
+      "run_id": "limitations::layer[8]_timestep[49]_noiseFalse",
+      "group": "limitations",
+      "config_name": "layer[8]_timestep[49]_noiseFalse",
+      "parameters": {
+        "layer": "8",
+        "timestep": "49",
+        "noise": "False"
+      },
+      "inputs": {
+        "result_dir": "results/limitations/layer[8]_timestep[49]_noiseFalse",
+        "log": "results/limitations/layer[8]_timestep[49]_noiseFalse/log.txt",
+        "videos": []
+      },
+      "metrics": {
+        "delta_avg": 41.9,
+        "delta_1": 2.9,
+        "delta_2": 14.4,
+        "delta_4": 39.7,
+        "delta_8": 68.0,
+        "delta_16": 84.3,
+        "n_videos": 4,
+        "frame_counts": [
+          69,
+          50,
+          80,
+          84
+        ]
+      },
+      "outputs": {
+        "dashboard": "index.html",
+        "copied_videos": []
+      }
+    },
+    {
+      "run_id": "new_experiments::layer[17]_timestep[20]_noiseFalse",
+      "group": "new_experiments",
+      "config_name": "layer[17]_timestep[20]_noiseFalse",
+      "parameters": {
+        "layer": "17",
+        "timestep": "20",
+        "noise": "False"
+      },
+      "inputs": {
+        "result_dir": "results/new_experiments/layer[17]_timestep[20]_noiseFalse",
+        "log": "results/new_experiments/layer[17]_timestep[20]_noiseFalse/log.txt",
+        "videos": []
+      },
+      "metrics": {
+        "delta_avg": 33.4,
+        "delta_1": 1.5,
+        "delta_2": 8.0,
+        "delta_4": 22.7,
+        "delta_8": 52.3,
+        "delta_16": 82.6,
+        "n_videos": 4,
+        "frame_counts": [
+          69,
+          50,
+          80,
+          84
+        ]
+      },
+      "outputs": {
+        "dashboard": "index.html",
+        "copied_videos": []
+      }
+    },
+    {
+      "run_id": "new_experiments::layer[17]_timestep[5]_noiseFalse",
+      "group": "new_experiments",
+      "config_name": "layer[17]_timestep[5]_noiseFalse",
+      "parameters": {
+        "layer": "17",
+        "timestep": "5",
+        "noise": "False"
+      },
+      "inputs": {
+        "result_dir": "results/new_experiments/layer[17]_timestep[5]_noiseFalse",
+        "log": "results/new_experiments/layer[17]_timestep[5]_noiseFalse/log.txt",
+        "videos": []
+      },
+      "metrics": {
+        "delta_avg": 0.8,
+        "delta_1": 0.0,
+        "delta_2": 0.0,
+        "delta_4": 0.1,
+        "delta_8": 0.4,
+        "delta_16": 3.5,
+        "n_videos": 4,
+        "frame_counts": [
+          69,
+          50,
+          80,
+          84
+        ]
+      },
+      "outputs": {
+        "dashboard": "index.html",
+        "copied_videos": []
+      }
+    },
+    {
+      "run_id": "new_experiments::layer[5]_timestep[10]_noiseFalse",
+      "group": "new_experiments",
+      "config_name": "layer[5]_timestep[10]_noiseFalse",
+      "parameters": {
+        "layer": "5",
+        "timestep": "10",
+        "noise": "False"
+      },
+      "inputs": {
+        "result_dir": "results/new_experiments/layer[5]_timestep[10]_noiseFalse",
+        "log": "results/new_experiments/layer[5]_timestep[10]_noiseFalse/log.txt",
+        "videos": []
+      },
+      "metrics": {
+        "delta_avg": 1.7,
+        "delta_1": 0.0,
+        "delta_2": 0.0,
+        "delta_4": 0.0,
+        "delta_8": 0.6,
+        "delta_16": 7.7,
+        "n_videos": 4,
+        "frame_counts": [
+          69,
+          50,
+          80,
+          84
+        ]
+      },
+      "outputs": {
+        "dashboard": "index.html",
+        "copied_videos": []
+      }
+    },
+    {
+      "run_id": "new_experiments::layer[5]_timestep[5]_noiseFalse",
+      "group": "new_experiments",
+      "config_name": "layer[5]_timestep[5]_noiseFalse",
+      "parameters": {
+        "layer": "5",
+        "timestep": "5",
+        "noise": "False"
+      },
+      "inputs": {
+        "result_dir": "results/new_experiments/layer[5]_timestep[5]_noiseFalse",
+        "log": "results/new_experiments/layer[5]_timestep[5]_noiseFalse/log.txt",
+        "videos": []
+      },
+      "metrics": {
+        "delta_avg": 0.0,
+        "delta_1": 0.0,
+        "delta_2": 0.0,
+        "delta_4": 0.0,
+        "delta_8": 0.0,
+        "delta_16": 0.0,
+        "n_videos": 4,
+        "frame_counts": [
+          69,
+          50,
+          80,
+          84
+        ]
+      },
+      "outputs": {
+        "dashboard": "index.html",
+        "copied_videos": []
+      }
+    },
+    {
+      "run_id": "param_study::layer[17]_timestep[10]_noiseFalse",
+      "group": "param_study",
+      "config_name": "layer[17]_timestep[10]_noiseFalse",
+      "parameters": {
+        "layer": "17",
+        "timestep": "10",
+        "noise": "False"
+      },
+      "inputs": {
+        "result_dir": "results/param_study/layer[17]_timestep[10]_noiseFalse",
+        "log": "results/param_study/layer[17]_timestep[10]_noiseFalse/log.txt",
+        "videos": []
+      },
+      "metrics": {
+        "delta_avg": 13.1,
+        "delta_1": 0.1,
+        "delta_2": 1.0,
+        "delta_4": 4.9,
+        "delta_8": 17.6,
+        "delta_16": 41.9,
+        "n_videos": 4,
+        "frame_counts": [
+          69,
+          50,
+          80,
+          84
+        ]
+      },
+      "outputs": {
+        "dashboard": "index.html",
+        "copied_videos": []
+      }
+    },
+    {
+      "run_id": "param_study::layer[17]_timestep[30]_noiseFalse",
+      "group": "param_study",
+      "config_name": "layer[17]_timestep[30]_noiseFalse",
+      "parameters": {
+        "layer": "17",
+        "timestep": "30",
+        "noise": "False"
+      },
+      "inputs": {
+        "result_dir": "results/param_study/layer[17]_timestep[30]_noiseFalse",
+        "log": "results/param_study/layer[17]_timestep[30]_noiseFalse/log.txt",
+        "videos": []
+      },
+      "metrics": {
+        "delta_avg": 47.8,
+        "delta_1": 5.7,
+        "delta_2": 20.7,
+        "delta_4": 51.2,
+        "delta_8": 74.3,
+        "delta_16": 87.2,
+        "n_videos": 4,
+        "frame_counts": [
+          69,
+          50,
+          80,
+          84
+        ]
+      },
+      "outputs": {
+        "dashboard": "index.html",
+        "copied_videos": []
+      }
+    },
+    {
+      "run_id": "param_study::layer[17]_timestep[49]_noiseFalse",
+      "group": "param_study",
+      "config_name": "layer[17]_timestep[49]_noiseFalse",
+      "parameters": {
+        "layer": "17",
+        "timestep": "49",
+        "noise": "False"
+      },
+      "inputs": {
+        "result_dir": "results/param_study/layer[17]_timestep[49]_noiseFalse",
+        "log": "results/param_study/layer[17]_timestep[49]_noiseFalse/log.txt",
+        "videos": []
+      },
+      "metrics": {
+        "delta_avg": 47.0,
+        "delta_1": 7.0,
+        "delta_2": 21.2,
+        "delta_4": 50.9,
+        "delta_8": 74.6,
+        "delta_16": 81.2,
+        "n_videos": 2,
+        "frame_counts": [
+          69,
+          50
+        ]
+      },
+      "outputs": {
+        "dashboard": "index.html",
+        "copied_videos": []
+      }
+    },
+    {
+      "run_id": "param_study::layer[27]_timestep[49]_noiseFalse",
+      "group": "param_study",
+      "config_name": "layer[27]_timestep[49]_noiseFalse",
+      "parameters": {
+        "layer": "27",
+        "timestep": "49",
+        "noise": "False"
+      },
+      "inputs": {
+        "result_dir": "results/param_study/layer[27]_timestep[49]_noiseFalse",
+        "log": "results/param_study/layer[27]_timestep[49]_noiseFalse/log.txt",
+        "videos": []
+      },
+      "metrics": {
+        "delta_avg": 37.0,
+        "delta_1": 3.7,
+        "delta_2": 14.1,
+        "delta_4": 35.7,
+        "delta_8": 57.5,
+        "delta_16": 73.8,
+        "n_videos": 2,
+        "frame_counts": [
+          69,
+          50
+        ]
+      },
+      "outputs": {
+        "dashboard": "index.html",
+        "copied_videos": []
+      }
+    },
+    {
+      "run_id": "param_study::layer[5]_timestep[49]_noiseFalse",
+      "group": "param_study",
+      "config_name": "layer[5]_timestep[49]_noiseFalse",
+      "parameters": {
+        "layer": "5",
+        "timestep": "49",
+        "noise": "False"
+      },
+      "inputs": {
+        "result_dir": "results/param_study/layer[5]_timestep[49]_noiseFalse",
+        "log": "results/param_study/layer[5]_timestep[49]_noiseFalse/log.txt",
+        "videos": []
+      },
+      "metrics": {
+        "delta_avg": 31.3,
+        "delta_1": 0.8,
+        "delta_2": 6.8,
+        "delta_4": 23.3,
+        "delta_8": 51.7,
+        "delta_16": 73.8,
+        "n_videos": 2,
+        "frame_counts": [
+          69,
+          50
+        ]
+      },
+      "outputs": {
+        "dashboard": "index.html",
+        "copied_videos": []
+      }
+    },
+    {
+      "run_id": "param_study_no_chunk::layer[17]_timestep[49]_noiseFalse",
+      "group": "param_study_no_chunk",
+      "config_name": "layer[17]_timestep[49]_noiseFalse",
+      "parameters": {
+        "layer": "17",
+        "timestep": "49",
+        "noise": "False"
+      },
+      "inputs": {
+        "result_dir": "results/param_study_no_chunk/layer[17]_timestep[49]_noiseFalse",
+        "log": "results/param_study_no_chunk/layer[17]_timestep[49]_noiseFalse/log.txt",
+        "videos": []
+      },
+      "metrics": {
+        "delta_avg": 46.4,
+        "delta_1": 5.1,
+        "delta_2": 18.8,
+        "delta_4": 47.7,
+        "delta_8": 74.7,
+        "delta_16": 85.6,
+        "n_videos": 4,
+        "frame_counts": [
+          69,
+          50,
+          80,
+          84
+        ]
+      },
+      "outputs": {
+        "dashboard": "index.html",
+        "copied_videos": []
+      }
+    }
+  ]
+}
