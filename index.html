@@ -180,6 +180,43 @@
     code { font-family:var(--mono);font-size:12px;background:var(--surface-2);color:var(--accent);padding:2px 5px;border-radius:3px; }
     .r2 { display:grid;grid-template-columns:1fr 1fr;gap:16px; }
 
+    /* LINEAGE GRAPH */
+    .lg-legend { display:flex;gap:20px;flex-wrap:wrap;margin-bottom:24px; }
+    .lg-leg { display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text-dim); }
+    .lg-dot { width:10px;height:10px;border-radius:50%;flex-shrink:0; }
+    .lg-dot.t { background:var(--accent); }
+    .lg-dot.c { background:var(--yellow); }
+    .lg-dot.k { background:var(--green); }
+
+    .lg-graph { position:relative;display:grid;grid-template-columns:1fr 180px 1fr;gap:0;overflow:visible; }
+    .lg-col { display:flex;flex-direction:column;justify-content:space-around;gap:7px;padding:8px 0; }
+    #lg-pre { padding-right:24px; }
+    #lg-fwd { padding-left:24px; }
+    .lg-hub-col { display:flex;align-items:center;justify-content:center;z-index:2; }
+    .lg-hub { background:var(--accent);color:#fff;padding:18px 16px;border-radius:8px;text-align:center;width:180px;box-shadow:0 4px 24px rgba(30,64,175,0.22); }
+    .lg-hub-name { font-size:18px;font-weight:800;letter-spacing:-0.02em; }
+    .lg-hub-venue { font-size:11px;opacity:0.75;margin-top:3px; }
+    .lg-hub-desc { font-size:11px;opacity:0.65;margin-top:10px;line-height:1.5; }
+
+    .lg-node { background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:9px 12px;cursor:default;transition:border-color 0.15s,background 0.15s;position:relative; }
+    .lg-node:hover { background:#fff;border-color:var(--border-strong); }
+    .lg-node.t { border-left:3px solid var(--accent); }
+    .lg-node.c { border-left:3px solid var(--yellow); }
+    .lg-node.k { border-left:3px solid var(--green); }
+    .lg-node-title { font-size:12px;font-weight:600;color:var(--text);line-height:1.3; }
+    .lg-node-meta  { font-size:11px;color:var(--text-muted);margin-top:2px; }
+
+    .lg-svg { position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible; }
+
+    .lg-tip { position:fixed;background:var(--text);color:#fff;font-size:12px;line-height:1.5;padding:8px 12px;border-radius:4px;max-width:260px;pointer-events:none;z-index:9999;display:none;box-shadow:0 4px 16px rgba(0,0,0,0.2); }
+
+    @media (max-width:760px) {
+      .lg-graph { grid-template-columns:1fr; }
+      .lg-hub-col { padding:24px 0; }
+      #lg-pre, #lg-fwd { padding:0; }
+      .lg-svg { display:none; }
+    }
+
     /* FOOTER */
     footer { border-top:1px solid var(--border);padding:32px;text-align:center;font-size:13px;color:var(--text-muted); }
     footer a { color:var(--accent);text-decoration:none; }
@@ -202,9 +239,10 @@
 </head>
 
 <body>
+<div id="top" aria-hidden="true" style="position:absolute;top:0;left:0;height:0;overflow:hidden;"></div>
 
   <!-- NAV -->
-  <nav id="top">
+  <nav>
     <a href="#top" class="nav-logo">DiffTrack · EE243</a>
     <ul class="nav-links">
       <li><a href="#part-a">Part A</a></li>
@@ -814,50 +852,120 @@
   <div class="pad" id="lineage">
     <div class="wrap">
       <div class="lbl">Research Lineage</div>
-      <h2 class="sec-title">Previous and Forward Papers</h2>
-      <p class="body-text" style="margin-bottom:32px;">12 predecessor papers that make DiffTrack possible, and 8 forward-lineage papers that build on its contributions.</p>
+      <h2 class="sec-title">Citation Graph</h2>
+      <p class="body-text" style="margin-bottom:20px;">12 predecessor papers feeding into DiffTrack, and 8 forward papers building on its contributions. Hover a node for details.</p>
 
-      <h3 class="sub-heading" style="margin-top:0;">← Predecessor Papers</h3>
-      <div class="tbl-wrap" style="margin-bottom:40px;">
-        <table>
-          <thead>
-            <tr><th style="width:30%">Paper</th><th style="width:28%">New Idea Introduced</th><th style="width:28%">How It Helped Build DiffTrack</th><th>Concept</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="n" style="font-size:12px;">Emergent Correspondence from Image Diffusion<br><span style="color:var(--text-muted);font-size:11px;">Tang et al., NeurIPS 2023</span></td><td class="nd" style="font-size:12px;">Emergent geometric correspondences in image diffusion models</td><td class="nd" style="font-size:12px;">Direct foundation — extends images→video, 2 frames→temporal sequences</td><td><span class="tag-t">Temporal</span></td></tr>
-            <tr><td class="n" style="font-size:12px;">Space-Time Correspondence as Contrastive Random Walk<br><span style="color:var(--text-muted);font-size:11px;">Jabri et al., NeurIPS 2020</span></td><td class="nd" style="font-size:12px;">Self-supervised spatiotemporal correspondence</td><td class="nd" style="font-size:12px;">Motivated temporal matching metrics and long-range consistency evaluation</td><td><span class="tag-t">Temporal</span></td></tr>
-            <tr><td class="n" style="font-size:12px;">Semantics Meets Temporal Correspondence<br><span style="color:var(--text-muted);font-size:11px;">Qian et al., ICCV 2023</span></td><td class="nd" style="font-size:12px;">Semantic cues influence temporal correspondence</td><td class="nd" style="font-size:12px;">Inspired analysis of text-attention interference in temporal matching</td><td><span class="tag-t">Temporal</span></td></tr>
-            <tr><td class="n" style="font-size:12px;">Self-Rectifying Diffusion Sampling with PAG<br><span style="color:var(--text-muted);font-size:11px;">Ahn et al., ECCV 2024</span></td><td class="nd" style="font-size:12px;">Attention perturbation to guide diffusion sampling</td><td class="nd" style="font-size:12px;">Direct predecessor to Cross-Frame Attention Guidance (CAG)</td><td><span class="tag-c">CAG</span></td></tr>
-            <tr><td class="n" style="font-size:12px;">Diffusion Model for Dense Matching<br><span style="color:var(--text-muted);font-size:11px;">Nam et al., 2023</span></td><td class="nd" style="font-size:12px;">Diffusion features for dense correspondence</td><td class="nd" style="font-size:12px;">Evidence diffusion models encode geometric structure → Q/K analysis</td><td><span class="tag-c">Q-K Attn</span></td></tr>
-            <tr><td class="n" style="font-size:12px;">Unsupervised Semantic Correspondence via Stable Diffusion<br><span style="color:var(--text-muted);font-size:11px;">Hedlin et al., NeurIPS 2023</span></td><td class="nd" style="font-size:12px;">Diffusion cross-attention for semantic matching</td><td class="nd" style="font-size:12px;">Motivated query-key similarity and attention score metrics</td><td><span class="tag-c">Q-K Attn</span></td></tr>
-            <tr><td class="n" style="font-size:12px;">TAP-Vid Benchmark<br><span style="color:var(--text-muted);font-size:11px;">Doersch et al., NeurIPS 2022</span></td><td class="nd" style="font-size:12px;">Standard benchmark for point tracking</td><td class="nd" style="font-size:12px;">Provides the evaluation protocol — all our experiments use this</td><td><span class="tag-k">Tracking</span></td></tr>
-            <tr><td class="n" style="font-size:12px;">CoTracker<br><span style="color:var(--text-muted);font-size:11px;">Karaev et al., ECCV 2024</span></td><td class="nd" style="font-size:12px;">Long-range point tracking via joint optimization</td><td class="nd" style="font-size:12px;">Provided pseudo-ground-truth for DiffTrack evaluation</td><td><span class="tag-k">Tracking</span></td></tr>
-            <tr><td class="n" style="font-size:12px;">CoTracker3<br><span style="color:var(--text-muted);font-size:11px;">Karaev et al., 2024</span></td><td class="nd" style="font-size:12px;">Tracking via pseudo-labeling real videos</td><td class="nd" style="font-size:12px;">Strengthened baseline for evaluating tracking accuracy</td><td><span class="tag-k">Tracking</span></td></tr>
-            <tr><td class="n" style="font-size:12px;">Particle Video Revisited<br><span style="color:var(--text-muted);font-size:11px;">Harley et al., ECCV 2022</span></td><td class="nd" style="font-size:12px;">Long-range tracking with occlusion handling</td><td class="nd" style="font-size:12px;">Motivated focus on long-range temporal consistency</td><td><span class="tag-k">Tracking</span></td></tr>
-            <tr><td class="n" style="font-size:12px;">CATs: Cost Aggregation Transformers<br><span style="color:var(--text-muted);font-size:11px;">Cho et al., NeurIPS 2021</span></td><td class="nd" style="font-size:12px;">Transformer-based cost aggregation for correspondence</td><td class="nd" style="font-size:12px;">Inspired layer-wise correspondence probing</td><td><span class="tag-t">Temporal</span></td></tr>
-            <tr><td class="n" style="font-size:12px;">Neural Matching Fields<br><span style="color:var(--text-muted);font-size:11px;">Hong et al., NeurIPS 2022</span></td><td class="nd" style="font-size:12px;">Implicit representation of matching fields</td><td class="nd" style="font-size:12px;">Conceptual basis for the matching confidence metric</td><td><span class="tag-t">Temporal</span></td></tr>
-          </tbody>
-        </table>
+      <!-- Legend -->
+      <div class="lg-legend">
+        <span class="lg-leg t"><span class="lg-dot t"></span>Temporal Correspondence</span>
+        <span class="lg-leg c"><span class="lg-dot c"></span>CAG / Attention Control</span>
+        <span class="lg-leg k"><span class="lg-dot k"></span>Point Tracking</span>
       </div>
 
-      <h3 class="sub-heading" style="margin-top:0;">→ Forward Lineage — Papers That Build on DiffTrack</h3>
-      <div class="tbl-wrap">
-        <table>
-          <thead>
-            <tr><th style="width:30%">Paper</th><th style="width:28%">New Idea Introduced</th><th style="width:28%">How It Builds on DiffTrack</th><th>Concept</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="n" style="font-size:12px;">Zero-Shot Video Restoration with Video DiMs<br><span style="color:var(--text-muted);font-size:11px;">Cao et al., 2026</span></td><td class="nd" style="font-size:12px;">Temporal-strengthening post-processing and latent fusion</td><td class="nd" style="font-size:12px;">Uses emergent temporal correspondences in video DiTs to stabilize restoration</td><td><span class="tag-t">Temporal</span></td></tr>
-            <tr><td class="n" style="font-size:12px;">Counterfactual Tracking with Video Diffusion Models<br><span style="color:var(--text-muted);font-size:11px;">Shrivastava et al., ICLR 2026</span></td><td class="nd" style="font-size:12px;">Counterfactual prompting to propagate point markers</td><td class="nd" style="font-size:12px;">Validates that DiTs encode motion — extends zero-shot tracking via prompting</td><td><span class="tag-k">Tracking</span></td></tr>
-            <tr><td class="n" style="font-size:12px;">Zero-Shot Video Deraining with Video DiMs<br><span style="color:var(--text-muted);font-size:11px;">Varanka et al., WACV</span></td><td class="nd" style="font-size:12px;">Attention switching for temporal consistency during deraining</td><td class="nd" style="font-size:12px;">Modifying cross-frame attention improves temporal coherence</td><td><span class="tag-c">CAG</span></td></tr>
-            <tr><td class="n" style="font-size:12px;">ZeroTrail: Zero-Shot Trajectory Control<br><span style="color:var(--text-muted);font-size:11px;">Lu et al., NeurIPS Workshop</span></td><td class="nd" style="font-size:12px;">Selective Attention Guidance Module (SAGM)</td><td class="nd" style="font-size:12px;">Extends CAG into a full trajectory-control system</td><td><span class="tag-c">CAG</span></td></tr>
-            <tr><td class="n" style="font-size:12px;">Cross-Attention for Zero-Shot Editing of T2V<br><span style="color:var(--text-muted);font-size:11px;">Motamed et al., CVPR Workshop 2024</span></td><td class="nd" style="font-size:12px;">Cross-attention controls object shape and movement</td><td class="nd" style="font-size:12px;">Builds on insight that Q-K layers govern temporal structure → applied to editing</td><td><span class="tag-c">Q-K Attn</span></td></tr>
-            <tr><td class="n" style="font-size:12px;">DiTFlow: Video Motion Transfer with DiTs<br><span style="color:var(--text-muted);font-size:11px;">Pondaven et al., CVPR 2025</span></td><td class="nd" style="font-size:12px;">Attention Motion Flow (AMF) from cross-frame attention maps</td><td class="nd" style="font-size:12px;">Directly builds on discovery that cross-frame attention encodes motion</td><td><span class="tag-t">Temporal</span></td></tr>
-            <tr><td class="n" style="font-size:12px;">VDT: Video DiTs via Mask Modeling<br><span style="color:var(--text-muted);font-size:11px;">Lu et al., 2025</span></td><td class="nd" style="font-size:12px;">Modular temporal attention and unified spatial-temporal modeling</td><td class="nd" style="font-size:12px;">Designs explicit temporal modules — motivated by layer-sensitivity finding</td><td><span class="tag-t">Temporal</span></td></tr>
-            <tr><td class="n" style="font-size:12px;">Weighted Cross-Frame Attention for T2V<br><span style="color:var(--text-muted);font-size:11px;">Wang et al., 2025</span></td><td class="nd" style="font-size:12px;">Weighted cross-frame attention for temporal coherence</td><td class="nd" style="font-size:12px;">Extends CAG by weighting cross-frame attention to stabilize long videos</td><td><span class="tag-c">CAG</span></td></tr>
-          </tbody>
-        </table>
+      <!-- Graph -->
+      <div class="lg-graph" id="lg-graph">
+        <svg class="lg-svg" id="lg-svg" aria-hidden="true"></svg>
+
+        <!-- Predecessors (left) -->
+        <div class="lg-col" id="lg-pre">
+          <div class="lg-node t" data-tip="Direct foundation — extends image diffusion correspondence to video sequences">
+            <div class="lg-node-title">Emergent Correspondence</div>
+            <div class="lg-node-meta">Tang et al. · NeurIPS 2023</div>
+          </div>
+          <div class="lg-node t" data-tip="Motivated temporal matching metrics and long-range consistency evaluation">
+            <div class="lg-node-title">Space-Time CRW</div>
+            <div class="lg-node-meta">Jabri et al. · NeurIPS 2020</div>
+          </div>
+          <div class="lg-node t" data-tip="Inspired analysis of text-attention interference in temporal matching">
+            <div class="lg-node-title">Semantics Meets Temporal Corr.</div>
+            <div class="lg-node-meta">Qian et al. · ICCV 2023</div>
+          </div>
+          <div class="lg-node t" data-tip="Inspired layer-wise correspondence probing in transformer networks">
+            <div class="lg-node-title">CATs: Cost Aggregation Transformers</div>
+            <div class="lg-node-meta">Cho et al. · NeurIPS 2021</div>
+          </div>
+          <div class="lg-node t" data-tip="Conceptual basis for the matching confidence metric used in DiffTrack">
+            <div class="lg-node-title">Neural Matching Fields</div>
+            <div class="lg-node-meta">Hong et al. · NeurIPS 2022</div>
+          </div>
+          <div class="lg-node c" data-tip="Direct predecessor to Cross-Frame Attention Guidance (CAG)">
+            <div class="lg-node-title">Self-Rectifying Diffusion (PAG)</div>
+            <div class="lg-node-meta">Ahn et al. · ECCV 2024</div>
+          </div>
+          <div class="lg-node c" data-tip="Evidence diffusion models encode geometric structure → motivated Q/K analysis">
+            <div class="lg-node-title">Diffusion for Dense Matching</div>
+            <div class="lg-node-meta">Nam et al. · 2023</div>
+          </div>
+          <div class="lg-node c" data-tip="Motivated query-key similarity and attention score metrics in DiffTrack">
+            <div class="lg-node-title">Unsupervised Semantic Corr.</div>
+            <div class="lg-node-meta">Hedlin et al. · NeurIPS 2023</div>
+          </div>
+          <div class="lg-node k" data-tip="Provides the evaluation protocol — all experiments use TAP-Vid DAVIS">
+            <div class="lg-node-title">TAP-Vid Benchmark</div>
+            <div class="lg-node-meta">Doersch et al. · NeurIPS 2022</div>
+          </div>
+          <div class="lg-node k" data-tip="Provided pseudo-ground-truth annotations for DiffTrack evaluation">
+            <div class="lg-node-title">CoTracker</div>
+            <div class="lg-node-meta">Karaev et al. · ECCV 2024</div>
+          </div>
+          <div class="lg-node k" data-tip="Strengthened baseline for evaluating tracking accuracy via real video pseudo-labels">
+            <div class="lg-node-title">CoTracker3</div>
+            <div class="lg-node-meta">Karaev et al. · 2024</div>
+          </div>
+          <div class="lg-node k" data-tip="Motivated focus on long-range temporal consistency and occlusion handling">
+            <div class="lg-node-title">Particle Video Revisited</div>
+            <div class="lg-node-meta">Harley et al. · ECCV 2022</div>
+          </div>
+        </div>
+
+        <!-- Hub (center) -->
+        <div class="lg-hub-col">
+          <div class="lg-hub" id="lg-hub">
+            <div class="lg-hub-name">DiffTrack</div>
+            <div class="lg-hub-venue">NeurIPS 2025 · Nam et al.</div>
+            <div class="lg-hub-desc">Zero-shot point tracking via emergent Q-K correspondences in a frozen CogVideoX-2B Video DiT</div>
+          </div>
+        </div>
+
+        <!-- Forward papers (right) -->
+        <div class="lg-col" id="lg-fwd">
+          <div class="lg-node t" data-tip="Uses emergent temporal correspondences in Video DiTs to stabilize video restoration">
+            <div class="lg-node-title">Zero-Shot Video Restoration</div>
+            <div class="lg-node-meta">Cao et al. · 2026</div>
+          </div>
+          <div class="lg-node t" data-tip="Directly builds on discovery that cross-frame attention encodes optical flow">
+            <div class="lg-node-title">DiTFlow: Motion Transfer</div>
+            <div class="lg-node-meta">Pondaven et al. · CVPR 2025</div>
+          </div>
+          <div class="lg-node t" data-tip="Designs explicit temporal attention modules, motivated by DiffTrack's layer-sensitivity finding">
+            <div class="lg-node-title">VDT: Video DiTs via Mask Modeling</div>
+            <div class="lg-node-meta">Lu et al. · 2025</div>
+          </div>
+          <div class="lg-node k" data-tip="Validates that Video DiTs encode motion — extends zero-shot tracking via counterfactual prompting">
+            <div class="lg-node-title">Counterfactual Tracking</div>
+            <div class="lg-node-meta">Shrivastava et al. · ICLR 2026</div>
+          </div>
+          <div class="lg-node c" data-tip="Attention switching for temporal consistency, building on cross-frame attention control">
+            <div class="lg-node-title">Zero-Shot Video Deraining</div>
+            <div class="lg-node-meta">Varanka et al. · WACV</div>
+          </div>
+          <div class="lg-node c" data-tip="Extends CAG into a full trajectory-control system via Selective Attention Guidance Module">
+            <div class="lg-node-title">ZeroTrail: Trajectory Control</div>
+            <div class="lg-node-meta">Lu et al. · NeurIPS Workshop</div>
+          </div>
+          <div class="lg-node c" data-tip="Builds on insight that Q-K layers govern temporal structure, applied to zero-shot T2V editing">
+            <div class="lg-node-title">Cross-Attention for T2V Editing</div>
+            <div class="lg-node-meta">Motamed et al. · CVPR Workshop 2024</div>
+          </div>
+          <div class="lg-node c" data-tip="Extends CAG by weighting cross-frame attention for long-video temporal coherence">
+            <div class="lg-node-title">Weighted Cross-Frame Attention</div>
+            <div class="lg-node-meta">Wang et al. · 2025</div>
+          </div>
+        </div>
       </div>
+
+      <!-- Tooltip -->
+      <div class="lg-tip" id="lg-tip"></div>
     </div>
   </div>
 
@@ -889,6 +997,7 @@
   </footer>
 
   <script>
+    /* Nav active highlight */
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -899,6 +1008,98 @@
       });
     }, { rootMargin: '-40% 0px -55% 0px' });
     document.querySelectorAll('[id]').forEach(s => obs.observe(s));
+
+    /* Lineage graph edge drawing */
+    const COLORS = { t: '#1e40af', c: '#92400e', k: '#15803d' };
+
+    function drawEdges() {
+      const svg = document.getElementById('lg-svg');
+      const graph = document.getElementById('lg-graph');
+      const hub = document.getElementById('lg-hub');
+      if (!svg || !graph || !hub) return;
+
+      svg.innerHTML = '';
+      const gr = graph.getBoundingClientRect();
+      const hr = hub.getBoundingClientRect();
+      if (gr.width === 0) return;
+
+      /* arrowhead markers */
+      const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+      ['t','c','k'].forEach(cat => {
+        const m = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+        m.setAttribute('id', 'arr-' + cat);
+        m.setAttribute('markerWidth', '7'); m.setAttribute('markerHeight', '7');
+        m.setAttribute('refX', '6'); m.setAttribute('refY', '3.5');
+        m.setAttribute('orient', 'auto');
+        const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        p.setAttribute('d', 'M0,0 L7,3.5 L0,7 Z');
+        p.setAttribute('fill', COLORS[cat]);
+        p.setAttribute('opacity', '0.45');
+        m.appendChild(p); defs.appendChild(m);
+      });
+      svg.appendChild(defs);
+      svg.setAttribute('viewBox', `0 0 ${gr.width} ${gr.height}`);
+
+      const hx_left  = hr.left - gr.left;
+      const hx_right = hr.right - gr.left;
+      const hy       = hr.top - gr.top + hr.height / 2;
+
+      /* predecessor → hub */
+      document.querySelectorAll('#lg-pre .lg-node').forEach(n => {
+        const cat = n.classList.contains('t') ? 't' : n.classList.contains('c') ? 'c' : 'k';
+        const r = n.getBoundingClientRect();
+        const x1 = r.right - gr.left;
+        const y1 = r.top - gr.top + r.height / 2;
+        const cx = x1 + (hx_left - x1) * 0.55;
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', `M${x1},${y1} C${cx},${y1} ${cx},${hy} ${hx_left},${hy}`);
+        path.setAttribute('stroke', COLORS[cat]);
+        path.setAttribute('stroke-width', '1.5');
+        path.setAttribute('stroke-opacity', '0.35');
+        path.setAttribute('fill', 'none');
+        path.setAttribute('marker-end', `url(#arr-${cat})`);
+        svg.appendChild(path);
+      });
+
+      /* hub → forward */
+      document.querySelectorAll('#lg-fwd .lg-node').forEach(n => {
+        const cat = n.classList.contains('t') ? 't' : n.classList.contains('c') ? 'c' : 'k';
+        const r = n.getBoundingClientRect();
+        const x2 = r.left - gr.left;
+        const y2 = r.top - gr.top + r.height / 2;
+        const cx = hx_right + (x2 - hx_right) * 0.45;
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', `M${hx_right},${hy} C${cx},${hy} ${cx},${y2} ${x2},${y2}`);
+        path.setAttribute('stroke', COLORS[cat]);
+        path.setAttribute('stroke-width', '1.5');
+        path.setAttribute('stroke-opacity', '0.35');
+        path.setAttribute('fill', 'none');
+        path.setAttribute('marker-end', `url(#arr-${cat})`);
+        svg.appendChild(path);
+      });
+    }
+
+    /* Tooltip */
+    const tip = document.getElementById('lg-tip');
+    document.querySelectorAll('.lg-node').forEach(n => {
+      n.addEventListener('mouseenter', e => {
+        const text = n.dataset.tip;
+        if (!text || !tip) return;
+        tip.textContent = text;
+        tip.style.display = 'block';
+      });
+      n.addEventListener('mousemove', e => {
+        if (!tip) return;
+        const x = e.clientX + 14, y = e.clientY + 14;
+        const ow = tip.offsetWidth, oh = tip.offsetHeight;
+        tip.style.left = (x + ow > window.innerWidth ? e.clientX - ow - 14 : x) + 'px';
+        tip.style.top  = (y + oh > window.innerHeight ? e.clientY - oh - 14 : y) + 'px';
+      });
+      n.addEventListener('mouseleave', () => { if (tip) tip.style.display = 'none'; });
+    });
+
+    window.addEventListener('load', drawEdges);
+    window.addEventListener('resize', drawEdges);
   </script>
 </body>
 </html>
