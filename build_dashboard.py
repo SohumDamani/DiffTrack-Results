@@ -345,6 +345,29 @@ code { color: #cce7ff; font-size: 0.74rem; word-break: break-all; }
 .lineage-section { background: #111; border: 1px solid #262626; border-radius: 6px; padding: 8px; }
 .lineage-section h4 { color: #adf; font-size: 0.72rem; margin-bottom: 5px; text-transform: uppercase; }
 .lineage-section p { color: #ddd; font-size: 0.78rem; line-height: 1.35; margin-bottom: 4px; }
+.research-lineage { scroll-margin-top: 16px; }
+.research-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                 gap: 12px; margin-bottom: 12px; }
+.paper-group { border: 1px solid #2a2a2a; border-radius: 8px; background: #151515; padding: 10px; }
+.paper-group h3 { color: #adf; margin-top: 0; }
+.paper-list { display: grid; gap: 7px; }
+.paper-item { border: 1px solid #272727; border-radius: 7px; background: #1a1a1a; }
+.paper-item[open], .paper-item:hover, .paper-item:focus-within {
+  border-color: #5a8367; background: #1d241f;
+}
+.paper-title { cursor: pointer; list-style: none; padding: 9px 10px; font-size: 0.82rem;
+               color: #f2f6f1; font-weight: 650; }
+.paper-title::-webkit-details-marker { display: none; }
+.paper-title::after { content: "+"; float: right; color: #91c79c; font-weight: 700; }
+.paper-item[open] .paper-title::after,
+.paper-item:hover .paper-title::after,
+.paper-item:focus-within .paper-title::after { content: "-"; }
+.paper-detail { display: none; padding: 0 10px 10px; }
+.paper-item[open] .paper-detail,
+.paper-item:hover .paper-detail,
+.paper-item:focus-within .paper-detail { display: block; }
+.paper-detail p { font-size: 0.78rem; line-height: 1.35; color: #ddd; margin-bottom: 5px; }
+.concept { display: inline-block; margin-top: 2px; color: #91c79c; font-size: 0.72rem; }
 .plots { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
 .plots img { max-width: 100%; border-radius: 6px; background: #1a1a1a; flex: 1 1 280px; }
 .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
@@ -396,6 +419,190 @@ def _plot_section(chart_paths: list[Path | None], out_dir: Path) -> str:
     ) + "</div>"
 
 
+PREDECESSOR_PAPERS = [
+    {
+        "paper": "Emergent Correspondence from Image Diffusion",
+        "citation": "Tang et al., NeurIPS 2023",
+        "idea": "Emergent geometric correspondences in image diffusion models",
+        "connection": "Direct foundation: extends images to video, and two-frame matching to temporal sequences.",
+        "concept": "Temporal",
+    },
+    {
+        "paper": "Space-Time Correspondence as Contrastive Random Walk",
+        "citation": "Jabri et al., NeurIPS 2020",
+        "idea": "Self-supervised spatiotemporal correspondence",
+        "connection": "Motivated temporal matching metrics and long-range consistency evaluation.",
+        "concept": "Temporal",
+    },
+    {
+        "paper": "Semantics Meets Temporal Correspondence",
+        "citation": "Qian et al., ICCV 2023",
+        "idea": "Semantic cues influence temporal correspondence",
+        "connection": "Inspired analysis of text-attention interference in temporal matching.",
+        "concept": "Temporal",
+    },
+    {
+        "paper": "Self-Rectifying Diffusion Sampling with PAG",
+        "citation": "Ahn et al., ECCV 2024",
+        "idea": "Attention perturbation to guide diffusion sampling",
+        "connection": "Direct predecessor to Cross-Frame Attention Guidance (CAG).",
+        "concept": "CAG",
+    },
+    {
+        "paper": "Diffusion Model for Dense Matching",
+        "citation": "Nam et al., 2023",
+        "idea": "Diffusion features for dense correspondence",
+        "connection": "Evidence diffusion models encode geometric structure, motivating query-key analysis.",
+        "concept": "Q-K Attn",
+    },
+    {
+        "paper": "Unsupervised Semantic Correspondence via Stable Diffusion",
+        "citation": "Hedlin et al., NeurIPS 2023",
+        "idea": "Diffusion cross-attention for semantic matching",
+        "connection": "Motivated query-key similarity and attention score metrics.",
+        "concept": "Q-K Attn",
+    },
+    {
+        "paper": "TAP-Vid Benchmark",
+        "citation": "Doersch et al., NeurIPS 2022",
+        "idea": "Standard benchmark for point tracking",
+        "connection": "Provides the evaluation protocol used by the experiments.",
+        "concept": "Tracking",
+    },
+    {
+        "paper": "CoTracker",
+        "citation": "Karaev et al., ECCV 2024",
+        "idea": "Long-range point tracking via joint optimization",
+        "connection": "Provided pseudo-ground-truth for DiffTrack evaluation.",
+        "concept": "Tracking",
+    },
+    {
+        "paper": "CoTracker3",
+        "citation": "Karaev et al., 2024",
+        "idea": "Tracking via pseudo-labeling real videos",
+        "connection": "Strengthened the baseline for evaluating tracking accuracy.",
+        "concept": "Tracking",
+    },
+    {
+        "paper": "Particle Video Revisited",
+        "citation": "Harley et al., ECCV 2022",
+        "idea": "Long-range tracking with occlusion handling",
+        "connection": "Motivated the focus on long-range temporal consistency.",
+        "concept": "Tracking",
+    },
+    {
+        "paper": "CATs: Cost Aggregation Transformers",
+        "citation": "Cho et al., NeurIPS 2021",
+        "idea": "Transformer-based cost aggregation for correspondence",
+        "connection": "Inspired layer-wise correspondence probing.",
+        "concept": "Temporal",
+    },
+    {
+        "paper": "Neural Matching Fields",
+        "citation": "Hong et al., NeurIPS 2022",
+        "idea": "Implicit representation of matching fields",
+        "connection": "Conceptual basis for the matching confidence metric.",
+        "concept": "Temporal",
+    },
+]
+
+
+FORWARD_PAPERS = [
+    {
+        "paper": "Zero-Shot Video Restoration with Video DiMs",
+        "citation": "Cao et al., 2026",
+        "idea": "Temporal-strengthening post-processing and latent fusion",
+        "connection": "Uses emergent temporal correspondences in video DiTs to stabilize restoration.",
+        "concept": "Temporal",
+    },
+    {
+        "paper": "Counterfactual Tracking with Video Diffusion Models",
+        "citation": "Shrivastava et al., ICLR 2026",
+        "idea": "Counterfactual prompting to propagate point markers",
+        "connection": "Validates that DiTs encode motion and extends zero-shot tracking via prompting.",
+        "concept": "Tracking",
+    },
+    {
+        "paper": "Zero-Shot Video Deraining with Video DiMs",
+        "citation": "Varanka et al., WACV",
+        "idea": "Attention switching for temporal consistency during deraining",
+        "connection": "Shows that modifying cross-frame attention improves temporal coherence.",
+        "concept": "CAG",
+    },
+    {
+        "paper": "ZeroTrail: Zero-Shot Trajectory Control",
+        "citation": "Lu et al., NeurIPS Workshop",
+        "idea": "Selective Attention Guidance Module (SAGM)",
+        "connection": "Extends CAG into a full trajectory-control system.",
+        "concept": "CAG",
+    },
+    {
+        "paper": "Cross-Attention for Zero-Shot Editing of T2V",
+        "citation": "Motamed et al., CVPR Workshop 2024",
+        "idea": "Cross-attention controls object shape and movement",
+        "connection": "Applies the insight that query-key layers govern temporal structure to editing.",
+        "concept": "Q-K Attn",
+    },
+    {
+        "paper": "DiTFlow: Video Motion Transfer with DiTs",
+        "citation": "Pondaven et al., CVPR 2025",
+        "idea": "Attention Motion Flow (AMF) from cross-frame attention maps",
+        "connection": "Directly builds on the discovery that cross-frame attention encodes motion.",
+        "concept": "Temporal",
+    },
+    {
+        "paper": "VDT: Video DiTs via Mask Modeling",
+        "citation": "Lu et al., 2025",
+        "idea": "Modular temporal attention and unified spatial-temporal modeling",
+        "connection": "Designs explicit temporal modules, motivated by layer-sensitivity findings.",
+        "concept": "Temporal",
+    },
+    {
+        "paper": "Weighted Cross-Frame Attention for T2V",
+        "citation": "Wang et al., 2025",
+        "idea": "Weighted cross-frame attention for temporal coherence",
+        "connection": "Extends CAG by weighting cross-frame attention to stabilize long videos.",
+        "concept": "CAG",
+    },
+]
+
+
+def _paper_item(paper: dict) -> str:
+    title = f"{paper['paper']} ({paper['citation']})"
+    return (
+        '<details class="paper-item">'
+        f'<summary class="paper-title">{escape(title)}</summary>'
+        '<div class="paper-detail">'
+        f'<p><b>New idea:</b> {escape(paper["idea"])}</p>'
+        f'<p><b>Lineage role:</b> {escape(paper["connection"])}</p>'
+        f'<span class="concept">{escape(paper["concept"])}</span>'
+        '</div>'
+        '</details>\n'
+    )
+
+
+def _paper_group(title: str, papers: list[dict]) -> str:
+    return (
+        '<section class="paper-group">'
+        f'<h3>{escape(title)}</h3>'
+        '<div class="paper-list">'
+        + ''.join(_paper_item(paper) for paper in papers)
+        + '</div></section>'
+    )
+
+
+def _research_lineage_section() -> str:
+    return f"""
+  <section id="part-a" class="research-lineage">
+    <h2>Research Lineage</h2>
+    <p class="subtitle">Previous and Forward Papers: 12 predecessor papers that make DiffTrack possible, and 8 forward-lineage papers that build on its contributions.</p>
+    <div class="research-grid">
+      {_paper_group("← Predecessor Papers", PREDECESSOR_PAPERS)}
+      {_paper_group("→ Forward Lineage", FORWARD_PAPERS)}
+    </div>
+  </section>"""
+
+
 def _lineage_entry(experiment: dict) -> str:
     metrics = experiment["metrics"]
     inputs = experiment["inputs"]
@@ -444,6 +651,7 @@ def build_html(records, video_entries, chart_paths, out_dir: Path, gen_date: str
     # Summary table — sort by delta_avg desc
     sorted_records = sorted(records, key=lambda r: r["metrics"]["delta_avg"], reverse=True)
     best_cfg = sorted_records[0]["cfg_name"] if sorted_records else ""
+    serve_dir = "." if str(out_dir) == "." else out_dir.as_posix()
     table_rows = "".join(
         f'<tr class="best">' + _table_row(r)[4:] if r["cfg_name"] == best_cfg
         else _table_row(r)
@@ -480,7 +688,7 @@ def build_html(records, video_entries, chart_paths, out_dir: Path, gen_date: str
 <body>
   <h1>DiffTrack — Experiment Dashboard</h1>
   <p class="subtitle">Generated: {gen_date} &nbsp;|&nbsp;
-    Serve locally: <code>cd mobile_results && python -m http.server 8080</code></p>
+    Serve locally: <code>cd {escape(serve_dir)} && python -m http.server 8080</code></p>
 
   <h2>All Results (sorted by δ_avg)</h2>
   {table_html}
@@ -488,7 +696,9 @@ def build_html(records, video_entries, chart_paths, out_dir: Path, gen_date: str
   <h2>Charts</h2>
   {_plot_section(chart_paths, out_dir)}
 
-  <h2>Lineage</h2>
+  {_research_lineage_section()}
+
+  <h2>Result Lineage</h2>
   <p class="subtitle">Machine-readable files: <code>lineage.json</code> and <code>lineage.csv</code></p>
   {_lineage_table(lineage)}
 

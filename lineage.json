@@ -2,7 +2,7 @@
   "generated_at": "2026-06-12 13:18",
   "generated_by": "build_dashboard.py",
   "results_dir": "results",
-  "dashboard_dir": "mobile_results",
+  "dashboard_dir": ".",
   "global_outputs": {
     "dashboard": "index.html",
     "lineage_json": "lineage.json",
