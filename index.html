@@ -305,7 +305,7 @@
   <div class="pad">
     <div class="wrap">
       <div class="lbl">Key Findings</div>
-      <h2 class="sec-title">What We Found — 13 Experiments</h2>
+      <h2 class="sec-title">What We Found — 13 Experiments + 2 New</h2>
       <div class="bento">
         <div class="m-card g">
           <div class="m-num">47.0</div>
@@ -317,10 +317,20 @@
           <div class="m-title">ts=1 Collapse</div>
           <div class="m-sub">Complete failure across all 4 videos, all 6 metrics — mechanism destroyed</div>
         </div>
+        <div class="m-card r">
+          <div class="m-num">4.3×</div>
+          <div class="m-title">Frame-Distance Degradation</div>
+          <div class="m-sub">delta_4 drops 63% → 15% over 69 frames — no temporal memory, proved empirically</div>
+        </div>
+        <div class="m-card r">
+          <div class="m-num">−38%</div>
+          <div class="m-title">Occlusion Blindness</div>
+          <div class="m-sub">Mean AJ 28.2 vs delta_avg 45.9 — pred_occluded hardcoded to all-zeros</div>
+        </div>
         <div class="m-card y">
           <div class="m-num">12×</div>
-          <div class="m-title">Precision Gap</div>
-          <div class="m-sub">Within-1px accuracy vs within-16px — no temporal memory in the model</div>
+          <div class="m-title">Precision Ceiling</div>
+          <div class="m-sub">7% within 1px vs 81% within 16px — one-shot matcher, not a tracker</div>
         </div>
       </div>
     </div>
@@ -750,7 +760,7 @@
     <div class="wrap">
       <div class="lbl">Discussion</div>
       <h2 class="sec-title">What We Found vs. What the Paper Claims</h2>
-      <p class="body-text" style="margin-bottom:28px;">We ran 13 experiments on a 4-video subset of TAP-Vid DAVIS. The table below maps each paper claim to our measurement. In most cases our results align closely with the paper — the largest deviations come from the small sample size (4 vs 30 videos) rather than any systematic difference. Two additional observations go beyond the paper's own analysis.</p>
+      <p class="body-text" style="margin-bottom:28px;">We ran 13 ablation experiments on a 4-video subset of TAP-Vid DAVIS, then added two new empirical experiments (Limitations 3 & 4) that required modifying the evaluation code. The table below maps each paper claim to our measurement, followed by our two original findings.</p>
 
       <div class="tbl-wrap" style="margin-bottom:36px;">
         <table>
@@ -804,6 +814,18 @@
               <td class="nd sm">All 13 experiments zero-shot on a frozen model.</td>
               <td><span class="disc-verdict dv-ok">Confirmed</span></td>
             </tr>
+            <tr style="background:rgba(11,122,117,0.04);">
+              <td class="na" style="font-weight:600;">NEW — Frame-distance degradation</td>
+              <td class="nd">delta_4 drops 63% → 15% from frames 1–10 to frames 51+ (Video 0, 69f)</td>
+              <td class="nd sm">4.3× accuracy drop. Added per-frame binning to evaluate_tapvid.py (22 lines).</td>
+              <td><span class="disc-verdict dv-new">Our finding</span></td>
+            </tr>
+            <tr style="background:rgba(11,122,117,0.04);">
+              <td class="na" style="font-weight:600;">NEW — Occlusion blindness</td>
+              <td class="nd">Mean AJ = 28.2 vs delta_avg = 45.9 (−38% gap). OA = 74.5%.</td>
+              <td class="nd sm">pred_occluded hardcoded all-zeros. Un-suppressed AJ in evaluation.py (3 lines).</td>
+              <td><span class="disc-verdict dv-new">Our finding</span></td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -817,19 +839,20 @@
         </div>
         <div class="finding yellow">
           <div class="finding-num">Root Cause 2 — No Temporal Memory</div>
-          <div class="finding-title">Frame-0 independent matching only</div>
-          <p>Every frame is matched against frame 0 independently — no velocity estimate, no motion prior, no trajectory history. Precision degrades 12× from 1px to 16px threshold with no way to recover accumulated drift.</p>
+          <div class="finding-title">Frame-0 independent matching only — proved empirically</div>
+          <p>Every frame is matched against frame 0 independently — no velocity estimate, no motion prior, no trajectory history. We proved this directly: delta_4 accuracy drops <strong>4.3× from 63% to 15%</strong> over the course of a single 69-frame video. A tracker with temporal memory would stay flat. Precision also degrades 12× from 1px to 16px threshold.</p>
         </div>
       </div>
 
       <h3 class="sub-heading">New Findings Beyond the Paper</h3>
       <div class="finding blue">
-        <div class="finding-num">New Findings</div>
+        <div class="finding-num">New Findings — Original Experiments</div>
         <div class="finding-title">What we add beyond the paper's analysis</div>
         <p>
+          <strong style="color:var(--text);">Frame-distance degradation (new experiment):</strong> We added per-frame-distance binned accuracy to the evaluator. delta_4 drops from 63% (frames 1–10) to 15% (frames 51+) — a 4.3× degradation in a single video. This empirically proves the absence of temporal memory and is not reported anywhere in the paper.<br><br>
+          <strong style="color:var(--text);">Occlusion blindness (new experiment):</strong> We un-suppressed AJ and OA reporting (previously hidden in zero_shot mode). Mean AJ = 28.2 vs delta_avg = 45.9 — a 38% gap caused by <code style="font-family:var(--mono);font-size:12px;">pred_occluded</code> being hardcoded to all-zeros. The paper's evaluation never reports AJ for its zero-shot results.<br><br>
           <strong style="color:var(--text);">Plateau framing:</strong> ts=30–49 form an effective operating plateau — the 0.8-point difference is within small-sample noise, not a meaningful peak.<br><br>
-          <strong style="color:var(--text);">Hard noise floor:</strong> A sharp failure cliff at ts≤5 — ts=10 gives 13.1, ts=5 gives 0.8. Below this floor the tracker fails as completely as at ts=1.<br><br>
-          <strong style="color:var(--text);">Threshold-accuracy spread:</strong> The 12× gap between delta_1 and delta_16 is not discussed in the paper; it reveals the method's fundamental precision ceiling for applications requiring sub-pixel accuracy.
+          <strong style="color:var(--text);">Hard noise floor:</strong> A sharp failure cliff at ts≤5 — ts=10 gives 13.1, ts=5 gives 0.8. Below this floor the tracker fails as completely as at ts=1.
         </p>
       </div>
     </div>
