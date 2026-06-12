@@ -15,12 +15,6 @@
 <a href="https://arxiv.org/abs/2506.17220"><img src='https://img.shields.io/badge/arXiv-DiffTrack-red' alt='Paper PDF'></a>
 <a href="https://cvlab-kaist.github.io/DiffTrack/"><img src='https://img.shields.io/badge/Project_Page-DiffTrack-green' alt='Project Page'></a>
 
-**Final project dashboard:** https://sohumdamani.github.io/DiffTrack-Results/
-
-**GitHub repository:** https://github.com/SohumDamani/DiffTrack-Results
-
-
-
 </div>
 
 ### 🔍 How do Video Diffusion Transformers (Video DiTs) learn and represent temporal correspondences across frames?
