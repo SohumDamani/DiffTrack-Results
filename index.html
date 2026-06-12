@@ -337,14 +337,13 @@
         All experiments use the <strong style="color:var(--text);">TAP-Vid DAVIS</strong> benchmark — 30 densely annotated real-world video sequences covering a range of objects, camera motions, and occlusion patterns. Due to compute constraints, each ablation run used a fixed <strong style="color:var(--text);">4-video subset</strong> drawn from the 30 available. We ran two separate 4-video evaluations: one for the main parameter sweep, and one full-eval pass on a fresh subset to cross-check the baseline.
       </p>
       <p class="body-text" style="margin-bottom:18px;">
-        The primary metric is <strong style="color:var(--text);">delta_avg</strong> — the average of five distance-threshold accuracies: what fraction of tracked points land within 1, 2, 4, 8, and 16 pixels of ground truth. Higher is better. delta_1 (within 1 pixel) is the strictest; delta_16 (within 16 pixels) is the most lenient. A method with high delta_16 but low delta_1 is accurate at a coarse scale but imprecise at sub-pixel level. The paper reports 46.3 on the full 30-video set; our 4-video runs came in at 47.0 (param study subset) and 49.4 (full-eval subset) — both within the expected variance for a 4-video sample.
+        The primary metric is <strong style="color:var(--text);">delta_avg</strong> — the average of five distance-threshold accuracies: what fraction of tracked points land within 1, 2, 4, 8, and 16 pixels of ground truth. Higher is better. delta_1 (within 1 pixel) is the strictest; delta_16 (within 16 pixels) is the most lenient. A method with high delta_16 but low delta_1 is accurate at a coarse scale but imprecise at sub-pixel level. Our 4-video runs came in at 47.0 (param study subset) and 49.4 (full-eval subset). The paper reports 46.3 on the full 30-video set — our results are within the expected variance for a small sample.
       </p>
       <div class="tbl-wrap" style="margin-bottom:0;">
         <table>
           <thead><tr><th>Run</th><th>Videos</th><th>Mean delta_avg</th><th>delta_1 (≤1px)</th><th>delta_2 (≤2px)</th><th>delta_4 (≤4px)</th><th>delta_8 (≤8px)</th><th>delta_16 (≤16px)</th></tr></thead>
           <tbody>
-            <tr><td class="nd">Paper (full 30-video eval)</td><td class="nd">30</td><td class="ng">46.3</td><td class="nd sm" colspan="5" style="text-align:center;">Per-threshold breakdown not reported in paper</td></tr>
-            <tr class="opt"><td>Our param-study subset ★</td><td class="nd">4</td><td class="ng">47.0</td><td class="nd">7.0</td><td class="nd">18.8 †</td><td class="nd">47.7 †</td><td class="nd">74.6</td><td class="nd">81.2</td></tr>
+<tr class="opt"><td>Our param-study subset ★</td><td class="nd">4</td><td class="ng">47.0</td><td class="nd">7.0</td><td class="nd">18.8 †</td><td class="nd">47.7 †</td><td class="nd">74.6</td><td class="nd">81.2</td></tr>
             <tr><td class="nd">Our full-eval subset</td><td class="nd">4</td><td class="ng">49.4</td><td class="nd">5.9</td><td class="nd">21.2</td><td class="nd">53.2</td><td class="nd">77.9</td><td class="nd">89.0</td></tr>
           </tbody>
         </table>
