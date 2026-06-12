@@ -614,6 +614,26 @@
       <!-- LIM 3: FRAME DISTANCE DEGRADATION -->
       <h3 class="sub-heading">Limitation 3 — Frame-Distance Degradation: No Temporal Memory</h3>
       <p class="body-text" style="margin-bottom:18px;">DiffTrack matches every frame independently against frame 0 — there is no motion model, no velocity estimate, no memory of where a point was in the previous frame. We ran a new experiment to prove this directly: we computed delta_4 accuracy in bins of 10 frames, ordered by distance from the reference frame. If temporal memory existed, accuracy would stay flat. Instead, it consistently declines.</p>
+      <div class="vid-pair">
+        <div class="vid-card g">
+          <video autoplay muted loop playsinline>
+            <source src="static/videos/lim3_framedist_gt_v0.mp4" type="video/mp4">
+          </video>
+          <div class="vid-label">
+            <span class="vl-name">Ground truth — Video 0 (69 frames)</span>
+            <span class="vl-val">GT tracks</span>
+          </div>
+        </div>
+        <div class="vid-card r">
+          <video autoplay muted loop playsinline>
+            <source src="static/videos/lim3_framedist_pred_v0.mp4" type="video/mp4">
+          </video>
+          <div class="vid-label">
+            <span class="vl-name">Predicted — accuracy degrades over time</span>
+            <span class="vl-val">63% → 15% ✗</span>
+          </div>
+        </div>
+      </div>
       <p class="body-text" style="margin-bottom:18px;">Results below are from a fresh run at Layer 17, ts=49 on the same 4-video subset. Each bin reports the fraction of visible tracked points landing within 4 pixels of ground truth.</p>
       <div class="tbl-wrap">
         <table>
@@ -637,6 +657,26 @@
 
       <!-- LIM 4: OCCLUSION BLINDNESS -->
       <h3 class="sub-heading">Limitation 4 — Occlusion Blindness: Hardcoded Visibility</h3>
+      <div class="vid-pair">
+        <div class="vid-card g">
+          <video autoplay muted loop playsinline>
+            <source src="static/videos/lim4_occlusion_gt_v2.mp4" type="video/mp4">
+          </video>
+          <div class="vid-label">
+            <span class="vl-name">Ground truth — Video 2 (80 frames)</span>
+            <span class="vl-val">GT with occlusions</span>
+          </div>
+        </div>
+        <div class="vid-card r">
+          <video autoplay muted loop playsinline>
+            <source src="static/videos/lim4_occlusion_pred_v2.mp4" type="video/mp4">
+          </video>
+          <div class="vid-label">
+            <span class="vl-name">Predicted — continues tracking through occlusions</span>
+            <span class="vl-val">AJ: 23.1 vs δ_avg: 43.8 ✗</span>
+          </div>
+        </div>
+      </div>
       <p class="body-text" style="margin-bottom:18px;">DiffTrack has no occlusion model. The evaluation code contains this line:</p>
       <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r);padding:12px 18px;margin-bottom:18px;font-family:var(--mono);font-size:13px;color:var(--text-dim);">
         pred_occluded = torch.zeros_like(visibility)  <span style="color:var(--accent);"># always predicts "visible"</span>
