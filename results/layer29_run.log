@@ -1,0 +1,116 @@
+/home/sdama009/.conda/envs/difftrack/lib/python3.10/site-packages/torch/utils/data/dataloader.py:617: UserWarning: This DataLoader will create 4 worker processes in total. Our suggested max number of worker in current system is 1, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+found 30 unique videos in ../data/tapvid_davis/tapvid_davis.pkl
+Loading pipeline components...:   0%|          | 0/5 [00:00<?, ?it/s]Loading pipeline components...:  20%|██        | 1/5 [00:04<00:17,  4.32s/it]
+Loading weights:   0%|          | 0/219 [00:00<?, ?it/s][A
+Loading weights:   3%|▎         | 7/219 [00:00<00:11, 17.68it/s][A
+Loading weights:   6%|▌         | 13/219 [00:00<00:08, 25.36it/s][A
+Loading weights:   8%|▊         | 17/219 [00:00<00:10, 19.59it/s][A
+Loading weights:  10%|█         | 22/219 [00:00<00:08, 24.28it/s][A
+Loading weights:  11%|█▏        | 25/219 [00:01<00:10, 18.82it/s][A
+Loading weights:  14%|█▍        | 31/219 [00:01<00:07, 24.16it/s][A
+Loading weights:  16%|█▌        | 34/219 [00:01<00:10, 18.01it/s][A
+Loading weights:  18%|█▊        | 40/219 [00:01<00:07, 23.32it/s][A
+Loading weights:  20%|█▉        | 43/219 [00:02<00:09, 18.15it/s][A
+Loading weights:  22%|██▏       | 49/219 [00:02<00:07, 23.14it/s][A
+Loading weights:  24%|██▎       | 52/219 [00:02<00:08, 18.80it/s][A
+Loading weights:  25%|██▌       | 55/219 [00:02<00:08, 20.36it/s][A
+Loading weights:  27%|██▋       | 59/219 [00:02<00:06, 23.91it/s][A
+Loading weights:  28%|██▊       | 62/219 [00:03<00:08, 18.21it/s][A
+Loading weights:  31%|███       | 68/219 [00:03<00:06, 23.57it/s][A
+Loading weights:  32%|███▏      | 71/219 [00:03<00:07, 18.82it/s][A
+Loading weights:  35%|███▍      | 76/219 [00:03<00:06, 22.64it/s][A
+Loading weights:  36%|███▌      | 79/219 [00:03<00:07, 17.91it/s][A
+Loading weights:  39%|███▉      | 85/219 [00:04<00:05, 23.31it/s][A
+Loading weights:  40%|████      | 88/219 [00:04<00:06, 18.73it/s][A
+Loading weights:  42%|████▏     | 91/219 [00:04<00:06, 20.36it/s][A
+Loading weights:  44%|████▍     | 97/219 [00:04<00:06, 19.59it/s][A
+Loading weights:  46%|████▌     | 100/219 [00:04<00:05, 20.98it/s][A
+Loading weights:  48%|████▊     | 106/219 [00:05<00:05, 19.34it/s][A
+Loading weights:  51%|█████     | 112/219 [00:05<00:04, 23.85it/s][A
+Loading weights:  53%|█████▎    | 115/219 [00:05<00:05, 18.87it/s][A
+Loading weights:  55%|█████▌    | 121/219 [00:05<00:04, 23.11it/s][A
+Loading weights:  57%|█████▋    | 124/219 [00:06<00:04, 19.25it/s][A
+Loading weights:  58%|█████▊    | 127/219 [00:06<00:04, 20.54it/s][A
+Loading weights:  60%|█████▉    | 131/219 [00:06<00:03, 24.10it/s][A
+Loading weights:  61%|██████    | 134/219 [00:06<00:04, 18.59it/s][A
+Loading weights:  64%|██████▍   | 140/219 [00:06<00:03, 23.63it/s][A
+Loading weights:  65%|██████▌   | 143/219 [00:06<00:04, 18.73it/s][A
+Loading weights:  68%|██████▊   | 148/219 [00:07<00:03, 22.57it/s][A
+Loading weights:  69%|██████▉   | 151/219 [00:07<00:03, 18.14it/s][A
+Loading weights:  70%|███████   | 154/219 [00:07<00:03, 19.77it/s][A
+Loading weights:  73%|███████▎  | 160/219 [00:07<00:03, 19.17it/s][A
+Loading weights:  76%|███████▌  | 166/219 [00:07<00:02, 24.03it/s][A
+Loading weights:  77%|███████▋  | 169/219 [00:08<00:02, 19.52it/s][A
+Loading weights:  79%|███████▊  | 172/219 [00:08<00:02, 20.35it/s][A
+Loading weights:  81%|████████▏ | 178/219 [00:08<00:02, 19.69it/s][A
+Loading weights:  84%|████████▍ | 184/219 [00:08<00:01, 23.99it/s][A
+Loading weights:  85%|████████▌ | 187/219 [00:09<00:01, 18.59it/s][A
+Loading weights:  88%|████████▊ | 193/219 [00:09<00:01, 23.32it/s][A
+Loading weights:  89%|████████▉ | 196/219 [00:09<00:01, 18.88it/s][A
+Loading weights:  91%|█████████ | 199/219 [00:09<00:00, 20.45it/s][A
+Loading weights:  94%|█████████▎| 205/219 [00:09<00:00, 19.48it/s][A
+Loading weights:  95%|█████████▍| 208/219 [00:10<00:00, 21.11it/s][A
+Loading weights:  97%|█████████▋| 212/219 [00:10<00:00, 24.29it/s][A
+Loading weights:  98%|█████████▊| 215/219 [00:10<00:00, 19.71it/s][A
+Loading weights: 100%|██████████| 219/219 [00:10<00:00, 18.74it/s][ALoading weights: 100%|██████████| 219/219 [00:10<00:00, 20.59it/s]
+Loading pipeline components...:  60%|██████    | 3/5 [00:15<00:10,  5.22s/it]Loading pipeline components...:  80%|████████  | 4/5 [00:15<00:03,  3.52s/it]Loading pipeline components...: 100%|██████████| 5/5 [00:15<00:00,  3.14s/it]
+Video saved to ./results/limitations/layer[29]_timestep[49]_noiseFalse/gt/000.mp4
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<01:59,  2.44s/it]  2%|▏         | 1/50 [00:02<01:59,  2.44s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:00,  2.46s/it]  2%|▏         | 1/50 [00:02<02:00,  2.46s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:01,  2.49s/it]  2%|▏         | 1/50 [00:02<02:01,  2.49s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:02,  2.50s/it]  2%|▏         | 1/50 [00:02<02:02,  2.50s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:03,  2.52s/it]  2%|▏         | 1/50 [00:02<02:03,  2.52s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:03,  2.53s/it]  2%|▏         | 1/50 [00:02<02:03,  2.53s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:04,  2.53s/it]  2%|▏         | 1/50 [00:02<02:04,  2.53s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]
+Video saved to ./results/limitations/layer[29]_timestep[49]_noiseFalse/pred/000.mp4
+Video 0 (69 frames)| delta_avg: 30.95 | delta_1: 1.50 | delta_2: 6.48 | delta_4: 27.43 | delta_8: 50.25 | delta_16: 69.08
+Video saved to ./results/limitations/layer[29]_timestep[49]_noiseFalse/gt/001.mp4
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:01,  2.48s/it]  2%|▏         | 1/50 [00:02<02:01,  2.48s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:02,  2.50s/it]  2%|▏         | 1/50 [00:02<02:02,  2.50s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:03,  2.52s/it]  2%|▏         | 1/50 [00:02<02:03,  2.52s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:03,  2.53s/it]  2%|▏         | 1/50 [00:02<02:03,  2.53s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:04,  2.53s/it]  2%|▏         | 1/50 [00:02<02:04,  2.53s/it]
+Video saved to ./results/limitations/layer[29]_timestep[49]_noiseFalse/pred/001.mp4
+Video 1 (50 frames)| delta_avg: 45.88 | delta_1: 8.16 | delta_2: 24.08 | delta_4: 44.90 | delta_8: 68.57 | delta_16: 83.67
+Video saved to ./results/limitations/layer[29]_timestep[49]_noiseFalse/gt/002.mp4
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:01,  2.48s/it]  2%|▏         | 1/50 [00:02<02:01,  2.48s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:02,  2.50s/it]  2%|▏         | 1/50 [00:02<02:02,  2.50s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:02,  2.51s/it]  2%|▏         | 1/50 [00:02<02:02,  2.51s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:03,  2.53s/it]  2%|▏         | 1/50 [00:02<02:03,  2.53s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:04,  2.53s/it]  2%|▏         | 1/50 [00:02<02:04,  2.53s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]
+Video saved to ./results/limitations/layer[29]_timestep[49]_noiseFalse/pred/002.mp4
+Video 2 (80 frames)| delta_avg: 30.41 | delta_1: 2.61 | delta_2: 7.58 | delta_4: 23.59 | delta_8: 47.94 | delta_16: 70.35
+Video saved to ./results/limitations/layer[29]_timestep[49]_noiseFalse/gt/003.mp4
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:00,  2.47s/it]  2%|▏         | 1/50 [00:02<02:00,  2.47s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:02,  2.49s/it]  2%|▏         | 1/50 [00:02<02:02,  2.49s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:02,  2.51s/it]  2%|▏         | 1/50 [00:02<02:02,  2.51s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:03,  2.53s/it]  2%|▏         | 1/50 [00:02<02:03,  2.53s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:04,  2.53s/it]  2%|▏         | 1/50 [00:02<02:04,  2.53s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]  2%|▏         | 1/50 [00:02<02:04,  2.54s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:02<01:52,  2.29s/it]  2%|▏         | 1/50 [00:02<01:52,  2.29s/it]
+Video saved to ./results/limitations/layer[29]_timestep[49]_noiseFalse/pred/003.mp4
+Video 3 (84 frames)| delta_avg: 44.89 | delta_1: 2.87 | delta_2: 18.29 | delta_4: 45.20 | delta_8: 72.35 | delta_16: 85.73
+Mean delta_avg: 38.0
+Mean delta_1: 3.8
+Mean delta_2: 14.1
+Mean delta_4: 35.3
+Mean delta_8: 59.8
+Mean delta_16: 77.2
+Report saved to ./results/limitations/layer[29]_timestep[49]_noiseFalse/log.txt
+Evaluation result saved at ./results/limitations/layer[29]_timestep[49]_noiseFalse

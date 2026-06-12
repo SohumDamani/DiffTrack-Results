@@ -1,0 +1,12 @@
+# Exclude large video/image frame directories
+param_study/*/gt/
+param_study/*/pred/
+param_study_no_chunk/*/gt/
+param_study_no_chunk/*/pred/
+limitations/*/gt/
+limitations/*/pred/
+new_experiments/*/gt/
+new_experiments/*/pred/
+full_eval_davis/*/gt/
+full_eval_davis/*/pred/
+attn_maps/

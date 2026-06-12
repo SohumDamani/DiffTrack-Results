@@ -1,0 +1,5 @@
+=== [A4] Attn maps: layer 5/17/27 ts=49 ===
+Traceback (most recent call last):
+  File "/home/sdama009/CV_Final_Project/DiffTrack/analyze_real.py", line 12, in <module>
+    from utils.aggregate_results import score_mean, accuracy_mean
+ImportError: cannot import name 'score_mean' from 'utils.aggregate_results' (/home/sdama009/CV_Final_Project/DiffTrack/utils/aggregate_results.py)

@@ -1,0 +1,56 @@
+/home/sdama009/.conda/envs/difftrack/lib/python3.10/site-packages/torch/utils/data/dataloader.py:617: UserWarning: This DataLoader will create 4 worker processes in total. Our suggested max number of worker in current system is 1, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(
+found 30 unique videos in ../data/tapvid_davis/tapvid_davis.pkl
+Loading pipeline components...:   0%|          | 0/5 [00:00<?, ?it/s]Loading pipeline components...:  20%|██        | 1/5 [00:04<00:17,  4.33s/it]Loading pipeline components...:  40%|████      | 2/5 [00:04<00:05,  1.97s/it]
+Loading weights:   0%|          | 0/219 [00:00<?, ?it/s][A
+Loading weights:   3%|▎         | 7/219 [00:00<00:12, 17.43it/s][A
+Loading weights:   6%|▌         | 13/219 [00:00<00:08, 25.07it/s][A
+Loading weights:   8%|▊         | 17/219 [00:00<00:10, 19.74it/s][A
+Loading weights:  10%|█         | 22/219 [00:00<00:08, 24.33it/s][A
+Loading weights:  11%|█▏        | 25/219 [00:01<00:10, 18.22it/s][A
+Loading weights:  14%|█▍        | 31/219 [00:01<00:07, 23.87it/s][A
+Loading weights:  16%|█▌        | 34/219 [00:01<00:10, 18.43it/s][A
+Loading weights:  18%|█▊        | 40/219 [00:01<00:07, 22.66it/s][A
+Loading weights:  20%|█▉        | 43/219 [00:02<00:09, 18.02it/s][A
+Loading weights:  22%|██▏       | 49/219 [00:02<00:07, 23.12it/s][A
+Loading weights:  24%|██▎       | 52/219 [00:02<00:09, 18.25it/s][A
+Loading weights:  26%|██▋       | 58/219 [00:02<00:06, 23.05it/s][A
+Loading weights:  28%|██▊       | 61/219 [00:03<00:08, 18.44it/s][A
+Loading weights:  29%|██▉       | 64/219 [00:03<00:07, 20.24it/s][A
+Loading weights:  32%|███▏      | 70/219 [00:03<00:07, 19.02it/s][A
+Loading weights:  35%|███▍      | 76/219 [00:03<00:06, 23.48it/s][A
+Loading weights:  36%|███▌      | 79/219 [00:03<00:07, 18.61it/s][A
+Loading weights:  39%|███▉      | 85/219 [00:04<00:05, 23.46it/s][A
+Loading weights:  40%|████      | 88/219 [00:04<00:07, 18.31it/s][A
+Loading weights:  43%|████▎     | 94/219 [00:04<00:05, 23.41it/s][A
+Loading weights:  44%|████▍     | 97/219 [00:04<00:06, 18.62it/s][A
+Loading weights:  46%|████▌     | 100/219 [00:04<00:05, 20.34it/s][A
+Loading weights:  48%|████▊     | 106/219 [00:05<00:06, 18.65it/s][A
+Loading weights:  51%|█████     | 112/219 [00:05<00:04, 22.96it/s][A
+Loading weights:  53%|█████▎    | 115/219 [00:05<00:05, 18.71it/s][A
+Loading weights:  55%|█████▌    | 121/219 [00:05<00:04, 23.20it/s][A
+Loading weights:  57%|█████▋    | 124/219 [00:06<00:05, 18.56it/s][A
+Loading weights:  59%|█████▉    | 130/219 [00:06<00:03, 23.13it/s][A
+Loading weights:  61%|██████    | 133/219 [00:06<00:04, 18.95it/s][A
+Loading weights:  62%|██████▏   | 136/219 [00:06<00:04, 20.34it/s][A
+Loading weights:  65%|██████▍   | 142/219 [00:06<00:04, 19.09it/s][A
+Loading weights:  68%|██████▊   | 148/219 [00:07<00:03, 22.93it/s][A
+Loading weights:  69%|██████▉   | 151/219 [00:07<00:03, 18.59it/s][A
+Loading weights:  72%|███████▏  | 157/219 [00:07<00:02, 23.53it/s][A
+Loading weights:  73%|███████▎  | 160/219 [00:07<00:03, 18.28it/s][A
+Loading weights:  76%|███████▌  | 166/219 [00:07<00:02, 23.18it/s][A
+Loading weights:  77%|███████▋  | 169/219 [00:08<00:02, 18.70it/s][A
+Loading weights:  79%|███████▊  | 172/219 [00:08<00:02, 20.00it/s][A
+Loading weights:  81%|████████▏ | 178/219 [00:08<00:02, 18.78it/s][A
+Loading weights:  84%|████████▍ | 184/219 [00:08<00:01, 22.99it/s][A
+Loading weights:  85%|████████▌ | 187/219 [00:09<00:01, 19.51it/s][A
+Loading weights:  87%|████████▋ | 190/219 [00:09<00:01, 20.55it/s][A
+Loading weights:  89%|████████▉ | 196/219 [00:09<00:01, 18.93it/s][A
+Loading weights:  92%|█████████▏| 202/219 [00:09<00:00, 23.35it/s][A
+Loading weights:  94%|█████████▎| 205/219 [00:10<00:00, 19.48it/s][A
+Loading weights:  95%|█████████▍| 208/219 [00:10<00:00, 20.42it/s][A
+Loading weights:  98%|█████████▊| 214/219 [00:10<00:00, 19.31it/s][A
+Loading weights: 100%|██████████| 219/219 [00:10<00:00, 19.48it/s][ALoading weights: 100%|██████████| 219/219 [00:10<00:00, 20.41it/s]
+Loading pipeline components...:  80%|████████  | 4/5 [00:15<00:04,  4.21s/it]Loading pipeline components...: 100%|██████████| 5/5 [00:15<00:00,  3.16s/it]
+Averaged score saved to: ./results/attn_maps/layer17_ts49/total_confidence_score.xlsx
+Averaged score saved to: ./results/attn_maps/layer17_ts49/total_attention_score.xlsx
