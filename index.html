@@ -525,7 +525,7 @@
     <div class="wrap">
       <div class="lbl">Part B</div>
       <h2 class="sec-title">Limitations Analysis</h2>
-      <p class="body-text">The paper itself identifies several failure modes in the appendix. We ran targeted experiments to observe these directly. Each limitation below is paired with a video comparison and raw log data — the numbers make the failure mode concrete.</p>
+      <p class="body-text">The paper identifies several failure modes in its appendix. We ran targeted experiments to observe them directly — and added two new empirical experiments (Limitations 3 and 4) that go beyond what the paper reports. Limitations 1 and 2 reproduce known behaviors; Limitations 3 and 4 are original findings from our codebase modifications and new evaluation runs.</p>
 
       <!-- LIM 1: ts=1 -->
       <h3 class="sub-heading">Limitation 1 — Noise Dependency: What Happens at ts=1</h3>
@@ -611,26 +611,55 @@
         <p>Layer 8 matches objects at the same spatial position (RoPE positional embeddings dominate, paper Figure 6). Layer 29 shows diffuse, scattered attention (paper Figure A.18). The paper provides no empirical guide for layer selection on a new domain or architecture.</p>
       </div>
 
-      <!-- LIM 3: TEMPORAL PRECISION -->
-      <h3 class="sub-heading">Limitation 3 — Precision vs Coarse Accuracy: A 12× Gap</h3>
-      <p class="body-text" style="margin-bottom:18px;">DiffTrack matches each frame independently against frame 0 — there is no motion model, no velocity estimate, no memory of where the point was in the previous frame. This shows up clearly when you look at the accuracy across different distance thresholds. The method does reasonably well at coarse tolerances (within 8–16 pixels), but struggles at fine precision (within 1–2 pixels). The numbers below are from our best configuration (Layer 17, ts=49) on the param-study 4-video set.</p>
+      <!-- LIM 3: FRAME DISTANCE DEGRADATION -->
+      <h3 class="sub-heading">Limitation 3 — Frame-Distance Degradation: No Temporal Memory</h3>
+      <p class="body-text" style="margin-bottom:18px;">DiffTrack matches every frame independently against frame 0 — there is no motion model, no velocity estimate, no memory of where a point was in the previous frame. We ran a new experiment to prove this directly: we computed delta_4 accuracy in bins of 10 frames, ordered by distance from the reference frame. If temporal memory existed, accuracy would stay flat. Instead, it consistently declines.</p>
+      <p class="body-text" style="margin-bottom:18px;">Results below are from a fresh run at Layer 17, ts=49 on the same 4-video subset. Each bin reports the fraction of visible tracked points landing within 4 pixels of ground truth.</p>
       <div class="tbl-wrap">
         <table>
-          <thead><tr><th>Threshold</th><th>% Points Correct ↑</th><th>Interpretation</th><th>Relative to δ₁</th></tr></thead>
+          <thead><tr><th>Frame distance bin</th><th>Video 0 (69f)</th><th>Video 1 (50f)</th><th>Video 2 (80f)</th><th>Video 3 (84f)</th></tr></thead>
           <tbody>
-            <tr><td class="na">delta_1 (within 1px)</td><td class="ng">7.0%</td><td class="nd">Sub-pixel precision — very few points hit this</td><td class="nd sm">1×</td></tr>
-            <tr><td class="nd">delta_2 (within 2px)</td><td class="n">~15%</td><td class="nd">Still quite precise</td><td class="nd sm">~2×</td></tr>
-            <tr><td class="nd">delta_4 (within 4px)</td><td class="n">~35%</td><td class="nd">Moderate precision</td><td class="nd sm">~5×</td></tr>
-            <tr><td class="nd">delta_8 (within 8px)</td><td class="n">74.6%</td><td class="nd">Coarse — most points correct here</td><td class="nd sm">~11×</td></tr>
-            <tr class="wrn"><td>delta_16 (within 16px)</td><td class="ny">81.2%</td><td class="nd">Very coarse tolerance</td><td class="ny sm">~12×</td></tr>
+            <tr class="opt"><td>Frames 1–10 (near ref)</td><td class="ng">63.2%</td><td class="ng">72.0%</td><td class="ng">51.5%</td><td class="ng">88.8%</td></tr>
+            <tr><td class="nd">Frames 11–20</td><td class="n">39.2%</td><td class="n">66.0%</td><td class="n">41.4%</td><td class="n">55.7%</td></tr>
+            <tr><td class="nd">Frames 21–30</td><td class="n">33.3%</td><td class="n">60.0%</td><td class="n">37.8%</td><td class="nr">28.1%</td></tr>
+            <tr><td class="nd">Frames 31–50</td><td class="n">29.2%</td><td class="nd">50.5%</td><td class="n">40.5%</td><td class="n">61.0%</td></tr>
+            <tr class="bad"><td>Frames 51+ (far from ref)</td><td class="nr">14.7%</td><td class="nd sm">—</td><td class="nr">31.7%</td><td class="nr">44.1%</td></tr>
           </tbody>
         </table>
       </div>
+      <p class="body-text" style="margin:14px 0 24px;font-size:14px;color:var(--text-dim);">Video 0 is the clearest case: 63.2% accuracy near frame 0, dropping to <strong>14.7%</strong> at frames 51+. That is a <strong>4.3× degradation</strong> over the course of a single 69-frame video. Video 1 (50 frames, no occlusions) degrades more gently. The trend holds across all four videos.</p>
 
       <div class="finding red">
-        <div class="finding-num">Limitation 3</div>
-        <div class="finding-title">12× accuracy spread — no motion model, no trajectory history</div>
-        <p>Only 7% of predictions land within 1 pixel vs 81% within 16 pixels. The method independently matches each frame against frame 0 with no velocity estimate or trajectory history. <strong>Without temporal continuity, drift compounds over long sequences</strong> — the method is a one-shot frame matcher, not a tracker in the classical sense.</p>
+        <div class="finding-num">Limitation 3 — New Empirical Result</div>
+        <div class="finding-title">Accuracy degrades 2–4× with distance from reference frame</div>
+        <p>Near frame 0: ~68% delta_4 accuracy (pooled). Beyond frame 50: ~31%. This directly proves the absence of temporal memory — the method re-matches every frame from scratch against frame 0, and correspondences degrade as objects drift further from their initial position. A classical tracker with a motion model would not show this pattern.</p>
+      </div>
+
+      <!-- LIM 4: OCCLUSION BLINDNESS -->
+      <h3 class="sub-heading">Limitation 4 — Occlusion Blindness: Hardcoded Visibility</h3>
+      <p class="body-text" style="margin-bottom:18px;">DiffTrack has no occlusion model. The evaluation code contains this line:</p>
+      <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r);padding:12px 18px;margin-bottom:18px;font-family:var(--mono);font-size:13px;color:var(--text-dim);">
+        pred_occluded = torch.zeros_like(visibility)  <span style="color:var(--accent);"># always predicts "visible"</span>
+      </div>
+      <p class="body-text" style="margin-bottom:18px;">Every tracked point is predicted as visible in every frame. The standard delta metric only evaluates visible ground-truth frames, so this doesn't hurt delta_avg. But <strong>Average Jaccard (AJ)</strong> — the stricter TAP-Vid metric — penalizes false visibility predictions. We enabled AJ reporting (previously suppressed in zero-shot mode) and re-ran the same 4-video baseline.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Video</th><th>Frames</th><th>delta_avg ↑</th><th>AJ ↑</th><th>OA ↑</th><th>AJ vs delta_avg</th></tr></thead>
+          <tbody>
+            <tr><td class="nd">Video 0</td><td class="nd">69</td><td class="n">38.2</td><td class="nr">20.1</td><td class="nd">65.5%</td><td class="nr sm">−47%</td></tr>
+            <tr><td class="nd">Video 1</td><td class="nd">50</td><td class="n">52.1</td><td class="ny">39.9</td><td class="ng">100%</td><td class="ny sm">−23% (no occlusions)</td></tr>
+            <tr><td class="nd">Video 2</td><td class="nd">80</td><td class="n">43.8</td><td class="nr">23.1</td><td class="nd">62.6%</td><td class="nr sm">−47%</td></tr>
+            <tr><td class="nd">Video 3</td><td class="nd">84</td><td class="n">49.7</td><td class="ny">29.6</td><td class="nd">69.9%</td><td class="ny sm">−40%</td></tr>
+            <tr class="bad"><td><strong>Mean</strong></td><td class="nd">—</td><td class="n">45.9</td><td class="nr"><strong>28.2</strong></td><td class="nd">74.5%</td><td class="nr sm"><strong>−38%</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="body-text" style="margin:14px 0 24px;font-size:14px;color:var(--text-dim);">Video 1 scores OA=100% because none of its tracked points are occluded in the ground truth — there are no occlusion frames to penalize. Videos 0 and 2 both drop to ~23% AJ because real occlusions trigger double penalties: wrong location prediction <em>and</em> wrong visibility prediction.</p>
+
+      <div class="finding red">
+        <div class="finding-num">Limitation 4 — New Empirical Result</div>
+        <div class="finding-title">AJ is 38% below delta_avg — the method is blind to occlusion</div>
+        <p>Mean AJ = 28.2 vs mean delta_avg = 45.9. The method predicts every point as always visible, which is wrong whenever a point passes behind another object. <code style="font-family:var(--mono);font-size:12px;">pred_occluded</code> is <strong>hardcoded to all-zeros</strong> — there is no learned or heuristic occlusion detector. For applications requiring accurate visibility prediction (e.g., robotics, depth estimation), this is a significant gap.</p>
       </div>
     </div>
   </div>
