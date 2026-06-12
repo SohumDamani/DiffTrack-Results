@@ -323,8 +323,28 @@ td { padding: 5px 8px; border-bottom: 1px solid #222; }
 tr:nth-child(even) td { background: #161616; }
 .best td { color: #7ef07e; font-weight: bold; }
 code { color: #cce7ff; font-size: 0.74rem; word-break: break-all; }
-.lineage-table td { vertical-align: top; }
 .muted { color: #888; }
+.lineage-list { display: grid; gap: 8px; margin-bottom: 12px; }
+.lineage-item { position: relative; background: #171717; border: 1px solid #2a2a2a;
+                border-radius: 8px; }
+.lineage-item[open], .lineage-item:hover, .lineage-item:focus-within {
+  border-color: #4f7fa3; background: #1b2024;
+}
+.lineage-title { cursor: pointer; list-style: none; padding: 10px 12px; color: #f3f7fb;
+                 font-size: 0.86rem; font-weight: 650; }
+.lineage-title::-webkit-details-marker { display: none; }
+.lineage-title::after { content: "+"; float: right; color: #8abce1; font-weight: 700; }
+.lineage-item[open] .lineage-title::after,
+.lineage-item:hover .lineage-title::after,
+.lineage-item:focus-within .lineage-title::after { content: "-"; }
+.lineage-panel { display: none; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+                 gap: 8px; padding: 0 12px 12px; }
+.lineage-item[open] .lineage-panel,
+.lineage-item:hover .lineage-panel,
+.lineage-item:focus-within .lineage-panel { display: grid; }
+.lineage-section { background: #111; border: 1px solid #262626; border-radius: 6px; padding: 8px; }
+.lineage-section h4 { color: #adf; font-size: 0.72rem; margin-bottom: 5px; text-transform: uppercase; }
+.lineage-section p { color: #ddd; font-size: 0.78rem; line-height: 1.35; margin-bottom: 4px; }
 .plots { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
 .plots img { max-width: 100%; border-radius: 6px; background: #1a1a1a; flex: 1 1 280px; }
 .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
@@ -376,33 +396,48 @@ def _plot_section(chart_paths: list[Path | None], out_dir: Path) -> str:
     ) + "</div>"
 
 
-def _lineage_table(lineage: dict) -> str:
-    rows = []
-    for experiment in lineage["experiments"]:
-        metrics = experiment["metrics"]
-        inputs = experiment["inputs"]
-        outputs = experiment["outputs"]
-        rows.append(
-            "<tr>"
-            f"<td>{escape(experiment['group'])}<br><code>{escape(experiment['config_name'])}</code></td>"
-            f"<td><code>{escape(inputs['log'])}</code><br>"
-            f"<span class=\"muted\">{len(inputs['videos'])} source video(s)</span></td>"
-            f"<td>L{escape(str(experiment['parameters']['layer']))}, "
-            f"t={escape(str(experiment['parameters']['timestep']))}, "
-            f"noise={escape(str(experiment['parameters']['noise']))}</td>"
-            f"<td>{metrics.get('n_videos', 0)} video(s)<br>"
-            f"delta_avg={metrics.get('delta_avg', 0):.1f}</td>"
-            f"<td>{len(outputs['copied_videos'])} dashboard video(s)</td>"
-            "</tr>\n"
-        )
+def _lineage_entry(experiment: dict) -> str:
+    metrics = experiment["metrics"]
+    inputs = experiment["inputs"]
+    outputs = experiment["outputs"]
+    params = experiment["parameters"]
+    title = f"{experiment['group']} / {experiment['config_name']}"
+    return (
+        '<details class="lineage-item">'
+        f'<summary class="lineage-title">{escape(title)}</summary>'
+        '<div class="lineage-panel">'
+        '<section class="lineage-section">'
+        '<h4>Source</h4>'
+        f'<p><code>{escape(inputs["log"])}</code></p>'
+        f'<p class="muted">{len(inputs["videos"])} source video(s)</p>'
+        '</section>'
+        '<section class="lineage-section">'
+        '<h4>Parameters</h4>'
+        f'<p>Layer {escape(str(params["layer"]))}</p>'
+        f'<p>Timestep {escape(str(params["timestep"]))}</p>'
+        f'<p>Noise {escape(str(params["noise"]))}</p>'
+        '</section>'
+        '<section class="lineage-section">'
+        '<h4>Metrics</h4>'
+        f'<p>{metrics.get("n_videos", 0)} video(s)</p>'
+        f'<p>delta_avg {metrics.get("delta_avg", 0):.1f}</p>'
+        '</section>'
+        '<section class="lineage-section">'
+        '<h4>Outputs</h4>'
+        f'<p><code>{escape(outputs["dashboard"])}</code></p>'
+        f'<p class="muted">{len(outputs["copied_videos"])} dashboard video(s)</p>'
+        '</section>'
+        '</div>'
+        '</details>\n'
+    )
 
-    return f"""
-<table class="lineage-table">
-  <thead><tr>
-    <th>Run</th><th>Source</th><th>Parameters</th><th>Parsed Metrics</th><th>Dashboard Outputs</th>
-  </tr></thead>
-  <tbody>{''.join(rows)}</tbody>
-</table>"""
+
+def _lineage_table(lineage: dict) -> str:
+    entries = []
+    for experiment in lineage["experiments"]:
+        entries.append(_lineage_entry(experiment))
+
+    return f'<div class="lineage-list">{"".join(entries)}</div>'
 
 
 def build_html(records, video_entries, chart_paths, out_dir: Path, gen_date: str, lineage: dict) -> str:
