@@ -317,6 +317,10 @@ h1 { font-size: 1.4rem; margin-bottom: 4px; color: #fff; }
 h2 { font-size: 1.1rem; margin: 20px 0 8px; color: #adf; border-bottom: 1px solid #333; padding-bottom: 4px; }
 h3 { font-size: 0.9rem; color: #ccc; margin: 12px 0 4px; }
 .subtitle { font-size: 0.8rem; color: #888; margin-bottom: 16px; }
+.site-links { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 16px; }
+.site-links a { color: #dff1ff; background: #1c2733; border: 1px solid #34485b; border-radius: 7px;
+                padding: 7px 9px; font-size: 0.78rem; font-weight: 700; text-decoration: none; }
+.site-links a:hover, .site-links a:focus { background: #26384a; border-color: #6ca2d8; }
 table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-bottom: 12px; }
 th { background: #222; color: #adf; text-align: left; padding: 6px 8px; }
 td { padding: 5px 8px; border-bottom: 1px solid #222; }
@@ -346,28 +350,47 @@ code { color: #cce7ff; font-size: 0.74rem; word-break: break-all; }
 .lineage-section h4 { color: #adf; font-size: 0.72rem; margin-bottom: 5px; text-transform: uppercase; }
 .lineage-section p { color: #ddd; font-size: 0.78rem; line-height: 1.35; margin-bottom: 4px; }
 .research-lineage { scroll-margin-top: 16px; }
-.research-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                 gap: 12px; margin-bottom: 12px; }
-.paper-group { border: 1px solid #2a2a2a; border-radius: 8px; background: #151515; padding: 10px; }
-.paper-group h3 { color: #adf; margin-top: 0; }
-.paper-list { display: grid; gap: 7px; }
-.paper-item { border: 1px solid #272727; border-radius: 7px; background: #1a1a1a; }
-.paper-item[open], .paper-item:hover, .paper-item:focus-within {
-  border-color: #5a8367; background: #1d241f;
+.research-lineage p { line-height: 1.45; }
+.lineage-intro { max-width: 980px; color: #cfd6dd; font-size: 0.9rem; margin-bottom: 14px; }
+.lineage-mindmap { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(210px, 0.75fr) minmax(0, 1fr);
+                   gap: 12px; align-items: stretch; margin: 14px 0; }
+.lineage-mindmap::before { content: ""; position: absolute; left: 8%; right: 8%; top: 50%; height: 3px;
+                           background: linear-gradient(90deg, #6ca2d8, #d97666, #74c69d); opacity: 0.58; }
+.map-column { position: relative; z-index: 1; display: grid; gap: 9px; }
+.map-node, .map-core, .lineage-essay article, .paper-group, .paper-item {
+  border: 1px solid #2c3640; border-radius: 8px; background: #171b20;
 }
-.paper-title { cursor: pointer; list-style: none; padding: 9px 10px; font-size: 0.82rem;
-               color: #f2f6f1; font-weight: 650; }
-.paper-title::-webkit-details-marker { display: none; }
-.paper-title::after { content: "+"; float: right; color: #91c79c; font-weight: 700; }
-.paper-item[open] .paper-title::after,
-.paper-item:hover .paper-title::after,
-.paper-item:focus-within .paper-title::after { content: "-"; }
-.paper-detail { display: none; padding: 0 10px 10px; }
-.paper-item[open] .paper-detail,
-.paper-item:hover .paper-detail,
-.paper-item:focus-within .paper-detail { display: block; }
-.paper-detail p { font-size: 0.78rem; line-height: 1.35; color: #ddd; margin-bottom: 5px; }
-.concept { display: inline-block; margin-top: 2px; color: #91c79c; font-size: 0.72rem; }
+.map-node { padding: 11px; border-left: 4px solid #6ca2d8; }
+.map-column.forward .map-node { border-left-color: #74c69d; }
+.map-core { position: relative; z-index: 2; padding: 15px; background: linear-gradient(135deg, #8f3e36, #14191f);
+            border-color: #71413d; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28); }
+.map-label, .concept { display: inline-block; color: #9bd5ff; font-size: 0.7rem; font-weight: 750;
+                       letter-spacing: 0.03em; text-transform: uppercase; }
+.map-column.forward .map-label { color: #9ce8bd; }
+.map-core .map-label { color: #ffd5ce; }
+.map-node h4, .map-core h3 { color: #f8fbff; margin: 5px 0 5px; line-height: 1.25; }
+.map-node p, .map-core p { color: #cfd6dd; font-size: 0.8rem; }
+.lineage-essay { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+                 gap: 10px; margin: 12px 0 14px; }
+.lineage-essay article { padding: 12px; background: #151922; }
+.lineage-essay h3 { color: #adf; margin-top: 0; font-size: 0.9rem; }
+.lineage-essay p { color: #d8dde2; font-size: 0.82rem; }
+.research-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                 gap: 12px; margin-bottom: 12px; }
+.paper-group { padding: 11px; background: #14171b; }
+.paper-group h3 { color: #adf; margin-top: 0; }
+.paper-group > p { color: #aab4bd; font-size: 0.8rem; margin-bottom: 9px; }
+.paper-list { display: grid; gap: 8px; }
+.paper-item { padding: 10px; background: #1a1f24; }
+.paper-item h4 { color: #f2f6f1; font-size: 0.84rem; line-height: 1.28; margin-bottom: 5px; }
+.paper-item p { font-size: 0.78rem; color: #d7dde1; margin-bottom: 5px; }
+.paper-item b { color: #f5f7f9; }
+.concept { margin-top: 2px; color: #91c79c; }
+@media (max-width: 760px) {
+  .lineage-mindmap { grid-template-columns: 1fr; }
+  .lineage-mindmap::before { left: 18px; right: auto; top: 2%; bottom: 2%; width: 3px; height: auto;
+                             background: linear-gradient(180deg, #6ca2d8, #d97666, #74c69d); }
+}
 .plots { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
 .plots img { max-width: 100%; border-radius: 6px; background: #1a1a1a; flex: 1 1 280px; }
 .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
@@ -570,21 +593,21 @@ FORWARD_PAPERS = [
 def _paper_item(paper: dict) -> str:
     title = f"{paper['paper']} ({paper['citation']})"
     return (
-        '<details class="paper-item">'
-        f'<summary class="paper-title">{escape(title)}</summary>'
-        '<div class="paper-detail">'
+        '<article class="paper-item">'
+        f'<h4>{escape(title)}</h4>'
         f'<p><b>New idea:</b> {escape(paper["idea"])}</p>'
         f'<p><b>Lineage role:</b> {escape(paper["connection"])}</p>'
         f'<span class="concept">{escape(paper["concept"])}</span>'
-        '</div>'
-        '</details>\n'
+        '</article>\n'
     )
 
 
-def _paper_group(title: str, papers: list[dict]) -> str:
+def _paper_group(title: str, papers: list[dict], description: str = "") -> str:
+    description_html = f'<p>{escape(description)}</p>' if description else ""
     return (
         '<section class="paper-group">'
         f'<h3>{escape(title)}</h3>'
+        f'{description_html}'
         '<div class="paper-list">'
         + ''.join(_paper_item(paper) for paper in papers)
         + '</div></section>'
@@ -595,10 +618,65 @@ def _research_lineage_section() -> str:
     return f"""
   <section id="part-a" class="research-lineage">
     <h2>Research Lineage</h2>
-    <p class="subtitle">Previous and Forward Papers: 12 predecessor papers that make DiffTrack possible, and 8 forward-lineage papers that build on its contributions.</p>
+    <p class="lineage-intro">DiffTrack is not just one paper placed between older and newer papers. It is a bridge between self-supervised temporal correspondence, diffusion-feature reuse, and attention-based video control. The lineage below explains what each research thread contributes, why the assigned paper matters, and how later work extracts its cross-frame attention idea into tracking, motion transfer, generation control, and restoration.</p>
+    <div class="lineage-mindmap" aria-label="DiffTrack lineage mind map">
+      <div class="map-column">
+        <article class="map-node">
+          <span class="map-label">Representation Geometry</span>
+          <h4>Emergent Correspondence from Image Diffusion</h4>
+          <p>Shows that pretrained diffusion features can align visual parts without task-specific labels.</p>
+        </article>
+        <article class="map-node">
+          <span class="map-label">Temporal Consistency</span>
+          <h4>Contrastive Random Walks and TAP-Vid</h4>
+          <p>Define tracking as stability over time, not merely nearest-neighbor similarity between two frames.</p>
+        </article>
+        <article class="map-node">
+          <span class="map-label">Semantic Precision Tradeoff</span>
+          <h4>Semantics Meets Temporal Correspondence</h4>
+          <p>Explains why semantic abstraction can preserve identity while weakening point-level localization.</p>
+        </article>
+      </div>
+      <article class="map-core">
+        <span class="map-label">Assigned Paper</span>
+        <h3>DiffTrack</h3>
+        <p>Reinterprets cross-frame attention inside video diffusion transformers as a zero-shot transport operator for point identity, motion evidence, and temporal correspondence.</p>
+      </article>
+      <div class="map-column forward">
+        <article class="map-node">
+          <span class="map-label">Point-Level Control</span>
+          <h4>Point Prompting</h4>
+          <p>Turns the correspondence signal into an interactive mechanism for propagating point markers.</p>
+        </article>
+        <article class="map-node">
+          <span class="map-label">Motion Representation</span>
+          <h4>DiTFlow</h4>
+          <p>Extracts motion flow directly from cross-frame attention maps.</p>
+        </article>
+        <article class="map-node">
+          <span class="map-label">Video Guidance</span>
+          <h4>ZeroTrail and Weighted Cross-Frame Attention</h4>
+          <p>Use attention as a control interface for trajectories, identity preservation, and temporal coherence.</p>
+        </article>
+      </div>
+    </div>
+    <div class="lineage-essay">
+      <article>
+        <h3>What DiffTrack inherits</h3>
+        <p>It inherits the idea that correspondence can emerge from representation geometry. Earlier work supplies the evaluation discipline: a match should remain coherent across time, occlusion, and changing appearance.</p>
+      </article>
+      <article>
+        <h3>What DiffTrack changes</h3>
+        <p>It changes diffusion attention from a generation-side mechanism into a tracking-side matching operator. Layer and timestep therefore become theoretical choices, because they regulate the balance between local geometry, semantics, and denoising noise.</p>
+      </article>
+      <article>
+        <h3>What later work extracts</h3>
+        <p>Later papers specialize the same insight. Some prompt points, some recover motion flow, some steer trajectories, and some use cross-frame attention to stabilize restoration or long video generation.</p>
+      </article>
+    </div>
     <div class="research-grid">
-      {_paper_group("← Predecessor Papers", PREDECESSOR_PAPERS)}
-      {_paper_group("→ Forward Lineage", FORWARD_PAPERS)}
+      {_paper_group("Predecessor papers: conceptual inputs", PREDECESSOR_PAPERS, "These papers explain the assumptions DiffTrack depends on: correspondence can be self-supervised, diffusion features carry geometry, and point tracking needs long-range consistency rather than isolated frame matching.")}
+      {_paper_group("Forward papers: successor directions", FORWARD_PAPERS, "These papers build from DiffTrack's core mechanism by using cross-frame attention for prompted tracking, motion transfer, video trajectory control, temporal restoration, and generation coherence.")}
     </div>
   </section>"""
 
@@ -686,9 +764,13 @@ def build_html(records, video_entries, chart_paths, out_dir: Path, gen_date: str
   <style>{CSS}</style>
 </head>
 <body>
-  <h1>DiffTrack — Experiment Dashboard</h1>
+  <h1>DiffTrack - Experiment Dashboard</h1>
   <p class="subtitle">Generated: {gen_date} &nbsp;|&nbsp;
     Serve locally: <code>cd {escape(serve_dir)} && python -m http.server 8080</code></p>
+  <nav class="site-links" aria-label="Project links">
+    <a href="https://sohumdamani.github.io/DiffTrack-Results/">Live GitHub Pages</a>
+    <a href="https://github.com/SohumDamani/DiffTrack-Results">GitHub Repository</a>
+  </nav>
 
   <h2>All Results (sorted by δ_avg)</h2>
   {table_html}

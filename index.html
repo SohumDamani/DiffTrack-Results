@@ -12,6 +12,10 @@ h1 { font-size: 1.4rem; margin-bottom: 4px; color: #fff; }
 h2 { font-size: 1.1rem; margin: 20px 0 8px; color: #adf; border-bottom: 1px solid #333; padding-bottom: 4px; }
 h3 { font-size: 0.9rem; color: #ccc; margin: 12px 0 4px; }
 .subtitle { font-size: 0.8rem; color: #888; margin-bottom: 16px; }
+.site-links { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 16px; }
+.site-links a { color: #dff1ff; background: #1c2733; border: 1px solid #34485b; border-radius: 7px;
+                padding: 7px 9px; font-size: 0.78rem; font-weight: 700; text-decoration: none; }
+.site-links a:hover, .site-links a:focus { background: #26384a; border-color: #6ca2d8; }
 table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-bottom: 12px; }
 th { background: #222; color: #adf; text-align: left; padding: 6px 8px; }
 td { padding: 5px 8px; border-bottom: 1px solid #222; }
@@ -41,28 +45,47 @@ code { color: #cce7ff; font-size: 0.74rem; word-break: break-all; }
 .lineage-section h4 { color: #adf; font-size: 0.72rem; margin-bottom: 5px; text-transform: uppercase; }
 .lineage-section p { color: #ddd; font-size: 0.78rem; line-height: 1.35; margin-bottom: 4px; }
 .research-lineage { scroll-margin-top: 16px; }
-.research-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                 gap: 12px; margin-bottom: 12px; }
-.paper-group { border: 1px solid #2a2a2a; border-radius: 8px; background: #151515; padding: 10px; }
-.paper-group h3 { color: #adf; margin-top: 0; }
-.paper-list { display: grid; gap: 7px; }
-.paper-item { border: 1px solid #272727; border-radius: 7px; background: #1a1a1a; }
-.paper-item[open], .paper-item:hover, .paper-item:focus-within {
-  border-color: #5a8367; background: #1d241f;
+.research-lineage p { line-height: 1.45; }
+.lineage-intro { max-width: 980px; color: #cfd6dd; font-size: 0.9rem; margin-bottom: 14px; }
+.lineage-mindmap { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(210px, 0.75fr) minmax(0, 1fr);
+                   gap: 12px; align-items: stretch; margin: 14px 0; }
+.lineage-mindmap::before { content: ""; position: absolute; left: 8%; right: 8%; top: 50%; height: 3px;
+                           background: linear-gradient(90deg, #6ca2d8, #d97666, #74c69d); opacity: 0.58; }
+.map-column { position: relative; z-index: 1; display: grid; gap: 9px; }
+.map-node, .map-core, .lineage-essay article, .paper-group, .paper-item {
+  border: 1px solid #2c3640; border-radius: 8px; background: #171b20;
 }
-.paper-title { cursor: pointer; list-style: none; padding: 9px 10px; font-size: 0.82rem;
-               color: #f2f6f1; font-weight: 650; }
-.paper-title::-webkit-details-marker { display: none; }
-.paper-title::after { content: "+"; float: right; color: #91c79c; font-weight: 700; }
-.paper-item[open] .paper-title::after,
-.paper-item:hover .paper-title::after,
-.paper-item:focus-within .paper-title::after { content: "-"; }
-.paper-detail { display: none; padding: 0 10px 10px; }
-.paper-item[open] .paper-detail,
-.paper-item:hover .paper-detail,
-.paper-item:focus-within .paper-detail { display: block; }
-.paper-detail p { font-size: 0.78rem; line-height: 1.35; color: #ddd; margin-bottom: 5px; }
-.concept { display: inline-block; margin-top: 2px; color: #91c79c; font-size: 0.72rem; }
+.map-node { padding: 11px; border-left: 4px solid #6ca2d8; }
+.map-column.forward .map-node { border-left-color: #74c69d; }
+.map-core { position: relative; z-index: 2; padding: 15px; background: linear-gradient(135deg, #8f3e36, #14191f);
+            border-color: #71413d; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28); }
+.map-label, .concept { display: inline-block; color: #9bd5ff; font-size: 0.7rem; font-weight: 750;
+                       letter-spacing: 0.03em; text-transform: uppercase; }
+.map-column.forward .map-label { color: #9ce8bd; }
+.map-core .map-label { color: #ffd5ce; }
+.map-node h4, .map-core h3 { color: #f8fbff; margin: 5px 0 5px; line-height: 1.25; }
+.map-node p, .map-core p { color: #cfd6dd; font-size: 0.8rem; }
+.lineage-essay { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+                 gap: 10px; margin: 12px 0 14px; }
+.lineage-essay article { padding: 12px; background: #151922; }
+.lineage-essay h3 { color: #adf; margin-top: 0; font-size: 0.9rem; }
+.lineage-essay p { color: #d8dde2; font-size: 0.82rem; }
+.research-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                 gap: 12px; margin-bottom: 12px; }
+.paper-group { padding: 11px; background: #14171b; }
+.paper-group h3 { color: #adf; margin-top: 0; }
+.paper-group > p { color: #aab4bd; font-size: 0.8rem; margin-bottom: 9px; }
+.paper-list { display: grid; gap: 8px; }
+.paper-item { padding: 10px; background: #1a1f24; }
+.paper-item h4 { color: #f2f6f1; font-size: 0.84rem; line-height: 1.28; margin-bottom: 5px; }
+.paper-item p { font-size: 0.78rem; color: #d7dde1; margin-bottom: 5px; }
+.paper-item b { color: #f5f7f9; }
+.concept { margin-top: 2px; color: #91c79c; }
+@media (max-width: 760px) {
+  .lineage-mindmap { grid-template-columns: 1fr; }
+  .lineage-mindmap::before { left: 18px; right: auto; top: 2%; bottom: 2%; width: 3px; height: auto;
+                             background: linear-gradient(180deg, #6ca2d8, #d97666, #74c69d); }
+}
 .plots { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
 .plots img { max-width: 100%; border-radius: 6px; background: #1a1a1a; flex: 1 1 280px; }
 .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
@@ -77,9 +100,13 @@ footer { margin-top: 24px; font-size: 0.72rem; color: #555; text-align: center; 
 </style>
 </head>
 <body>
-  <h1>DiffTrack — Experiment Dashboard</h1>
-  <p class="subtitle">Generated: 2026-06-12 13:18 &nbsp;|&nbsp;
+  <h1>DiffTrack - Experiment Dashboard</h1>
+  <p class="subtitle">Generated: 2026-06-12 16:05 &nbsp;|&nbsp;
     Serve locally: <code>cd . && python -m http.server 8080</code></p>
+  <nav class="site-links" aria-label="Project links">
+    <a href="https://sohumdamani.github.io/DiffTrack-Results/">Live GitHub Pages</a>
+    <a href="https://github.com/SohumDamani/DiffTrack-Results">GitHub Repository</a>
+  </nav>
 
   <h2>All Results (sorted by δ_avg)</h2>
   
@@ -111,29 +138,84 @@ footer { margin-top: 24px; font-size: 0.72rem; color: #555; text-align: center; 
   
   <section id="part-a" class="research-lineage">
     <h2>Research Lineage</h2>
-    <p class="subtitle">Previous and Forward Papers: 12 predecessor papers that make DiffTrack possible, and 8 forward-lineage papers that build on its contributions.</p>
+    <p class="lineage-intro">DiffTrack is not just one paper placed between older and newer papers. It is a bridge between self-supervised temporal correspondence, diffusion-feature reuse, and attention-based video control. The lineage below explains what each research thread contributes, why the assigned paper matters, and how later work extracts its cross-frame attention idea into tracking, motion transfer, generation control, and restoration.</p>
+    <div class="lineage-mindmap" aria-label="DiffTrack lineage mind map">
+      <div class="map-column">
+        <article class="map-node">
+          <span class="map-label">Representation Geometry</span>
+          <h4>Emergent Correspondence from Image Diffusion</h4>
+          <p>Shows that pretrained diffusion features can align visual parts without task-specific labels.</p>
+        </article>
+        <article class="map-node">
+          <span class="map-label">Temporal Consistency</span>
+          <h4>Contrastive Random Walks and TAP-Vid</h4>
+          <p>Define tracking as stability over time, not merely nearest-neighbor similarity between two frames.</p>
+        </article>
+        <article class="map-node">
+          <span class="map-label">Semantic Precision Tradeoff</span>
+          <h4>Semantics Meets Temporal Correspondence</h4>
+          <p>Explains why semantic abstraction can preserve identity while weakening point-level localization.</p>
+        </article>
+      </div>
+      <article class="map-core">
+        <span class="map-label">Assigned Paper</span>
+        <h3>DiffTrack</h3>
+        <p>Reinterprets cross-frame attention inside video diffusion transformers as a zero-shot transport operator for point identity, motion evidence, and temporal correspondence.</p>
+      </article>
+      <div class="map-column forward">
+        <article class="map-node">
+          <span class="map-label">Point-Level Control</span>
+          <h4>Point Prompting</h4>
+          <p>Turns the correspondence signal into an interactive mechanism for propagating point markers.</p>
+        </article>
+        <article class="map-node">
+          <span class="map-label">Motion Representation</span>
+          <h4>DiTFlow</h4>
+          <p>Extracts motion flow directly from cross-frame attention maps.</p>
+        </article>
+        <article class="map-node">
+          <span class="map-label">Video Guidance</span>
+          <h4>ZeroTrail and Weighted Cross-Frame Attention</h4>
+          <p>Use attention as a control interface for trajectories, identity preservation, and temporal coherence.</p>
+        </article>
+      </div>
+    </div>
+    <div class="lineage-essay">
+      <article>
+        <h3>What DiffTrack inherits</h3>
+        <p>It inherits the idea that correspondence can emerge from representation geometry. Earlier work supplies the evaluation discipline: a match should remain coherent across time, occlusion, and changing appearance.</p>
+      </article>
+      <article>
+        <h3>What DiffTrack changes</h3>
+        <p>It changes diffusion attention from a generation-side mechanism into a tracking-side matching operator. Layer and timestep therefore become theoretical choices, because they regulate the balance between local geometry, semantics, and denoising noise.</p>
+      </article>
+      <article>
+        <h3>What later work extracts</h3>
+        <p>Later papers specialize the same insight. Some prompt points, some recover motion flow, some steer trajectories, and some use cross-frame attention to stabilize restoration or long video generation.</p>
+      </article>
+    </div>
     <div class="research-grid">
-      <section class="paper-group"><h3>← Predecessor Papers</h3><div class="paper-list"><details class="paper-item"><summary class="paper-title">Emergent Correspondence from Image Diffusion (Tang et al., NeurIPS 2023)</summary><div class="paper-detail"><p><b>New idea:</b> Emergent geometric correspondences in image diffusion models</p><p><b>Lineage role:</b> Direct foundation: extends images to video, and two-frame matching to temporal sequences.</p><span class="concept">Temporal</span></div></details>
-<details class="paper-item"><summary class="paper-title">Space-Time Correspondence as Contrastive Random Walk (Jabri et al., NeurIPS 2020)</summary><div class="paper-detail"><p><b>New idea:</b> Self-supervised spatiotemporal correspondence</p><p><b>Lineage role:</b> Motivated temporal matching metrics and long-range consistency evaluation.</p><span class="concept">Temporal</span></div></details>
-<details class="paper-item"><summary class="paper-title">Semantics Meets Temporal Correspondence (Qian et al., ICCV 2023)</summary><div class="paper-detail"><p><b>New idea:</b> Semantic cues influence temporal correspondence</p><p><b>Lineage role:</b> Inspired analysis of text-attention interference in temporal matching.</p><span class="concept">Temporal</span></div></details>
-<details class="paper-item"><summary class="paper-title">Self-Rectifying Diffusion Sampling with PAG (Ahn et al., ECCV 2024)</summary><div class="paper-detail"><p><b>New idea:</b> Attention perturbation to guide diffusion sampling</p><p><b>Lineage role:</b> Direct predecessor to Cross-Frame Attention Guidance (CAG).</p><span class="concept">CAG</span></div></details>
-<details class="paper-item"><summary class="paper-title">Diffusion Model for Dense Matching (Nam et al., 2023)</summary><div class="paper-detail"><p><b>New idea:</b> Diffusion features for dense correspondence</p><p><b>Lineage role:</b> Evidence diffusion models encode geometric structure, motivating query-key analysis.</p><span class="concept">Q-K Attn</span></div></details>
-<details class="paper-item"><summary class="paper-title">Unsupervised Semantic Correspondence via Stable Diffusion (Hedlin et al., NeurIPS 2023)</summary><div class="paper-detail"><p><b>New idea:</b> Diffusion cross-attention for semantic matching</p><p><b>Lineage role:</b> Motivated query-key similarity and attention score metrics.</p><span class="concept">Q-K Attn</span></div></details>
-<details class="paper-item"><summary class="paper-title">TAP-Vid Benchmark (Doersch et al., NeurIPS 2022)</summary><div class="paper-detail"><p><b>New idea:</b> Standard benchmark for point tracking</p><p><b>Lineage role:</b> Provides the evaluation protocol used by the experiments.</p><span class="concept">Tracking</span></div></details>
-<details class="paper-item"><summary class="paper-title">CoTracker (Karaev et al., ECCV 2024)</summary><div class="paper-detail"><p><b>New idea:</b> Long-range point tracking via joint optimization</p><p><b>Lineage role:</b> Provided pseudo-ground-truth for DiffTrack evaluation.</p><span class="concept">Tracking</span></div></details>
-<details class="paper-item"><summary class="paper-title">CoTracker3 (Karaev et al., 2024)</summary><div class="paper-detail"><p><b>New idea:</b> Tracking via pseudo-labeling real videos</p><p><b>Lineage role:</b> Strengthened the baseline for evaluating tracking accuracy.</p><span class="concept">Tracking</span></div></details>
-<details class="paper-item"><summary class="paper-title">Particle Video Revisited (Harley et al., ECCV 2022)</summary><div class="paper-detail"><p><b>New idea:</b> Long-range tracking with occlusion handling</p><p><b>Lineage role:</b> Motivated the focus on long-range temporal consistency.</p><span class="concept">Tracking</span></div></details>
-<details class="paper-item"><summary class="paper-title">CATs: Cost Aggregation Transformers (Cho et al., NeurIPS 2021)</summary><div class="paper-detail"><p><b>New idea:</b> Transformer-based cost aggregation for correspondence</p><p><b>Lineage role:</b> Inspired layer-wise correspondence probing.</p><span class="concept">Temporal</span></div></details>
-<details class="paper-item"><summary class="paper-title">Neural Matching Fields (Hong et al., NeurIPS 2022)</summary><div class="paper-detail"><p><b>New idea:</b> Implicit representation of matching fields</p><p><b>Lineage role:</b> Conceptual basis for the matching confidence metric.</p><span class="concept">Temporal</span></div></details>
+      <section class="paper-group"><h3>Predecessor papers: conceptual inputs</h3><p>These papers explain the assumptions DiffTrack depends on: correspondence can be self-supervised, diffusion features carry geometry, and point tracking needs long-range consistency rather than isolated frame matching.</p><div class="paper-list"><article class="paper-item"><h4>Emergent Correspondence from Image Diffusion (Tang et al., NeurIPS 2023)</h4><p><b>New idea:</b> Emergent geometric correspondences in image diffusion models</p><p><b>Lineage role:</b> Direct foundation: extends images to video, and two-frame matching to temporal sequences.</p><span class="concept">Temporal</span></article>
+<article class="paper-item"><h4>Space-Time Correspondence as Contrastive Random Walk (Jabri et al., NeurIPS 2020)</h4><p><b>New idea:</b> Self-supervised spatiotemporal correspondence</p><p><b>Lineage role:</b> Motivated temporal matching metrics and long-range consistency evaluation.</p><span class="concept">Temporal</span></article>
+<article class="paper-item"><h4>Semantics Meets Temporal Correspondence (Qian et al., ICCV 2023)</h4><p><b>New idea:</b> Semantic cues influence temporal correspondence</p><p><b>Lineage role:</b> Inspired analysis of text-attention interference in temporal matching.</p><span class="concept">Temporal</span></article>
+<article class="paper-item"><h4>Self-Rectifying Diffusion Sampling with PAG (Ahn et al., ECCV 2024)</h4><p><b>New idea:</b> Attention perturbation to guide diffusion sampling</p><p><b>Lineage role:</b> Direct predecessor to Cross-Frame Attention Guidance (CAG).</p><span class="concept">CAG</span></article>
+<article class="paper-item"><h4>Diffusion Model for Dense Matching (Nam et al., 2023)</h4><p><b>New idea:</b> Diffusion features for dense correspondence</p><p><b>Lineage role:</b> Evidence diffusion models encode geometric structure, motivating query-key analysis.</p><span class="concept">Q-K Attn</span></article>
+<article class="paper-item"><h4>Unsupervised Semantic Correspondence via Stable Diffusion (Hedlin et al., NeurIPS 2023)</h4><p><b>New idea:</b> Diffusion cross-attention for semantic matching</p><p><b>Lineage role:</b> Motivated query-key similarity and attention score metrics.</p><span class="concept">Q-K Attn</span></article>
+<article class="paper-item"><h4>TAP-Vid Benchmark (Doersch et al., NeurIPS 2022)</h4><p><b>New idea:</b> Standard benchmark for point tracking</p><p><b>Lineage role:</b> Provides the evaluation protocol used by the experiments.</p><span class="concept">Tracking</span></article>
+<article class="paper-item"><h4>CoTracker (Karaev et al., ECCV 2024)</h4><p><b>New idea:</b> Long-range point tracking via joint optimization</p><p><b>Lineage role:</b> Provided pseudo-ground-truth for DiffTrack evaluation.</p><span class="concept">Tracking</span></article>
+<article class="paper-item"><h4>CoTracker3 (Karaev et al., 2024)</h4><p><b>New idea:</b> Tracking via pseudo-labeling real videos</p><p><b>Lineage role:</b> Strengthened the baseline for evaluating tracking accuracy.</p><span class="concept">Tracking</span></article>
+<article class="paper-item"><h4>Particle Video Revisited (Harley et al., ECCV 2022)</h4><p><b>New idea:</b> Long-range tracking with occlusion handling</p><p><b>Lineage role:</b> Motivated the focus on long-range temporal consistency.</p><span class="concept">Tracking</span></article>
+<article class="paper-item"><h4>CATs: Cost Aggregation Transformers (Cho et al., NeurIPS 2021)</h4><p><b>New idea:</b> Transformer-based cost aggregation for correspondence</p><p><b>Lineage role:</b> Inspired layer-wise correspondence probing.</p><span class="concept">Temporal</span></article>
+<article class="paper-item"><h4>Neural Matching Fields (Hong et al., NeurIPS 2022)</h4><p><b>New idea:</b> Implicit representation of matching fields</p><p><b>Lineage role:</b> Conceptual basis for the matching confidence metric.</p><span class="concept">Temporal</span></article>
 </div></section>
-      <section class="paper-group"><h3>→ Forward Lineage</h3><div class="paper-list"><details class="paper-item"><summary class="paper-title">Zero-Shot Video Restoration with Video DiMs (Cao et al., 2026)</summary><div class="paper-detail"><p><b>New idea:</b> Temporal-strengthening post-processing and latent fusion</p><p><b>Lineage role:</b> Uses emergent temporal correspondences in video DiTs to stabilize restoration.</p><span class="concept">Temporal</span></div></details>
-<details class="paper-item"><summary class="paper-title">Counterfactual Tracking with Video Diffusion Models (Shrivastava et al., ICLR 2026)</summary><div class="paper-detail"><p><b>New idea:</b> Counterfactual prompting to propagate point markers</p><p><b>Lineage role:</b> Validates that DiTs encode motion and extends zero-shot tracking via prompting.</p><span class="concept">Tracking</span></div></details>
-<details class="paper-item"><summary class="paper-title">Zero-Shot Video Deraining with Video DiMs (Varanka et al., WACV)</summary><div class="paper-detail"><p><b>New idea:</b> Attention switching for temporal consistency during deraining</p><p><b>Lineage role:</b> Shows that modifying cross-frame attention improves temporal coherence.</p><span class="concept">CAG</span></div></details>
-<details class="paper-item"><summary class="paper-title">ZeroTrail: Zero-Shot Trajectory Control (Lu et al., NeurIPS Workshop)</summary><div class="paper-detail"><p><b>New idea:</b> Selective Attention Guidance Module (SAGM)</p><p><b>Lineage role:</b> Extends CAG into a full trajectory-control system.</p><span class="concept">CAG</span></div></details>
-<details class="paper-item"><summary class="paper-title">Cross-Attention for Zero-Shot Editing of T2V (Motamed et al., CVPR Workshop 2024)</summary><div class="paper-detail"><p><b>New idea:</b> Cross-attention controls object shape and movement</p><p><b>Lineage role:</b> Applies the insight that query-key layers govern temporal structure to editing.</p><span class="concept">Q-K Attn</span></div></details>
-<details class="paper-item"><summary class="paper-title">DiTFlow: Video Motion Transfer with DiTs (Pondaven et al., CVPR 2025)</summary><div class="paper-detail"><p><b>New idea:</b> Attention Motion Flow (AMF) from cross-frame attention maps</p><p><b>Lineage role:</b> Directly builds on the discovery that cross-frame attention encodes motion.</p><span class="concept">Temporal</span></div></details>
-<details class="paper-item"><summary class="paper-title">VDT: Video DiTs via Mask Modeling (Lu et al., 2025)</summary><div class="paper-detail"><p><b>New idea:</b> Modular temporal attention and unified spatial-temporal modeling</p><p><b>Lineage role:</b> Designs explicit temporal modules, motivated by layer-sensitivity findings.</p><span class="concept">Temporal</span></div></details>
-<details class="paper-item"><summary class="paper-title">Weighted Cross-Frame Attention for T2V (Wang et al., 2025)</summary><div class="paper-detail"><p><b>New idea:</b> Weighted cross-frame attention for temporal coherence</p><p><b>Lineage role:</b> Extends CAG by weighting cross-frame attention to stabilize long videos.</p><span class="concept">CAG</span></div></details>
+      <section class="paper-group"><h3>Forward papers: successor directions</h3><p>These papers build from DiffTrack&#x27;s core mechanism by using cross-frame attention for prompted tracking, motion transfer, video trajectory control, temporal restoration, and generation coherence.</p><div class="paper-list"><article class="paper-item"><h4>Zero-Shot Video Restoration with Video DiMs (Cao et al., 2026)</h4><p><b>New idea:</b> Temporal-strengthening post-processing and latent fusion</p><p><b>Lineage role:</b> Uses emergent temporal correspondences in video DiTs to stabilize restoration.</p><span class="concept">Temporal</span></article>
+<article class="paper-item"><h4>Counterfactual Tracking with Video Diffusion Models (Shrivastava et al., ICLR 2026)</h4><p><b>New idea:</b> Counterfactual prompting to propagate point markers</p><p><b>Lineage role:</b> Validates that DiTs encode motion and extends zero-shot tracking via prompting.</p><span class="concept">Tracking</span></article>
+<article class="paper-item"><h4>Zero-Shot Video Deraining with Video DiMs (Varanka et al., WACV)</h4><p><b>New idea:</b> Attention switching for temporal consistency during deraining</p><p><b>Lineage role:</b> Shows that modifying cross-frame attention improves temporal coherence.</p><span class="concept">CAG</span></article>
+<article class="paper-item"><h4>ZeroTrail: Zero-Shot Trajectory Control (Lu et al., NeurIPS Workshop)</h4><p><b>New idea:</b> Selective Attention Guidance Module (SAGM)</p><p><b>Lineage role:</b> Extends CAG into a full trajectory-control system.</p><span class="concept">CAG</span></article>
+<article class="paper-item"><h4>Cross-Attention for Zero-Shot Editing of T2V (Motamed et al., CVPR Workshop 2024)</h4><p><b>New idea:</b> Cross-attention controls object shape and movement</p><p><b>Lineage role:</b> Applies the insight that query-key layers govern temporal structure to editing.</p><span class="concept">Q-K Attn</span></article>
+<article class="paper-item"><h4>DiTFlow: Video Motion Transfer with DiTs (Pondaven et al., CVPR 2025)</h4><p><b>New idea:</b> Attention Motion Flow (AMF) from cross-frame attention maps</p><p><b>Lineage role:</b> Directly builds on the discovery that cross-frame attention encodes motion.</p><span class="concept">Temporal</span></article>
+<article class="paper-item"><h4>VDT: Video DiTs via Mask Modeling (Lu et al., 2025)</h4><p><b>New idea:</b> Modular temporal attention and unified spatial-temporal modeling</p><p><b>Lineage role:</b> Designs explicit temporal modules, motivated by layer-sensitivity findings.</p><span class="concept">Temporal</span></article>
+<article class="paper-item"><h4>Weighted Cross-Frame Attention for T2V (Wang et al., 2025)</h4><p><b>New idea:</b> Weighted cross-frame attention for temporal coherence</p><p><b>Lineage role:</b> Extends CAG by weighting cross-frame attention to stabilize long videos.</p><span class="concept">CAG</span></article>
 </div></section>
     </div>
   </section>
