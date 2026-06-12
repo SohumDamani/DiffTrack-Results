@@ -226,54 +226,88 @@ Videos are organized by experiment: `param_study/`, `limitations/`, `new_experim
 
 ## Research Lineage
 
-DiffTrack is best understood as a convergence point rather than a flat list of related papers. Three research threads flow into it, and several successor threads flow out of it:
+DiffTrack is best understood as a **research bridge**, not a flat bibliography. The key lineage is:
 
-```text
-Self-supervised temporal correspondence
-        |
-        |  Space-Time Correspondence as a Contrastive Random Walk
-        |  TAP-Vid, CoTracker, CoTracker3, Particle Video Revisited
-        v
-Diffusion feature reuse  ----->  DiffTrack  ----->  Point prompting and tracking control
-        |                       /    |    \         DiTFlow motion transfer
-        |                      /     |     \        ZeroTrail and weighted cross-frame attention
-        v                     v      v      v       restoration and deraining consistency
-Semantic correspondence   layer choice   timestep choice
+| Conceptual inputs | DiffTrack contribution | Successor directions |
+|---|---|---|
+| Self-supervised temporal correspondence | Cross-frame attention becomes a zero-shot matching operator | Point prompting and counterfactual tracking |
+| Diffusion features as geometric descriptors | Video DiT representations are probed without tracker training | DiTFlow and attention-derived motion flow |
+| Semantic correspondence and layer sensitivity | Layer/timestep choices become probes of where correspondence lives | ZeroTrail, weighted cross-frame attention, restoration, and deraining |
+
+At a graduate level, the important point is that DiffTrack does **not** merely apply a pretrained model to tracking. It reinterprets cross-frame attention inside a video diffusion transformer as a **transport operator over visual evidence**. That operator moves point identity, motion cues, and temporal correspondence through the denoising process without supervised point-tracker labels.
+
+```mermaid
+flowchart LR
+  subgraph A["Predecessor foundations"]
+    A1["Self-supervised temporal correspondence<br/>Contrastive Random Walks, TAP-Vid"]
+    A2["Diffusion correspondence descriptors<br/>Emergent Correspondence, Dense Matching"]
+    A3["Semantic precision tradeoff<br/>Semantics Meets Temporal Correspondence"]
+    A4["Attention guidance<br/>Perturbed-Attention Guidance"]
+  end
+
+  D["DiffTrack<br/>Cross-frame attention as zero-shot point transport"]
+
+  subgraph B["Forward lineage"]
+    B1["Point Prompting<br/>interactive point propagation"]
+    B2["DiTFlow<br/>attention motion flow"]
+    B3["ZeroTrail<br/>trajectory control"]
+    B4["Weighted Cross-Frame Attention<br/>long-video coherence"]
+    B5["Restoration and Deraining<br/>temporal consistency under degradation"]
+  end
+
+  A1 --> D
+  A2 --> D
+  A3 --> D
+  A4 --> D
+  D --> B1
+  D --> B2
+  D --> B3
+  D --> B4
+  D --> B5
 ```
 
-At a graduate level, the important point is that DiffTrack does not merely apply a pretrained model to tracking. It reinterprets cross-frame attention inside a video diffusion transformer as a transport operator over visual evidence. That operator can move point identity, motion cues, and temporal correspondence through the denoising process without supervised tracker training. This is why the ablation results are meaningful: layer selection, timestep selection, and chunking are not just engineering knobs; they probe where the model stores geometry, when denoising produces useful correspondence, and whether temporal consistency is actually solved by the architecture.
+### What DiffTrack Inherits
 
-### Predecessor Papers: What DiffTrack Inherits
+<details open>
+<summary><strong>Representation geometry: diffusion features already contain correspondence</strong></summary>
 
-**Emergent Correspondence from Image Diffusion (Tang et al., NeurIPS 2023)** gives the direct representational foundation. It shows that diffusion features can contain geometric correspondence before any explicit tracker is trained. DiffTrack extends this idea from image-level correspondence into video sequences.
+**Emergent Correspondence from Image Diffusion (Tang et al., NeurIPS 2023)** is the direct representational foundation. It shows that diffusion features can expose geometric correspondence before any explicit tracker is trained. DiffTrack extends this idea from image-level matching into video sequences.
 
-**Space-Time Correspondence as Contrastive Random Walk (Jabri et al., NeurIPS 2020)** supplies the temporal logic. A correspondence is not strong simply because it matches locally; it must remain coherent when propagated across time. This motivates evaluating long-range consistency instead of only short-range similarity.
+**Diffusion Model for Dense Matching (Nam et al., 2023)** and **Unsupervised Semantic Correspondence via Stable Diffusion (Hedlin et al., NeurIPS 2023)** strengthen the same claim: diffusion representations are not only generative features; they can also serve as dense correspondence descriptors through query-key similarity and attention-score analysis.
 
-**Semantics Meets Temporal Correspondence (Qian et al., ICCV 2023)** clarifies the semantic tradeoff. Semantic abstraction can preserve object identity, but it can also blur point-level location. That tension directly explains why layer choice matters in DiffTrack.
+</details>
 
-**Self-Rectifying Diffusion Sampling with Perturbed-Attention Guidance (Ahn et al., ECCV 2024)** contributes the idea that attention can be perturbed or guided during diffusion sampling. DiffTrack's Cross-Attention Guidance belongs to this family of attention-control methods.
+<details open>
+<summary><strong>Temporal discipline: a match must survive time, not just one frame pair</strong></summary>
 
-**Diffusion Model for Dense Matching (Nam et al., 2023)** and **Unsupervised Semantic Correspondence via Stable Diffusion (Hedlin et al., NeurIPS 2023)** motivate query-key analysis. They support the claim that diffusion representations are not only generative features; they can also serve as correspondence descriptors.
+**Space-Time Correspondence as Contrastive Random Walk (Jabri et al., NeurIPS 2020)** supplies the temporal logic. A correspondence is meaningful only if it remains coherent when propagated across time. This motivates long-range consistency evaluation instead of short-range nearest-neighbor matching.
 
-**TAP-Vid, CoTracker, CoTracker3, and Particle Video Revisited** provide the tracking context. They define the benchmark pressure: long-range point tracking needs stability through occlusion, deformation, and appearance change. DiffTrack is interesting because it attempts this without supervised point-tracker training.
+**TAP-Vid, CoTracker, CoTracker3, and Particle Video Revisited** provide the benchmark pressure. They frame point tracking as a long-range problem involving occlusion, deformation, camera motion, and appearance change. DiffTrack is interesting because it attempts this without supervised point-tracker training.
 
-**CATs: Cost Aggregation Transformers (Cho et al., NeurIPS 2021)** and **Neural Matching Fields (Hong et al., NeurIPS 2022)** supply the broader correspondence machinery: transformer-based cost aggregation, implicit matching fields, and confidence reasoning.
+</details>
 
-### Forward Lineage: What Later Work Extracts
+<details open>
+<summary><strong>Layer and attention theory: semantics help identity but can damage point precision</strong></summary>
 
-**Point Prompting: Counterfactual Tracking with Video Diffusion Models (Shrivastava et al., ICLR 2026)** turns DiffTrack's implicit tracking signal into an interactive point-propagation mechanism.
+**Semantics Meets Temporal Correspondence (Qian et al., ICCV 2023)** clarifies the core tradeoff behind layer selection. Semantic abstraction can preserve object identity, but it can also blur exact point location. This is why layer choice in DiffTrack is not just a hyperparameter; it probes where the model stores geometric versus semantic information.
 
-**DiTFlow: Video Motion Transfer with Diffusion Transformers (Pondaven et al., CVPR 2025)** extracts motion flow from cross-frame attention maps. This directly develops the idea that attention is not merely explanatory; it can become a motion representation.
+**Self-Rectifying Diffusion Sampling with Perturbed-Attention Guidance (Ahn et al., ECCV 2024)** contributes the idea that attention can be perturbed or guided during diffusion sampling. DiffTrack's Cross-Attention Guidance belongs to this attention-control family.
 
-**ZeroTrail: Zero-Shot Trajectory Control for Video Diffusion Models (Lu et al., NeurIPS Workshop)** extends Cross-Attention Guidance into a trajectory-control system. In other words, the attention mechanism becomes a steering interface.
+**CATs: Cost Aggregation Transformers (Cho et al., NeurIPS 2021)** and **Neural Matching Fields (Hong et al., NeurIPS 2022)** supply broader correspondence machinery: transformer-based cost aggregation, implicit matching fields, and confidence reasoning.
 
-**Enhancing Video Consistency in Zero-Shot T2V via Weighted Cross-Frame Attention (Wang et al., 2025)** weights cross-frame attention to stabilize long generated videos, using the same core insight that temporal identity can be managed through attention.
+</details>
 
-**Zero-Shot Video Restoration with Video DiMs (Cao et al., 2026)** and **Zero-Shot Video Deraining with Video Diffusion Models (Varanka et al., WACV)** apply temporal correspondence to restoration tasks. Instead of tracking for its own sake, they use correspondence to preserve consistency under degradation.
+### What Later Work Extracts
 
-**Investigating Cross-Attention for Zero-Shot Editing of T2V Models (Motamed et al., CVPR Workshop 2024)** and **VDT: General-Purpose Video Diffusion Transformers via Mask Modeling (Lu et al., 2025)** show the broader architectural consequence: once cross-frame attention is treated as a temporal structure carrier, it influences editing, generation, and model design.
+| Successor direction | Papers | How it builds on DiffTrack |
+|---|---|---|
+| Prompted point propagation | Point Prompting / Counterfactual Tracking | Turns DiffTrack's implicit tracking signal into an interactive mechanism for moving point markers through denoising. |
+| Attention as motion representation | DiTFlow | Converts cross-frame attention maps into Attention Motion Flow, making attention a reusable motion field. |
+| Attention as a control interface | ZeroTrail; Weighted Cross-Frame Attention for T2V | Uses cross-frame attention to steer trajectories, preserve identity, and stabilize longer generated videos. |
+| Temporal restoration | Zero-Shot Video Restoration; Zero-Shot Video Deraining | Uses emergent correspondence to maintain temporal consistency under degradation rather than only for tracking. |
+| Architecture and editing implications | Cross-Attention Editing; VDT Mask Modeling | Shows that once attention carries temporal structure, it affects editing, generation control, and model design. |
 
-The takeaway is that DiffTrack sits at a methodological bridge. Before it, the central question was whether representations contain correspondence. After it, the question becomes how cross-frame attention can be controlled, weighted, prompted, or extracted to move visual evidence across time.
+**Takeaway:** before DiffTrack, the central question was whether representations contain correspondence. After DiffTrack, the question becomes how cross-frame attention can be **controlled, weighted, prompted, or extracted** to move visual evidence across time.
 
 ---
 
