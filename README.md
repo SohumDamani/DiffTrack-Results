@@ -299,13 +299,41 @@ flowchart LR
 
 ### What Later Work Extracts
 
-| Successor direction | Papers | How it builds on DiffTrack |
-|---|---|---|
-| Prompted point propagation | Point Prompting / Counterfactual Tracking | Turns DiffTrack's implicit tracking signal into an interactive mechanism for moving point markers through denoising. |
-| Attention as motion representation | DiTFlow | Converts cross-frame attention maps into Attention Motion Flow, making attention a reusable motion field. |
-| Attention as a control interface | ZeroTrail; Weighted Cross-Frame Attention for T2V | Uses cross-frame attention to steer trajectories, preserve identity, and stabilize longer generated videos. |
-| Temporal restoration | Zero-Shot Video Restoration; Zero-Shot Video Deraining | Uses emergent correspondence to maintain temporal consistency under degradation rather than only for tracking. |
-| Architecture and editing implications | Cross-Attention Editing; VDT Mask Modeling | Shows that once attention carries temporal structure, it affects editing, generation control, and model design. |
+<details open>
+<summary><strong>Prompted tracking: implicit correspondence becomes interactive point propagation</strong></summary>
+
+**Point Prompting: Counterfactual Tracking with Video Diffusion Models (Shrivastava et al., ICLR 2026)** extracts DiffTrack's tracking insight into an interactive setting. Instead of only reading correspondences after the fact, it uses prompting to propagate point markers through the denoising process.
+
+The conceptual move is important: DiffTrack shows that Video DiTs encode motion and point identity; point prompting turns that encoded structure into a controllable tracking interface.
+
+</details>
+
+<details open>
+<summary><strong>Motion representation: cross-frame attention becomes a flow field</strong></summary>
+
+**DiTFlow: Video Motion Transfer with Diffusion Transformers (Pondaven et al., CVPR 2025)** builds directly on the discovery that cross-frame attention encodes motion. It extracts Attention Motion Flow from attention maps, converting a correspondence signal into a reusable motion representation.
+
+This is a stricter successor than a generic related paper: it treats the same attention geometry that DiffTrack uses for tracking as a transport structure for motion transfer.
+
+</details>
+
+<details open>
+<summary><strong>Attention control: correspondence becomes a steering mechanism</strong></summary>
+
+**ZeroTrail: Zero-Shot Trajectory Control for Video Diffusion Models (Lu et al., NeurIPS Workshop)** extends Cross-Attention Guidance into trajectory control. The attention mechanism is no longer only diagnostic; it becomes an interface for steering generated motion.
+
+**Enhancing Video Consistency in Zero-Shot T2V via Weighted Cross-Frame Attention (Wang et al., 2025)** uses the same family of ideas to preserve temporal identity across longer generated videos. Instead of asking whether cross-frame attention contains correspondence, it asks how that attention should be weighted to stabilize generation.
+
+</details>
+
+<details open>
+<summary><strong>Restoration and editing: temporal correspondence becomes a general video prior</strong></summary>
+
+**Zero-Shot Video Restoration with Video DiMs (Cao et al., 2026)** and **Zero-Shot Video Deraining with Video Diffusion Models (Varanka et al., WACV)** use emergent temporal correspondence to maintain consistency under degradation. The lineage shifts from tracking points to preserving coherent visual evidence across damaged frames.
+
+**Investigating Cross-Attention for Zero-Shot Editing of T2V Models (Motamed et al., CVPR Workshop 2024)** and **VDT: General-Purpose Video Diffusion Transformers via Mask Modeling (Lu et al., 2025)** show the broader architectural consequence: once attention carries temporal structure, it influences editing, generation control, and model design.
+
+</details>
 
 **Takeaway:** before DiffTrack, the central question was whether representations contain correspondence. After DiffTrack, the question becomes how cross-frame attention can be **controlled, weighted, prompted, or extracted** to move visual evidence across time.
 
