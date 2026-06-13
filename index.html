@@ -200,13 +200,15 @@
     .lg-hub-venue { font-size:11px;opacity:0.72;margin-top:3px; }
     .lg-hub-desc { font-size:11px;opacity:0.6;margin-top:9px;line-height:1.5; }
 
-    .lg-node { background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:7px 10px;cursor:default;transition:background 0.12s,border-color 0.12s; }
+    .lg-node { background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:10px 12px;cursor:default;transition:background 0.12s,border-color 0.12s; }
     .lg-node:hover { background:#fff;border-color:var(--border-strong); }
-    .lg-node-title { font-size:12px;font-weight:500;color:var(--text);line-height:1.3; }
-    .lg-node-meta  { font-size:11px;color:var(--text-muted);margin-top:1px; }
+    .lg-node-title { font-size:12px;font-weight:650;color:var(--text);line-height:1.3; }
+    .lg-node-meta  { font-size:11px;color:var(--text-muted);margin-top:2px; }
+    .lg-node-notes { margin:8px 0 0;padding:8px 0 0 16px;border-top:1px solid var(--border);font-size:11px;line-height:1.45;color:var(--text-dim); }
+    .lg-node-notes li { margin:0 0 4px; }
+    .lg-node-notes li:last-child { margin-bottom:0; }
 
     .lg-svg { position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible; }
-    .lg-tip { position:fixed;background:var(--text);color:#fff;font-size:12px;line-height:1.5;padding:10px 12px;border-radius:4px;max-width:360px;pointer-events:none;z-index:9999;display:none;box-shadow:0 4px 16px rgba(0,0,0,0.2);white-space:pre-line; }
 
     @media (max-width:760px) {
       .lg-graph { grid-template-columns:1fr; }
@@ -851,7 +853,7 @@
     <div class="wrap">
       <div class="lbl">Research Lineage</div>
       <h2 class="sec-title">Citation Graph</h2>
-      <p class="body-text" style="margin-bottom:20px;">12 predecessor papers and 8 forward papers. One edge per category group — hover any node for a focused 3-point explanation of its role in the DiffTrack lineage.</p>
+      <p class="body-text" style="margin-bottom:20px;">12 predecessor papers and 8 forward papers. One edge per category group, with each paper's role summarized directly under its title.</p>
 
       <div class="lg-legend">
         <span class="lg-leg t"><span class="lg-dot t"></span>Temporal Correspondence</span>
@@ -981,8 +983,6 @@
           </div>
         </div>
       </div>
-
-      <div class="lg-tip" id="lg-tip"></div>
     </div>
   </div>
 
@@ -1085,23 +1085,28 @@
       });
     }
 
-    /* Tooltip */
-    const lgTip = document.getElementById('lg-tip');
-    document.querySelectorAll('.lg-node').forEach(n => {
-      n.addEventListener('mouseenter', () => {
-        if (!n.dataset.tip || !lgTip) return;
-        lgTip.textContent = n.dataset.tip;
-        lgTip.style.display = 'block';
-      });
-      n.addEventListener('mousemove', e => {
-        if (!lgTip) return;
-        const x = e.clientX + 14, y = e.clientY + 14;
-        lgTip.style.left = (x + lgTip.offsetWidth  > window.innerWidth  ? e.clientX - lgTip.offsetWidth  - 14 : x) + 'px';
-        lgTip.style.top  = (y + lgTip.offsetHeight > window.innerHeight ? e.clientY - lgTip.offsetHeight - 14 : y) + 'px';
-      });
-      n.addEventListener('mouseleave', () => { if (lgTip) lgTip.style.display = 'none'; });
-    });
+    /* Visible lineage notes */
+    function renderLineageNotes() {
+      document.querySelectorAll('.lg-node').forEach(n => {
+        if (!n.dataset.tip || n.querySelector('.lg-node-notes')) return;
+        const notes = n.dataset.tip
+          .split('\n')
+          .map(line => line.replace(/^- /, '').trim())
+          .filter(Boolean);
+        if (!notes.length) return;
 
+        const list = document.createElement('ul');
+        list.className = 'lg-node-notes';
+        notes.forEach(note => {
+          const item = document.createElement('li');
+          item.textContent = note;
+          list.appendChild(item);
+        });
+        n.appendChild(list);
+      });
+    }
+
+    renderLineageNotes();
     window.addEventListener('load', drawEdges);
     window.addEventListener('resize', drawEdges);
   </script>
