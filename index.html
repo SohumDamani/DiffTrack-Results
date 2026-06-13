@@ -206,7 +206,7 @@
     .lg-node-meta  { font-size:11px;color:var(--text-muted);margin-top:1px; }
 
     .lg-svg { position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible; }
-    .lg-tip { position:fixed;background:var(--text);color:#fff;font-size:12px;line-height:1.5;padding:8px 12px;border-radius:4px;max-width:260px;pointer-events:none;z-index:9999;display:none;box-shadow:0 4px 16px rgba(0,0,0,0.2); }
+    .lg-tip { position:fixed;background:var(--text);color:#fff;font-size:12px;line-height:1.5;padding:10px 12px;border-radius:4px;max-width:360px;pointer-events:none;z-index:9999;display:none;box-shadow:0 4px 16px rgba(0,0,0,0.2);white-space:pre-line; }
 
     @media (max-width:760px) {
       .lg-graph { grid-template-columns:1fr; }
@@ -851,7 +851,7 @@
     <div class="wrap">
       <div class="lbl">Research Lineage</div>
       <h2 class="sec-title">Citation Graph</h2>
-      <p class="body-text" style="margin-bottom:20px;">12 predecessor papers and 8 forward papers. One edge per category group — hover any node for details.</p>
+      <p class="body-text" style="margin-bottom:20px;">12 predecessor papers and 8 forward papers. One edge per category group — hover any node for a focused 3-point explanation of its role in the DiffTrack lineage.</p>
 
       <div class="lg-legend">
         <span class="lg-leg t"><span class="lg-dot t"></span>Temporal Correspondence</span>
@@ -866,23 +866,23 @@
         <div class="lg-col" id="lg-pre">
           <div class="lg-group" data-cat="t">
             <div class="lg-group-hd"><span class="lg-dot t"></span>Temporal Correspondence</div>
-            <div class="lg-node" data-tip="Showed image diffusion models contain emergent geometric correspondences — direct foundation for DiffTrack, extended to video">
+            <div class="lg-node" data-tip="- Shows that diffusion features can align visual parts without explicit correspondence labels.&#10;- Gives DiffTrack its direct representation-level foundation: generative features already contain geometry.&#10;- DiffTrack extends this image-level insight into video, where correspondence must remain stable through time.">
               <div class="lg-node-title">Emergent Correspondence from Image Diffusion</div>
               <div class="lg-node-meta">Tang et al. · NeurIPS 2023</div>
             </div>
-            <div class="lg-node" data-tip="Introduced self-supervised spatiotemporal correspondences — motivated temporal matching metrics">
+            <div class="lg-node" data-tip="- Defines correspondence as a cycle-consistent relation across space and time.&#10;- Moves the problem beyond adjacent-frame matching toward longer temporal structure.&#10;- Motivates DiffTrack's emphasis on whether frozen video features preserve identity over frame distance.">
               <div class="lg-node-title">Space-Time Correspondence as CRW</div>
               <div class="lg-node-meta">Jabri et al. · NeurIPS 2020</div>
             </div>
-            <div class="lg-node" data-tip="Showed semantic cues influence temporal correspondence — inspired text-attention interference analysis">
+            <div class="lg-node" data-tip="- Shows that semantic information can help maintain object identity across time.&#10;- Also warns that semantic abstraction may blur precise point-level localization.&#10;- Helps explain why DiffTrack studies layer choice, because different layers trade geometry for semantics.">
               <div class="lg-node-title">Semantics Meets Temporal Correspondence</div>
               <div class="lg-node-meta">Qian et al. · ICCV 2023</div>
             </div>
-            <div class="lg-node" data-tip="Transformer cost aggregation for correspondence — inspired layer-wise probing in DiffTrack">
+            <div class="lg-node" data-tip="- Uses transformers to aggregate matching costs instead of relying on local similarity alone.&#10;- Connects attention-style computation to the quality of dense correspondence.&#10;- Motivates DiffTrack's layer-wise probing of where useful matching signals emerge.">
               <div class="lg-node-title">CATs: Cost Aggregation Transformers</div>
               <div class="lg-node-meta">Cho et al. · NeurIPS 2021</div>
             </div>
-            <div class="lg-node" data-tip="Implicit matching field representation — conceptual basis for DiffTrack's matching confidence metric">
+            <div class="lg-node" data-tip="- Treats correspondence as an implicit field rather than a list of isolated matches.&#10;- Connects confidence estimation to the structure of the matching landscape.&#10;- Helps interpret DiffTrack's attention maps as evidence fields for likely point motion.">
               <div class="lg-node-title">Neural Matching Fields</div>
               <div class="lg-node-meta">Hong et al. · NeurIPS 2022</div>
             </div>
@@ -890,15 +890,15 @@
 
           <div class="lg-group" data-cat="c">
             <div class="lg-group-hd"><span class="lg-dot c"></span>Attention &amp; CAG</div>
-            <div class="lg-node" data-tip="Attention perturbation to guide diffusion sampling — direct predecessor to Cross-Frame Attention Guidance (CAG)">
+            <div class="lg-node" data-tip="- Treats diffusion attention as a controllable signal during sampling.&#10;- Prefigures Cross-Frame Attention Guidance by showing that attention intervention can change behavior.&#10;- Links DiffTrack to a broader family of methods that guide generation through internal attention.">
               <div class="lg-node-title">Self-Rectifying Diffusion with PAG</div>
               <div class="lg-node-meta">Ahn et al. · ECCV 2024</div>
             </div>
-            <div class="lg-node" data-tip="Diffusion features for dense correspondence — evidence diffusion models encode geometry, motivating Q-K analysis">
+            <div class="lg-node" data-tip="- Shows that diffusion features can support dense geometric matching.&#10;- Supports the idea that query-key geometry is not incidental noise but a usable correspondence signal.&#10;- Makes DiffTrack's internal feature probing more principled and less like a black-box trick.">
               <div class="lg-node-title">Diffusion Model for Dense Matching</div>
               <div class="lg-node-meta">Nam et al. · 2023</div>
             </div>
-            <div class="lg-node" data-tip="Diffusion cross-attention for semantic matching — motivated query-key similarity and attention score metrics">
+            <div class="lg-node" data-tip="- Uses diffusion cross-attention to recover semantic correspondences without full supervision.&#10;- Motivates examining both attention scores and query-key similarity as measurable matching signals.&#10;- Supports DiffTrack's claim that generation-time attention can expose correspondence structure.">
               <div class="lg-node-title">Unsupervised Semantic Correspondence</div>
               <div class="lg-node-meta">Hedlin et al. · NeurIPS 2023</div>
             </div>
@@ -906,19 +906,19 @@
 
           <div class="lg-group" data-cat="k">
             <div class="lg-group-hd"><span class="lg-dot k"></span>Zero-Shot Tracking</div>
-            <div class="lg-node" data-tip="Standard benchmark for point tracking — provides the evaluation protocol used in all our experiments">
+            <div class="lg-node" data-tip="- Defines the benchmark pressure for point tracking under real video motion.&#10;- Requires methods to preserve point identity through deformation, camera motion, and visibility changes.&#10;- Makes DiffTrack comparable to established tracking systems rather than only qualitative demos.">
               <div class="lg-node-title">TAP-Vid Benchmark</div>
               <div class="lg-node-meta">Doersch et al. · NeurIPS 2022</div>
             </div>
-            <div class="lg-node" data-tip="Long-range point tracking via joint optimization — provided pseudo-ground-truth for DiffTrack evaluation">
+            <div class="lg-node" data-tip="- Represents a strong trained baseline for joint point tracking across video.&#10;- Uses temporal reasoning and optimization that frozen zero-shot DiffTrack does not have.&#10;- Clarifies the gap between emergent correspondence and purpose-trained tracking systems.">
               <div class="lg-node-title">CoTracker</div>
               <div class="lg-node-meta">Karaev et al. · ECCV 2024</div>
             </div>
-            <div class="lg-node" data-tip="Improved tracking via pseudo-labeling real videos — strengthened baseline for accuracy evaluation">
+            <div class="lg-node" data-tip="- Strengthens point tracking by using pseudo-labels from real videos.&#10;- Raises the empirical standard that zero-shot approaches must be compared against.&#10;- Highlights what supervision and data adaptation can add beyond DiffTrack's frozen-model setup.">
               <div class="lg-node-title">CoTracker3</div>
               <div class="lg-node-meta">Karaev et al. · 2024</div>
             </div>
-            <div class="lg-node" data-tip="Classic long-range tracking with occlusion handling — motivated focus on long-range temporal consistency">
+            <div class="lg-node" data-tip="- Focuses on persistent particle identity over long video horizons.&#10;- Emphasizes occlusion handling as a core requirement rather than a secondary metric.&#10;- Explains why DiffTrack's frame-distance degradation and visibility failures are important limitations.">
               <div class="lg-node-title">Particle Video Revisited</div>
               <div class="lg-node-meta">Harley et al. · ECCV 2022</div>
             </div>
@@ -938,15 +938,15 @@
         <div class="lg-col" id="lg-fwd">
           <div class="lg-group" data-cat="t">
             <div class="lg-group-hd"><span class="lg-dot t"></span>Temporal Correspondence</div>
-            <div class="lg-node" data-tip="Uses emergent temporal correspondences in Video DiTs to stabilize zero-shot video restoration">
+            <div class="lg-node" data-tip="- Uses Video DiT correspondence signals to improve restoration without task-specific training.&#10;- Turns tracking-like temporal structure into a prior for consistent video recovery.&#10;- Shows that DiffTrack's correspondence insight can transfer beyond point tracking.">
               <div class="lg-node-title">Zero-Shot Video Restoration</div>
               <div class="lg-node-meta">Cao et al. · 2026</div>
             </div>
-            <div class="lg-node" data-tip="Extracts Attention Motion Flow from cross-frame attention — directly builds on DiffTrack's motion-encoding discovery">
+            <div class="lg-node" data-tip="- Extracts Attention Motion Flow directly from cross-frame attention.&#10;- Converts internal attention patterns into reusable motion fields.&#10;- Directly builds on DiffTrack's finding that Video DiT attention encodes motion correspondence.">
               <div class="lg-node-title">DiTFlow: Motion Transfer with DiTs</div>
               <div class="lg-node-meta">Pondaven et al. · CVPR 2025</div>
             </div>
-            <div class="lg-node" data-tip="Modular temporal attention modules — motivated by DiffTrack's finding that only specific layers encode temporal matching">
+            <div class="lg-node" data-tip="- Builds explicit temporal modules into Video Diffusion Transformers.&#10;- Reflects DiffTrack's observation that temporal structure is layer-dependent.&#10;- Moves the lineage from analysis of hidden representations toward architecture design.">
               <div class="lg-node-title">VDT: Video DiTs via Mask Modeling</div>
               <div class="lg-node-meta">Lu et al. · 2025</div>
             </div>
@@ -954,19 +954,19 @@
 
           <div class="lg-group" data-cat="c">
             <div class="lg-group-hd"><span class="lg-dot c"></span>Attention &amp; CAG</div>
-            <div class="lg-node" data-tip="Attention switching for temporal consistency during deraining — builds on cross-frame attention analysis">
+            <div class="lg-node" data-tip="- Uses attention switching to preserve temporal consistency during video deraining.&#10;- Applies cross-frame attention control under visual degradation rather than clean tracking settings.&#10;- Extends DiffTrack's attention-based view into a restoration and enhancement task.">
               <div class="lg-node-title">Zero-Shot Video Deraining</div>
               <div class="lg-node-meta">Varanka et al. · WACV</div>
             </div>
-            <div class="lg-node" data-tip="Selective Attention Guidance Module for trajectory control — extends CAG into a full trajectory-control system">
+            <div class="lg-node" data-tip="- Uses Selective Attention Guidance to control generated object trajectories.&#10;- Turns Cross-Frame Attention Guidance into a user-facing steering mechanism.&#10;- Shows how correspondence signals can become controllable motion tools, not only analysis metrics.">
               <div class="lg-node-title">ZeroTrail: Zero-Shot Trajectory Control</div>
               <div class="lg-node-meta">Lu et al. · NeurIPS Workshop</div>
             </div>
-            <div class="lg-node" data-tip="Cross-attention controls object shape and movement in T2V — builds on Q-K layers governing temporal structure">
+            <div class="lg-node" data-tip="- Uses cross-attention to edit object shape and motion in text-to-video generation.&#10;- Extends query-key temporal structure from tracking analysis into editing control.&#10;- Treats attention as an interface for modifying video content while retaining temporal coherence.">
               <div class="lg-node-title">Cross-Attention for T2V Editing</div>
               <div class="lg-node-meta">Motamed et al. · CVPR Workshop 2024</div>
             </div>
-            <div class="lg-node" data-tip="Weighted cross-frame attention for temporal coherence — extends CAG to stabilize long videos">
+            <div class="lg-node" data-tip="- Weights cross-frame attention to strengthen temporal coherence.&#10;- Preserves identity and motion consistency across longer generated videos.&#10;- Extracts a practical control rule from the same attention behavior DiffTrack analyzes.">
               <div class="lg-node-title">Weighted Cross-Frame Attention</div>
               <div class="lg-node-meta">Wang et al. · 2025</div>
             </div>
@@ -974,7 +974,7 @@
 
           <div class="lg-group" data-cat="k">
             <div class="lg-group-hd"><span class="lg-dot k"></span>Zero-Shot Tracking</div>
-            <div class="lg-node" data-tip="Counterfactual prompting to propagate point markers — validates DiTs encode motion, extends zero-shot tracking">
+            <div class="lg-node" data-tip="- Uses counterfactual prompting to propagate point markers through video.&#10;- Turns implicit correspondence into a more interactive tracking interface.&#10;- Validates the DiffTrack premise that Video DiTs encode usable motion identity without tracker training.">
               <div class="lg-node-title">Counterfactual Tracking</div>
               <div class="lg-node-meta">Shrivastava et al. · ICLR 2026</div>
             </div>
