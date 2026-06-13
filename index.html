@@ -188,31 +188,29 @@
     .lg-dot.c { background:var(--yellow); }
     .lg-dot.k { background:var(--green); }
 
-    .lg-graph { position:relative;display:grid;grid-template-columns:1fr 180px 1fr;gap:0;overflow:visible; }
-    .lg-col { display:flex;flex-direction:column;justify-content:space-around;gap:7px;padding:8px 0; }
-    #lg-pre { padding-right:24px; }
-    #lg-fwd { padding-left:24px; }
+    .lg-graph { position:relative;display:grid;grid-template-columns:1fr 172px 1fr;gap:0; }
+    .lg-col { display:flex;flex-direction:column;gap:14px;padding:8px 0; }
+    #lg-pre { padding-right:28px; }
+    #lg-fwd { padding-left:28px; }
+    .lg-group { display:flex;flex-direction:column;gap:6px; }
+    .lg-group-hd { display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:2px; }
     .lg-hub-col { display:flex;align-items:center;justify-content:center;z-index:2; }
-    .lg-hub { background:var(--accent);color:#fff;padding:18px 16px;border-radius:8px;text-align:center;width:180px;box-shadow:0 4px 24px rgba(30,64,175,0.22); }
-    .lg-hub-name { font-size:18px;font-weight:800;letter-spacing:-0.02em; }
-    .lg-hub-venue { font-size:11px;opacity:0.75;margin-top:3px; }
-    .lg-hub-desc { font-size:11px;opacity:0.65;margin-top:10px;line-height:1.5; }
+    .lg-hub { background:var(--accent);color:#fff;padding:18px 14px;border-radius:8px;text-align:center;width:172px;box-shadow:0 4px 20px rgba(30,64,175,0.2); }
+    .lg-hub-name { font-size:17px;font-weight:800;letter-spacing:-0.02em; }
+    .lg-hub-venue { font-size:11px;opacity:0.72;margin-top:3px; }
+    .lg-hub-desc { font-size:11px;opacity:0.6;margin-top:9px;line-height:1.5; }
 
-    .lg-node { background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:9px 12px;cursor:default;transition:border-color 0.15s,background 0.15s;position:relative; }
+    .lg-node { background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:7px 10px;cursor:default;transition:background 0.12s,border-color 0.12s; }
     .lg-node:hover { background:#fff;border-color:var(--border-strong); }
-    .lg-node.t { border-left:3px solid var(--accent); }
-    .lg-node.c { border-left:3px solid var(--yellow); }
-    .lg-node.k { border-left:3px solid var(--green); }
-    .lg-node-title { font-size:12px;font-weight:600;color:var(--text);line-height:1.3; }
-    .lg-node-meta  { font-size:11px;color:var(--text-muted);margin-top:2px; }
+    .lg-node-title { font-size:12px;font-weight:500;color:var(--text);line-height:1.3; }
+    .lg-node-meta  { font-size:11px;color:var(--text-muted);margin-top:1px; }
 
     .lg-svg { position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible; }
-
     .lg-tip { position:fixed;background:var(--text);color:#fff;font-size:12px;line-height:1.5;padding:8px 12px;border-radius:4px;max-width:260px;pointer-events:none;z-index:9999;display:none;box-shadow:0 4px 16px rgba(0,0,0,0.2); }
 
     @media (max-width:760px) {
       .lg-graph { grid-template-columns:1fr; }
-      .lg-hub-col { padding:24px 0; }
+      .lg-hub-col { order:-1;padding:0 0 20px; }
       #lg-pre, #lg-fwd { padding:0; }
       .lg-svg { display:none; }
     }
@@ -853,118 +851,137 @@
     <div class="wrap">
       <div class="lbl">Research Lineage</div>
       <h2 class="sec-title">Citation Graph</h2>
-      <p class="body-text" style="margin-bottom:20px;">12 predecessor papers feeding into DiffTrack, and 8 forward papers building on its contributions. Hover a node for details.</p>
+      <p class="body-text" style="margin-bottom:20px;">12 predecessor papers and 8 forward papers. One edge per category group — hover any node for details.</p>
 
-      <!-- Legend -->
       <div class="lg-legend">
         <span class="lg-leg t"><span class="lg-dot t"></span>Temporal Correspondence</span>
-        <span class="lg-leg c"><span class="lg-dot c"></span>CAG / Attention Control</span>
-        <span class="lg-leg k"><span class="lg-dot k"></span>Point Tracking</span>
+        <span class="lg-leg c"><span class="lg-dot c"></span>Attention &amp; CAG</span>
+        <span class="lg-leg k"><span class="lg-dot k"></span>Zero-Shot Tracking</span>
       </div>
 
-      <!-- Graph -->
       <div class="lg-graph" id="lg-graph">
         <svg class="lg-svg" id="lg-svg" aria-hidden="true"></svg>
 
-        <!-- Predecessors (left) -->
+        <!-- Predecessors -->
         <div class="lg-col" id="lg-pre">
-          <div class="lg-node t" data-tip="Direct foundation — extends image diffusion correspondence to video sequences">
-            <div class="lg-node-title">Emergent Correspondence</div>
-            <div class="lg-node-meta">Tang et al. · NeurIPS 2023</div>
+          <div class="lg-group" data-cat="t">
+            <div class="lg-group-hd"><span class="lg-dot t"></span>Temporal Correspondence</div>
+            <div class="lg-node" data-tip="Showed image diffusion models contain emergent geometric correspondences — direct foundation for DiffTrack, extended to video">
+              <div class="lg-node-title">Emergent Correspondence from Image Diffusion</div>
+              <div class="lg-node-meta">Tang et al. · NeurIPS 2023</div>
+            </div>
+            <div class="lg-node" data-tip="Introduced self-supervised spatiotemporal correspondences — motivated temporal matching metrics">
+              <div class="lg-node-title">Space-Time Correspondence as CRW</div>
+              <div class="lg-node-meta">Jabri et al. · NeurIPS 2020</div>
+            </div>
+            <div class="lg-node" data-tip="Showed semantic cues influence temporal correspondence — inspired text-attention interference analysis">
+              <div class="lg-node-title">Semantics Meets Temporal Correspondence</div>
+              <div class="lg-node-meta">Qian et al. · ICCV 2023</div>
+            </div>
+            <div class="lg-node" data-tip="Transformer cost aggregation for correspondence — inspired layer-wise probing in DiffTrack">
+              <div class="lg-node-title">CATs: Cost Aggregation Transformers</div>
+              <div class="lg-node-meta">Cho et al. · NeurIPS 2021</div>
+            </div>
+            <div class="lg-node" data-tip="Implicit matching field representation — conceptual basis for DiffTrack's matching confidence metric">
+              <div class="lg-node-title">Neural Matching Fields</div>
+              <div class="lg-node-meta">Hong et al. · NeurIPS 2022</div>
+            </div>
           </div>
-          <div class="lg-node t" data-tip="Motivated temporal matching metrics and long-range consistency evaluation">
-            <div class="lg-node-title">Space-Time CRW</div>
-            <div class="lg-node-meta">Jabri et al. · NeurIPS 2020</div>
+
+          <div class="lg-group" data-cat="c">
+            <div class="lg-group-hd"><span class="lg-dot c"></span>Attention &amp; CAG</div>
+            <div class="lg-node" data-tip="Attention perturbation to guide diffusion sampling — direct predecessor to Cross-Frame Attention Guidance (CAG)">
+              <div class="lg-node-title">Self-Rectifying Diffusion with PAG</div>
+              <div class="lg-node-meta">Ahn et al. · ECCV 2024</div>
+            </div>
+            <div class="lg-node" data-tip="Diffusion features for dense correspondence — evidence diffusion models encode geometry, motivating Q-K analysis">
+              <div class="lg-node-title">Diffusion Model for Dense Matching</div>
+              <div class="lg-node-meta">Nam et al. · 2023</div>
+            </div>
+            <div class="lg-node" data-tip="Diffusion cross-attention for semantic matching — motivated query-key similarity and attention score metrics">
+              <div class="lg-node-title">Unsupervised Semantic Correspondence</div>
+              <div class="lg-node-meta">Hedlin et al. · NeurIPS 2023</div>
+            </div>
           </div>
-          <div class="lg-node t" data-tip="Inspired analysis of text-attention interference in temporal matching">
-            <div class="lg-node-title">Semantics Meets Temporal Corr.</div>
-            <div class="lg-node-meta">Qian et al. · ICCV 2023</div>
-          </div>
-          <div class="lg-node t" data-tip="Inspired layer-wise correspondence probing in transformer networks">
-            <div class="lg-node-title">CATs: Cost Aggregation Transformers</div>
-            <div class="lg-node-meta">Cho et al. · NeurIPS 2021</div>
-          </div>
-          <div class="lg-node t" data-tip="Conceptual basis for the matching confidence metric used in DiffTrack">
-            <div class="lg-node-title">Neural Matching Fields</div>
-            <div class="lg-node-meta">Hong et al. · NeurIPS 2022</div>
-          </div>
-          <div class="lg-node c" data-tip="Direct predecessor to Cross-Frame Attention Guidance (CAG)">
-            <div class="lg-node-title">Self-Rectifying Diffusion (PAG)</div>
-            <div class="lg-node-meta">Ahn et al. · ECCV 2024</div>
-          </div>
-          <div class="lg-node c" data-tip="Evidence diffusion models encode geometric structure → motivated Q/K analysis">
-            <div class="lg-node-title">Diffusion for Dense Matching</div>
-            <div class="lg-node-meta">Nam et al. · 2023</div>
-          </div>
-          <div class="lg-node c" data-tip="Motivated query-key similarity and attention score metrics in DiffTrack">
-            <div class="lg-node-title">Unsupervised Semantic Corr.</div>
-            <div class="lg-node-meta">Hedlin et al. · NeurIPS 2023</div>
-          </div>
-          <div class="lg-node k" data-tip="Provides the evaluation protocol — all experiments use TAP-Vid DAVIS">
-            <div class="lg-node-title">TAP-Vid Benchmark</div>
-            <div class="lg-node-meta">Doersch et al. · NeurIPS 2022</div>
-          </div>
-          <div class="lg-node k" data-tip="Provided pseudo-ground-truth annotations for DiffTrack evaluation">
-            <div class="lg-node-title">CoTracker</div>
-            <div class="lg-node-meta">Karaev et al. · ECCV 2024</div>
-          </div>
-          <div class="lg-node k" data-tip="Strengthened baseline for evaluating tracking accuracy via real video pseudo-labels">
-            <div class="lg-node-title">CoTracker3</div>
-            <div class="lg-node-meta">Karaev et al. · 2024</div>
-          </div>
-          <div class="lg-node k" data-tip="Motivated focus on long-range temporal consistency and occlusion handling">
-            <div class="lg-node-title">Particle Video Revisited</div>
-            <div class="lg-node-meta">Harley et al. · ECCV 2022</div>
+
+          <div class="lg-group" data-cat="k">
+            <div class="lg-group-hd"><span class="lg-dot k"></span>Zero-Shot Tracking</div>
+            <div class="lg-node" data-tip="Standard benchmark for point tracking — provides the evaluation protocol used in all our experiments">
+              <div class="lg-node-title">TAP-Vid Benchmark</div>
+              <div class="lg-node-meta">Doersch et al. · NeurIPS 2022</div>
+            </div>
+            <div class="lg-node" data-tip="Long-range point tracking via joint optimization — provided pseudo-ground-truth for DiffTrack evaluation">
+              <div class="lg-node-title">CoTracker</div>
+              <div class="lg-node-meta">Karaev et al. · ECCV 2024</div>
+            </div>
+            <div class="lg-node" data-tip="Improved tracking via pseudo-labeling real videos — strengthened baseline for accuracy evaluation">
+              <div class="lg-node-title">CoTracker3</div>
+              <div class="lg-node-meta">Karaev et al. · 2024</div>
+            </div>
+            <div class="lg-node" data-tip="Classic long-range tracking with occlusion handling — motivated focus on long-range temporal consistency">
+              <div class="lg-node-title">Particle Video Revisited</div>
+              <div class="lg-node-meta">Harley et al. · ECCV 2022</div>
+            </div>
           </div>
         </div>
 
-        <!-- Hub (center) -->
+        <!-- Hub -->
         <div class="lg-hub-col">
           <div class="lg-hub" id="lg-hub">
             <div class="lg-hub-name">DiffTrack</div>
-            <div class="lg-hub-venue">NeurIPS 2025 · Nam et al.</div>
+            <div class="lg-hub-venue">NeurIPS 2025</div>
             <div class="lg-hub-desc">Zero-shot point tracking via emergent Q-K correspondences in a frozen CogVideoX-2B Video DiT</div>
           </div>
         </div>
 
-        <!-- Forward papers (right) -->
+        <!-- Forward papers -->
         <div class="lg-col" id="lg-fwd">
-          <div class="lg-node t" data-tip="Uses emergent temporal correspondences in Video DiTs to stabilize video restoration">
-            <div class="lg-node-title">Zero-Shot Video Restoration</div>
-            <div class="lg-node-meta">Cao et al. · 2026</div>
+          <div class="lg-group" data-cat="t">
+            <div class="lg-group-hd"><span class="lg-dot t"></span>Temporal Correspondence</div>
+            <div class="lg-node" data-tip="Uses emergent temporal correspondences in Video DiTs to stabilize zero-shot video restoration">
+              <div class="lg-node-title">Zero-Shot Video Restoration</div>
+              <div class="lg-node-meta">Cao et al. · 2026</div>
+            </div>
+            <div class="lg-node" data-tip="Extracts Attention Motion Flow from cross-frame attention — directly builds on DiffTrack's motion-encoding discovery">
+              <div class="lg-node-title">DiTFlow: Motion Transfer with DiTs</div>
+              <div class="lg-node-meta">Pondaven et al. · CVPR 2025</div>
+            </div>
+            <div class="lg-node" data-tip="Modular temporal attention modules — motivated by DiffTrack's finding that only specific layers encode temporal matching">
+              <div class="lg-node-title">VDT: Video DiTs via Mask Modeling</div>
+              <div class="lg-node-meta">Lu et al. · 2025</div>
+            </div>
           </div>
-          <div class="lg-node t" data-tip="Directly builds on discovery that cross-frame attention encodes optical flow">
-            <div class="lg-node-title">DiTFlow: Motion Transfer</div>
-            <div class="lg-node-meta">Pondaven et al. · CVPR 2025</div>
+
+          <div class="lg-group" data-cat="c">
+            <div class="lg-group-hd"><span class="lg-dot c"></span>Attention &amp; CAG</div>
+            <div class="lg-node" data-tip="Attention switching for temporal consistency during deraining — builds on cross-frame attention analysis">
+              <div class="lg-node-title">Zero-Shot Video Deraining</div>
+              <div class="lg-node-meta">Varanka et al. · WACV</div>
+            </div>
+            <div class="lg-node" data-tip="Selective Attention Guidance Module for trajectory control — extends CAG into a full trajectory-control system">
+              <div class="lg-node-title">ZeroTrail: Zero-Shot Trajectory Control</div>
+              <div class="lg-node-meta">Lu et al. · NeurIPS Workshop</div>
+            </div>
+            <div class="lg-node" data-tip="Cross-attention controls object shape and movement in T2V — builds on Q-K layers governing temporal structure">
+              <div class="lg-node-title">Cross-Attention for T2V Editing</div>
+              <div class="lg-node-meta">Motamed et al. · CVPR Workshop 2024</div>
+            </div>
+            <div class="lg-node" data-tip="Weighted cross-frame attention for temporal coherence — extends CAG to stabilize long videos">
+              <div class="lg-node-title">Weighted Cross-Frame Attention</div>
+              <div class="lg-node-meta">Wang et al. · 2025</div>
+            </div>
           </div>
-          <div class="lg-node t" data-tip="Designs explicit temporal attention modules, motivated by DiffTrack's layer-sensitivity finding">
-            <div class="lg-node-title">VDT: Video DiTs via Mask Modeling</div>
-            <div class="lg-node-meta">Lu et al. · 2025</div>
-          </div>
-          <div class="lg-node k" data-tip="Validates that Video DiTs encode motion — extends zero-shot tracking via counterfactual prompting">
-            <div class="lg-node-title">Counterfactual Tracking</div>
-            <div class="lg-node-meta">Shrivastava et al. · ICLR 2026</div>
-          </div>
-          <div class="lg-node c" data-tip="Attention switching for temporal consistency, building on cross-frame attention control">
-            <div class="lg-node-title">Zero-Shot Video Deraining</div>
-            <div class="lg-node-meta">Varanka et al. · WACV</div>
-          </div>
-          <div class="lg-node c" data-tip="Extends CAG into a full trajectory-control system via Selective Attention Guidance Module">
-            <div class="lg-node-title">ZeroTrail: Trajectory Control</div>
-            <div class="lg-node-meta">Lu et al. · NeurIPS Workshop</div>
-          </div>
-          <div class="lg-node c" data-tip="Builds on insight that Q-K layers govern temporal structure, applied to zero-shot T2V editing">
-            <div class="lg-node-title">Cross-Attention for T2V Editing</div>
-            <div class="lg-node-meta">Motamed et al. · CVPR Workshop 2024</div>
-          </div>
-          <div class="lg-node c" data-tip="Extends CAG by weighting cross-frame attention for long-video temporal coherence">
-            <div class="lg-node-title">Weighted Cross-Frame Attention</div>
-            <div class="lg-node-meta">Wang et al. · 2025</div>
+
+          <div class="lg-group" data-cat="k">
+            <div class="lg-group-hd"><span class="lg-dot k"></span>Zero-Shot Tracking</div>
+            <div class="lg-node" data-tip="Counterfactual prompting to propagate point markers — validates DiTs encode motion, extends zero-shot tracking">
+              <div class="lg-node-title">Counterfactual Tracking</div>
+              <div class="lg-node-meta">Shrivastava et al. · ICLR 2026</div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Tooltip -->
       <div class="lg-tip" id="lg-tip"></div>
     </div>
   </div>
@@ -1009,15 +1026,14 @@
     }, { rootMargin: '-40% 0px -55% 0px' });
     document.querySelectorAll('[id]').forEach(s => obs.observe(s));
 
-    /* Lineage graph edge drawing */
-    const COLORS = { t: '#1e40af', c: '#92400e', k: '#15803d' };
+    /* Lineage graph — one edge per category group */
+    const LG_COLORS = { t: '#1e40af', c: '#92400e', k: '#15803d' };
 
     function drawEdges() {
-      const svg = document.getElementById('lg-svg');
+      const svg   = document.getElementById('lg-svg');
       const graph = document.getElementById('lg-graph');
-      const hub = document.getElementById('lg-hub');
+      const hub   = document.getElementById('lg-hub');
       if (!svg || !graph || !hub) return;
-
       svg.innerHTML = '';
       const gr = graph.getBoundingClientRect();
       const hr = hub.getBoundingClientRect();
@@ -1025,77 +1041,65 @@
 
       /* arrowhead markers */
       const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-      ['t','c','k'].forEach(cat => {
+      Object.entries(LG_COLORS).forEach(([cat, col]) => {
         const m = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
         m.setAttribute('id', 'arr-' + cat);
-        m.setAttribute('markerWidth', '7'); m.setAttribute('markerHeight', '7');
-        m.setAttribute('refX', '6'); m.setAttribute('refY', '3.5');
-        m.setAttribute('orient', 'auto');
+        m.setAttribute('markerWidth', '8'); m.setAttribute('markerHeight', '8');
+        m.setAttribute('refX', '7'); m.setAttribute('refY', '4'); m.setAttribute('orient', 'auto');
         const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        p.setAttribute('d', 'M0,0 L7,3.5 L0,7 Z');
-        p.setAttribute('fill', COLORS[cat]);
-        p.setAttribute('opacity', '0.45');
+        p.setAttribute('d', 'M0,0 L8,4 L0,8 Z');
+        p.setAttribute('fill', col); p.setAttribute('opacity', '0.5');
         m.appendChild(p); defs.appendChild(m);
       });
       svg.appendChild(defs);
       svg.setAttribute('viewBox', `0 0 ${gr.width} ${gr.height}`);
 
-      const hx_left  = hr.left - gr.left;
-      const hx_right = hr.right - gr.left;
-      const hy       = hr.top - gr.top + hr.height / 2;
+      const hxL = hr.left  - gr.left;
+      const hxR = hr.right - gr.left;
+      const hy  = hr.top   - gr.top + hr.height / 2;
 
-      /* predecessor → hub */
-      document.querySelectorAll('#lg-pre .lg-node').forEach(n => {
-        const cat = n.classList.contains('t') ? 't' : n.classList.contains('c') ? 'c' : 'k';
-        const r = n.getBoundingClientRect();
-        const x1 = r.right - gr.left;
-        const y1 = r.top - gr.top + r.height / 2;
-        const cx = x1 + (hx_left - x1) * 0.55;
+      function addPath(x1, y1, x2, y2, cat, toHub) {
         const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('d', `M${x1},${y1} C${cx},${y1} ${cx},${hy} ${hx_left},${hy}`);
-        path.setAttribute('stroke', COLORS[cat]);
-        path.setAttribute('stroke-width', '1.5');
-        path.setAttribute('stroke-opacity', '0.35');
+        const cx = x1 + (x2 - x1) * 0.5;
+        path.setAttribute('d', `M${x1},${y1} C${cx},${y1} ${cx},${y2} ${x2},${y2}`);
+        path.setAttribute('stroke', LG_COLORS[cat]);
+        path.setAttribute('stroke-width', '2');
+        path.setAttribute('stroke-opacity', '0.4');
         path.setAttribute('fill', 'none');
         path.setAttribute('marker-end', `url(#arr-${cat})`);
         svg.appendChild(path);
+      }
+
+      /* predecessors: one line per group from group vertical midpoint to hub */
+      document.querySelectorAll('#lg-pre .lg-group').forEach(g => {
+        const cat = g.dataset.cat;
+        const r   = g.getBoundingClientRect();
+        addPath(r.right - gr.left, r.top - gr.top + r.height / 2, hxL, hy, cat, true);
       });
 
-      /* hub → forward */
-      document.querySelectorAll('#lg-fwd .lg-node').forEach(n => {
-        const cat = n.classList.contains('t') ? 't' : n.classList.contains('c') ? 'c' : 'k';
-        const r = n.getBoundingClientRect();
-        const x2 = r.left - gr.left;
-        const y2 = r.top - gr.top + r.height / 2;
-        const cx = hx_right + (x2 - hx_right) * 0.45;
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('d', `M${hx_right},${hy} C${cx},${hy} ${cx},${y2} ${x2},${y2}`);
-        path.setAttribute('stroke', COLORS[cat]);
-        path.setAttribute('stroke-width', '1.5');
-        path.setAttribute('stroke-opacity', '0.35');
-        path.setAttribute('fill', 'none');
-        path.setAttribute('marker-end', `url(#arr-${cat})`);
-        svg.appendChild(path);
+      /* forward: one line per group from hub to group vertical midpoint */
+      document.querySelectorAll('#lg-fwd .lg-group').forEach(g => {
+        const cat = g.dataset.cat;
+        const r   = g.getBoundingClientRect();
+        addPath(hxR, hy, r.left - gr.left, r.top - gr.top + r.height / 2, cat, false);
       });
     }
 
     /* Tooltip */
-    const tip = document.getElementById('lg-tip');
+    const lgTip = document.getElementById('lg-tip');
     document.querySelectorAll('.lg-node').forEach(n => {
-      n.addEventListener('mouseenter', e => {
-        const text = n.dataset.tip;
-        if (!text || !tip) return;
-        tip.textContent = text;
-        tip.style.display = 'block';
+      n.addEventListener('mouseenter', () => {
+        if (!n.dataset.tip || !lgTip) return;
+        lgTip.textContent = n.dataset.tip;
+        lgTip.style.display = 'block';
       });
       n.addEventListener('mousemove', e => {
-        if (!tip) return;
+        if (!lgTip) return;
         const x = e.clientX + 14, y = e.clientY + 14;
-        const ow = tip.offsetWidth, oh = tip.offsetHeight;
-        tip.style.left = (x + ow > window.innerWidth ? e.clientX - ow - 14 : x) + 'px';
-        tip.style.top  = (y + oh > window.innerHeight ? e.clientY - oh - 14 : y) + 'px';
+        lgTip.style.left = (x + lgTip.offsetWidth  > window.innerWidth  ? e.clientX - lgTip.offsetWidth  - 14 : x) + 'px';
+        lgTip.style.top  = (y + lgTip.offsetHeight > window.innerHeight ? e.clientY - lgTip.offsetHeight - 14 : y) + 'px';
       });
-      n.addEventListener('mouseleave', () => { if (tip) tip.style.display = 'none'; });
+      n.addEventListener('mouseleave', () => { if (lgTip) lgTip.style.display = 'none'; });
     });
 
     window.addEventListener('load', drawEdges);
